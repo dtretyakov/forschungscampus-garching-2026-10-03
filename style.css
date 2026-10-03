@@ -57,7 +57,10 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
 }
 .iconbtn svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
 .iconbtn svg circle:first-child { fill: currentColor; stroke: none; }
-.langbtn { font-size: 13px; font-weight: 700; letter-spacing: .03em; }
+.langbtn {
+  font: 700 13px/1 system-ui, sans-serif; letter-spacing: .03em; color: var(--text);
+  -webkit-appearance: none; appearance: none; text-align: center; text-align-last: center; padding: 0; cursor: pointer;
+}
 .iconbtn.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 #search {
   width: 100%; margin-top: 8px; padding: 9px 12px;

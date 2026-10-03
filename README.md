@@ -7,7 +7,7 @@ Interaktive, mobile Karte aller Stationen des Tags der offenen Tür am Forschung
 - **📍 Standort**: eigene GPS-Position, Entfernung und Sortierung nach Nähe, „Route“ öffnet die Fußgänger-Navigation.
 - **Details**: Programmbeschreibung, Standort/Raum, Vorträge mit Uhrzeit (vergangene ausgegraut), Kontakt, Link zum Original.
 - **★ Mein Plan**: Stationen merken (lokal im Browser).
-- **Deutsch / English**: Sprache folgt dem Gerät, umschaltbar per Knopf (`#lang=en` im Link). Kurzbeschreibungen und Titel auf Englisch stehen in `data/i18n_en.json`; die ausführlichen Programmtexte gibt es nur auf Deutsch (mit Übersetzungs-Link).
+- **Deutsch / English / Русский**: Sprache folgt dem Gerät, umschaltbar über die Auswahl im Kopf (`#lang=en`, `#lang=ru` im Link). Titel und Kurzbeschreibungen der Stationen stehen in `data/i18n_en.json` und `data/i18n_ru.json` (fehlende Texte: Englisch, dann Deutsch); die ausführlichen Programmtexte gibt es nur auf Deutsch (mit Übersetzungs-Link).
 - Filter stecken im Link, z. B. `#cat=targets:kinder,formats:mitmachstationen` – zum Teilen oder als QR-Code.
 - Funktioniert offline weiter (Service Worker), sobald die Seite einmal geladen wurde.
 

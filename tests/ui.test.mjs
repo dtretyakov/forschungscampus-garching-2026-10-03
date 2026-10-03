@@ -136,10 +136,40 @@ await page.screenshot({ path: `${shots}/5-desktop.png` });
   await p3.waitForSelector("#detail:not([hidden]) h2");
   assert.match(await p3.textContent("#detail .back"), /Back to list/);
   await p3.screenshot({ path: `${shots}/8-english-detail.png` });
-  await p3.click("#lang");
+  await p3.selectOption("#lang", "de");
   assert.equal(await p3.getAttribute("html", "lang"), "de");
   assert.match(await p3.textContent("#detail .back"), /Zurück/);
   await ctx3.close();
+}
+
+// Russian: a browser set to Russian gets the Russian UI and Russian station texts (English fallback).
+{
+  const ctx4 = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, locale: "ru-RU" });
+  const p4 = await ctx4.newPage();
+  p4.on("pageerror", (e) => errors.push(e.message));
+  await p4.route(/tile\.openstreetmap\.org/, (r) => r.abort());
+  if (useFixture) {
+    await p4.route(/data\/stations\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_stations.json") }));
+    await p4.route(/data\/pois\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_pois.json") }));
+  }
+  await p4.goto(base);
+  await p4.waitForSelector(".list .item");
+  assert.equal(await p4.getAttribute("html", "lang"), "ru");
+  assert.equal(await p4.inputValue("#lang"), "ru");
+  assert.match(await p4.textContent("#title"), /День открытых дверей/);
+  assert.match(await p4.textContent("#count"), /станц/);
+  const kid = data.categories.find((c) => /kind/i.test(c.label));
+  if (kid && kid.label_ru) assert.match(await p4.textContent(`.chip[data-cat="${kid.id}"]`), new RegExp(kid.label_ru));
+  await p4.click(`.chip[data-cat="${cat.id}"]`);
+  assert.match(await p4.evaluate(() => location.hash), /lang=ru/);
+  const first = expected[0];
+  const want = first.teaser_ru || first.teaser_en || first.teaser;
+  await p4.locator(".list .item").first().click();
+  await p4.waitForSelector("#detail:not([hidden]) h2");
+  assert.match(await p4.textContent("#detail .back"), /Назад/);
+  if (want) assert.equal((await p4.textContent("#detail .lead")).trim(), want);
+  await p4.screenshot({ path: `${shots}/9-russian-detail.png` });
+  await ctx4.close();
 }
 
 assert.deepEqual(errors, [], "no page errors");

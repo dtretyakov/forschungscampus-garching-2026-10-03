@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -r index.html style.css app.js sw.js manifest.webmanifest icon.svg data vendor _site/
-          rm -f _site/data/manual_coords.json _site/data/i18n_en.json _site/data/georef.json
+          rm -f _site/data/manual_coords.json _site/data/i18n_*.json _site/data/georef.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

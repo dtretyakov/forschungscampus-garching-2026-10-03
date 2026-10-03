@@ -11,21 +11,24 @@
    "group": "targets",
    "label": "Kinder",
    "color": "#d9480f",
-   "label_en": "Children"
+   "label_en": "Children",
+   "label_ru": "Дети"
   },
   {
    "id": "targets:erwachsene",
    "group": "targets",
    "label": "Erwachsene",
    "color": "#2f9e44",
-   "label_en": "Adults"
+   "label_en": "Adults",
+   "label_ru": "Взрослые"
   },
   {
    "id": "tags:physik",
    "group": "tags",
    "label": "Physik",
    "color": "#1971c2",
-   "label_en": "Physics"
+   "label_en": "Physics",
+   "label_ru": "Физика"
   }
  ],
  "stations": [
@@ -95,12 +98,14 @@
   {
    "id": "targets",
    "label": "Zielgruppe",
-   "label_en": "Audience"
+   "label_en": "Audience",
+   "label_ru": "Для кого"
   },
   {
    "id": "tags",
    "label": "Thema",
-   "label_en": "Topic"
+   "label_en": "Topic",
+   "label_ru": "Тема"
   }
  ]
 }

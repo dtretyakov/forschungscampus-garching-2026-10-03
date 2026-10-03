@@ -10,17 +10,20 @@
   {
    "id": "targets",
    "label": "Zielgruppe",
-   "label_en": "Audience"
+   "label_en": "Audience",
+   "label_ru": "Для кого"
   },
   {
    "id": "formats",
    "label": "Format",
-   "label_en": "Format"
+   "label_en": "Format",
+   "label_ru": "Формат"
   },
   {
    "id": "languages",
    "label": "Sprache",
-   "label_en": "Language"
+   "label_en": "Language",
+   "label_ru": "Язык"
   }
  ],
  "categories": [
@@ -30,6 +33,7 @@
    "group_label": "Zielgruppe",
    "label": "Kinder",
    "label_en": "Children",
+   "label_ru": "Дети",
    "color": "#d9480f"
   },
   {
@@ -38,6 +42,7 @@
    "group_label": "Zielgruppe",
    "label": "Jugendliche",
    "label_en": "Teens",
+   "label_ru": "Подростки",
    "color": "#7048e8"
   },
   {
@@ -46,6 +51,7 @@
    "group_label": "Zielgruppe",
    "label": "Studieninteressierte",
    "label_en": "Prospective students",
+   "label_ru": "Абитуриенты",
    "color": "#1971c2"
   },
   {
@@ -54,6 +60,7 @@
    "group_label": "Zielgruppe",
    "label": "Erwachsene",
    "label_en": "Adults",
+   "label_ru": "Взрослые",
    "color": "#2b8a3e"
   },
   {
@@ -62,6 +69,7 @@
    "group_label": "Format",
    "label": "Experimente",
    "label_en": "Experiments",
+   "label_ru": "Эксперименты",
    "color": "#5c677d"
   },
   {
@@ -70,6 +78,7 @@
    "group_label": "Format",
    "label": "Information/Beratung",
    "label_en": "Information/advice",
+   "label_ru": "Информация/консультации",
    "color": "#5c677d"
   },
   {
@@ -78,6 +87,7 @@
    "group_label": "Format",
    "label": "Laborführungen",
    "label_en": "Lab tours",
+   "label_ru": "Экскурсии по лабораториям",
    "color": "#5c677d"
   },
   {
@@ -86,6 +96,7 @@
    "group_label": "Format",
    "label": "Maustag",
    "label_en": "Maus-Tag (kids)",
+   "label_ru": "Maus-Tag (для детей)",
    "color": "#5c677d"
   },
   {
@@ -94,6 +105,7 @@
    "group_label": "Format",
    "label": "Mitmachstationen",
    "label_en": "Hands-on stations",
+   "label_ru": "Интерактивные станции",
    "color": "#5c677d"
   },
   {
@@ -102,6 +114,7 @@
    "group_label": "Format",
    "label": "Offene Labore",
    "label_en": "Open labs",
+   "label_ru": "Открытые лаборатории",
    "color": "#5c677d"
   },
   {
@@ -110,6 +123,7 @@
    "group_label": "Format",
    "label": "Science Shows",
    "label_en": "Science shows",
+   "label_ru": "Научные шоу",
    "color": "#5c677d"
   },
   {
@@ -118,6 +132,7 @@
    "group_label": "Format",
    "label": "Verpflegung",
    "label_en": "Food & drinks",
+   "label_ru": "Еда и напитки",
    "color": "#5c677d"
   },
   {
@@ -126,6 +141,7 @@
    "group_label": "Format",
    "label": "Vorträge",
    "label_en": "Talks",
+   "label_ru": "Доклады",
    "color": "#5c677d"
   },
   {
@@ -134,6 +150,7 @@
    "group_label": "Format",
    "label": "Workshops",
    "label_en": "Workshops",
+   "label_ru": "Мастер-классы",
    "color": "#5c677d"
   },
   {
@@ -142,6 +159,7 @@
    "group_label": "Sprache",
    "label": "Deutsch",
    "label_en": "German",
+   "label_ru": "Немецкий",
    "color": "#0b7285"
   },
   {
@@ -150,6 +168,7 @@
    "group_label": "Sprache",
    "label": "Englisch",
    "label_en": "English",
+   "label_ru": "Английский",
    "color": "#0b7285"
   }
  ],
@@ -199,7 +218,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Join in & discover: experiments, lab tours, workshops and talks on physics & chemistry!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM School of Natural Sciences (естественные науки)",
+   "teaser_ru": "Участвуйте и открывайте: эксперименты, экскурсии по лабораториям, мастер-классы и доклады по физике и химии!",
+   "position_note_ru": ""
   },
   {
    "id": "bnmrz-tum",
@@ -234,7 +256,10 @@
    "talks": [],
    "title_en": "Bavarian NMR Center – TUM/Helmholtz",
    "teaser_en": "Lively molecules in mighty magnets – research at the Bavarian NMR Center.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Баварский центр ЯМР – TUM/Helmholtz",
+   "teaser_ru": "Бодрые молекулы в мощных магнитах – исследования в Баварском центре ЯМР.",
+   "position_note_ru": ""
   },
   {
    "id": "crc",
@@ -273,7 +298,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Catalysis in action: making reactions more efficient, saving energy, protecting the environment!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Центр исследований катализа (CRC) – TUM",
+   "teaser_ru": "Катализ в действии: делаем реакции эффективнее, экономим энергию, бережём природу!",
+   "position_note_ru": ""
   },
   {
    "id": "tumint-energy",
@@ -329,7 +357,10 @@
    ],
    "title_en": "",
    "teaser_en": "What will the battery of the future look like? Dive into the world of solid-state batteries!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "Каким будет аккумулятор будущего? Погрузитесь в мир твердотельных батарей!",
+   "position_note_ru": ""
   },
   {
    "id": "tum-cpa",
@@ -369,7 +400,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Understanding proteins: structure, function and interaction – in VR, 3D and living systems.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Центр функциональных белковых комплексов (CPA) – TUM",
+   "teaser_ru": "Понять белки: строение, функции и взаимодействие – в VR, 3D и живых системах.",
+   "position_note_ru": ""
   },
   {
    "id": "tum-aipd",
@@ -410,7 +444,10 @@
    "talks": [],
    "title_en": "TUM Professorship of AI-Guided Protein Design",
    "teaser_en": "How artificial intelligence is revolutionising drug development.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: профессура дизайна белков с помощью ИИ",
+   "teaser_ru": "Как искусственный интеллект меняет разработку лекарств.",
+   "position_note_ru": ""
   },
   {
    "id": "cala",
@@ -456,7 +493,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Learn about radiation-medicine research at one of the most powerful lasers in the world.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Центр прикладных лазерных технологий (CALA)",
+   "teaser_ru": "Узнайте об исследованиях в радиационной медицине на одном из самых мощных лазеров в мире.",
+   "position_note_ru": ""
   },
   {
    "id": "wsi-znn",
@@ -504,7 +544,10 @@
    "talks": [],
    "title_en": "Walter Schottky Institute and ZNN (Nano)",
    "teaser_en": "Semiconductors are our thing – from quantum computers and sensors to renewable energy.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт Вальтера Шоттки и ZNN (нано)",
+   "teaser_ru": "Полупроводники – наша специальность: от квантовых компьютеров и сенсоров до возобновляемой энергии.",
+   "position_note_ru": ""
   },
   {
    "id": "tum-alumni-career",
@@ -541,7 +584,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "The TUM Community team welcomes TUM alumni on campus and presents what the TUM network offers.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM Alumni & Career (выпускники и карьера)",
+   "teaser_ru": "Команда TUM Community встречает выпускников TUM на кампусе и рассказывает о возможностях сети TUM.",
+   "position_note_ru": ""
   },
   {
    "id": "mep",
@@ -584,7 +630,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "MEP offers insights into its interdisciplinary research for a sustainable future.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Мюнхенский институт материалов, энергетики и технологических процессов (MEP)",
+   "teaser_ru": "MEP рассказывает о своих междисциплинарных исследованиях ради устойчивого будущего.",
+   "position_note_ru": ""
   },
   {
    "id": "frm-ii",
@@ -629,7 +678,10 @@
    "talks": [],
    "title_en": "Research Neutron Source Heinz Maier-Leibnitz (FRM II)",
    "teaser_en": "Research with neutrons: see inside matter, cure cancer and solve the world's future challenges!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Исследовательский нейтронный источник Хайнца Майер-Лейбница (FRM II)",
+   "teaser_ru": "Исследования с нейтронами: просвечивать материю, лечить рак и решать задачи будущего!",
+   "position_note_ru": ""
   },
   {
    "id": "stellaris-apartment-hotel",
@@ -661,7 +713,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Hospitality up close: discover the Stellaris Apartment Hotel, the Courtyard by Marriott Munich Garching and the Science Congress Center on an exclusive tour.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Stellaris Apartment Hotel (отель)",
+   "teaser_ru": "Гостеприимство вблизи: эксклюзивная экскурсия по Stellaris Apartment Hotel, Courtyard by Marriott Munich Garching и Science Congress Center.",
+   "position_note_ru": ""
   },
   {
    "id": "utg",
@@ -703,7 +758,10 @@
    "talks": [],
    "title_en": "TUM Chair of Metal Forming and Casting",
    "teaser_en": "How does a car come out of sheet metal or molten metal? Production technology live!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: кафедра обработки металлов давлением и литейного производства",
+   "teaser_ru": "Как из листа металла или жидкого металла получается автомобиль? Производство вживую!",
+   "position_note_ru": ""
   },
   {
    "id": "wmi",
@@ -778,7 +836,10 @@
    ],
    "title_en": "Walther-Meißner-Institute for Low Temperature Research",
    "teaser_en": "Dive into a world colder than outer space, full of artificial atoms. Caution, cold!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт Вальтера Майсснера (физика низких температур)",
+   "teaser_ru": "Мир холоднее космоса, полный искусственных атомов. Осторожно, холодно!",
+   "position_note_ru": ""
   },
   {
    "id": "mqv",
@@ -845,7 +906,10 @@
    ],
    "title_en": "",
    "teaser_en": "Quantum computers, the technology of the future: find out how, where and why we build them.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "Квантовые компьютеры – технология будущего: как, где и зачем мы их создаём.",
+   "position_note_ru": ""
   },
   {
    "id": "ipp",
@@ -922,7 +986,10 @@
    ],
    "title_en": "Max Planck Institute for Plasma Physics (IPP)",
    "teaser_en": "Fusion: find out how we bring the sun's way of producing energy down to Earth.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт физики плазмы Общества Макса Планка (IPP)",
+   "teaser_ru": "Термоядерный синтез: как мы переносим способ получения энергии Солнца на Землю.",
+   "position_note_ru": ""
   },
   {
    "id": "proxima-fusion",
@@ -964,7 +1031,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "From stellarator to fusion power plant: see how Proxima Fusion plans to generate energy.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "От стелларатора к термоядерной электростанции: как Proxima Fusion собирается вырабатывать энергию.",
+   "position_note_ru": ""
   },
   {
    "id": "mpcdf",
@@ -1014,7 +1084,10 @@
    ],
    "title_en": "",
    "teaser_en": "What is behind the doors of a data centre, how does it work and what do supercomputers achieve?",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Вычислительный центр Общества Макса Планка (MPCDF)",
+   "teaser_ru": "Что скрывается за дверями вычислительного центра, как он работает и на что способны суперкомпьютеры?",
+   "position_note_ru": ""
   },
   {
    "id": "eurofusion",
@@ -1048,7 +1121,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "From stars to sustainable energy: discover fusion!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "От звёзд к устойчивой энергии: откройте для себя термоядерный синтез!",
+   "position_note_ru": ""
   },
   {
    "id": "krp-mechatec-gmbh",
@@ -1091,7 +1167,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "How much can a material take before it gives way?",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "Сколько выдержит материал, прежде чем поддастся?",
+   "position_note_ru": ""
   },
   {
    "id": "hll",
@@ -1128,7 +1207,10 @@
    "talks": [],
    "title_en": "Semiconductor Laboratory of the Max Planck Society",
    "teaser_en": "\"Sensing the Invisible\" – detectors for science.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Полупроводниковая лаборатория Общества Макса Планка",
+   "teaser_ru": "«Увидеть невидимое» – детекторы для науки.",
+   "position_note_ru": ""
   },
   {
    "id": "mpp",
@@ -1241,7 +1323,10 @@
    ],
    "title_en": "Max Planck Institute for Physics",
    "teaser_en": "The world at the smallest and the very largest scales: what do elementary particles have to do with the universe?",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт физики Общества Макса Планка",
+   "teaser_ru": "Мир в самом малом и самом большом масштабе: как элементарные частицы связаны со Вселенной?",
+   "position_note_ru": ""
   },
   {
    "id": "tum-ais",
@@ -1285,7 +1370,10 @@
    "talks": [],
    "title_en": "TUM Chair of Automation and Information Systems",
    "teaser_en": "How are machines, robots and production plants controlled today? Can AI help us?",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: кафедра автоматизации и информационных систем",
+   "teaser_ru": "Как сегодня управляют машинами, роботами и заводами? Может ли помочь ИИ?",
+   "position_note_ru": ""
   },
   {
    "id": "tum-les",
@@ -1337,7 +1425,10 @@
    ],
    "title_en": "TUM Chair of Energy Systems",
    "teaser_en": "The future of energy up close! Discover our chair through a talk, a tour and a hands-on station.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: кафедра энергетических систем",
+   "teaser_ru": "Энергетика будущего вблизи: доклад, экскурсия и интерактивная станция.",
+   "position_note_ru": ""
   },
   {
    "id": "tum-lfe",
@@ -1382,7 +1473,10 @@
    "talks": [],
    "title_en": "TUM Chair of Ergonomics",
    "teaser_en": "How can humans and machines become one? Discover the world of ergonomics!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: кафедра эргономики",
+   "teaser_ru": "Как человеку и машине стать единым целым? Откройте мир эргономики!",
+   "position_note_ru": ""
   },
   {
    "id": "fml",
@@ -1422,7 +1516,10 @@
    "talks": [],
    "title_en": "TUM Chair of Materials Handling, Material Flow, Logistics",
    "teaser_en": "Robotics, AI, sustainability? Explore the world of logistics with us!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: кафедра подъёмно-транспортной техники и логистики",
+   "teaser_ru": "Робототехника, ИИ, устойчивость? Исследуйте с нами мир логистики!",
+   "position_note_ru": ""
   },
   {
    "id": "fzg",
@@ -1461,7 +1558,10 @@
    "talks": [],
    "title_en": "TUM Chair of Machine Elements (FZG)",
    "teaser_en": "What is special about gears? Why do we research them? Where are gears used?",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: кафедра деталей машин (FZG)",
+   "teaser_ru": "Чем особенны зубчатые колёса? Зачем их исследуют? Где они используются?",
+   "position_note_ru": ""
   },
   {
    "id": "science-slam",
@@ -1516,7 +1616,10 @@
    ],
    "title_en": "",
    "teaser_en": "Discover. Check. Slam. Come to the Science Slam and be amazed! (One session in English.)",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Science Slam (научный слэм)",
+   "teaser_ru": "Открывай. Проверяй. Слэм! Приходите на Science Slam – будет интересно! (Одна сессия на английском.)",
+   "position_note_ru": ""
   },
   {
    "id": "akaflieg-muenchen",
@@ -1557,7 +1660,10 @@
    "talks": [],
    "title_en": "Akaflieg München e.V. – TUM student initiative",
    "teaser_en": "Design. Build. Fly. Since 1924.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Akaflieg München e.V. – студенческая инициатива TUM",
+   "teaser_ru": "Конструировать. Строить. Летать. С 1924 года.",
+   "position_note_ru": ""
   },
   {
    "id": "hummingbird",
@@ -1598,7 +1704,10 @@
    "talks": [],
    "title_en": "Hummingbird Gas Turbines – TUM student initiative",
    "teaser_en": "Aircraft engines in miniature – small but powerful!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Hummingbird Gas Turbines – студенческая инициатива TUM",
+   "teaser_ru": "Авиационные двигатели в миниатюре – маленькие, но мощные!",
+   "position_note_ru": ""
   },
   {
    "id": "igem",
@@ -1635,7 +1744,10 @@
    "talks": [],
    "title_en": "iGEM Munich – TUM student initiative",
    "teaser_en": "Biology meets engineering: discover the world of synthetic biology with us!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "iGEM Munich – студенческая инициатива TUM",
+   "teaser_ru": "Биология встречается с инженерией: откройте мир синтетической биологии!",
+   "position_note_ru": ""
   },
   {
    "id": "exzellenzcluster-muenchen",
@@ -1673,7 +1785,10 @@
    "talks": [],
    "title_en": "Clusters of Excellence of TUM and LMU",
    "teaser_en": "From the atom to outer space: experience quanta & energy, the magic of the universe & of biomolecules – up close.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Кластеры передового опыта TUM и LMU",
+   "teaser_ru": "От атома до космоса: кванты и энергия, магия Вселенной и биомолекул – вблизи.",
+   "position_note_ru": ""
   },
   {
    "id": "qookies",
@@ -1720,7 +1835,10 @@
    ],
    "title_en": "",
    "teaser_en": "A game about quantum logic and crumb chaos – released right here at the open day.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "Игра о квантовой логике и хаосе из крошек – премьера прямо здесь, в день открытых дверей.",
+   "position_note_ru": ""
   },
   {
    "id": "tum-cst-studienberatung",
@@ -1756,7 +1874,10 @@
    "talks": [],
    "title_en": "TUM CST Student Advising and Information",
    "teaser_en": "Questions about degree programmes or applying to TUM? We look forward to your visit!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM CST: консультации для абитуриентов",
+   "teaser_ru": "Вопросы о программах обучения или поступлении в TUM? Ждём вас!",
+   "position_note_ru": ""
   },
   {
    "id": "tum-additive",
@@ -1792,7 +1913,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Additive manufacturing live – discover the future of production!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM.Additive (аддитивное производство)",
+   "teaser_ru": "3D-печать вживую – откройте будущее производства!",
+   "position_note_ru": ""
   },
   {
    "id": "khg-tum",
@@ -1830,7 +1954,10 @@
    "talks": [],
    "title_en": "Catholic University Community at TUM",
    "teaser_en": "Wonder and understanding – where science and faith meet.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Католическая студенческая община при TUM",
+   "teaser_ru": "Удивляться и понимать – где встречаются наука и вера.",
+   "position_note_ru": ""
   },
   {
    "id": "studierendenwerk-muenchen",
@@ -1870,7 +1997,10 @@
    "talks": [],
    "title_en": "Studierendenwerk München Oberbayern (student services)",
    "teaser_en": "From general advice and student financing (BAföG) to childcare, the Mensa and housing.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Studierendenwerk München Oberbayern (студенческая служба)",
+   "teaser_ru": "От общих консультаций и стипендии BAföG до детского сада, столовой и жилья.",
+   "position_note_ru": ""
   },
   {
    "id": "pushquantum",
@@ -1912,7 +2042,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Play Quantum TiqTaqToe and explore quantum mechanics with PushQuantum students from TUM & LMU",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "Сыграйте в квантовые крестики-нолики и познакомьтесь с квантовой механикой вместе со студентами TUM и LMU.",
+   "position_note_ru": ""
   },
   {
    "id": "tum-cit",
@@ -1958,7 +2091,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Discover AI, robotics and digital systems through talks, demos and hands-on activities.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM School of Computation, Information and Technology (математика и информатика)",
+   "teaser_ru": "ИИ, робототехника и цифровые системы: доклады, демонстрации и интерактивные станции.",
+   "position_note_ru": ""
   },
   {
    "id": "mdsi-tum",
@@ -2001,7 +2137,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "Shaping the Future with Data. MDSI is TUM's hub for data science, machine learning and AI.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Мюнхенский институт науки о данных (MDSI) – TUM",
+   "teaser_ru": "Shaping the Future with Data. MDSI – центр TUM по data science, машинному обучению и ИИ.",
+   "position_note_ru": ""
   },
   {
    "id": "relai",
@@ -2038,7 +2177,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "AI to try out! Learn how our research makes AI safe, fair and reliable.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "relAI – школа Конрада Цузе по надёжному ИИ",
+   "teaser_ru": "ИИ, который можно попробовать! Как наши исследования делают ИИ безопасным, честным и надёжным.",
+   "position_note_ru": ""
   },
   {
    "id": "stadt-garching",
@@ -2070,7 +2212,10 @@
    "talks": [],
    "title_en": "City of Garching b. München",
    "teaser_en": "Everything about the city of Garching b. München!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Город Гархинг-бай-Мюнхен",
+   "teaser_ru": "Всё о городе Гархинг – у нас!",
+   "position_note_ru": ""
   },
   {
    "id": "universitaetsbibliothek",
@@ -2107,7 +2252,10 @@
    "talks": [],
    "title_en": "University Library",
    "teaser_en": "Learning and research: literature, study spaces and support for open access & research data.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Университетская библиотека",
+   "teaser_ru": "Учиться и исследовать: литература, учебные места и поддержка по Open Access и исследовательским данным.",
+   "position_note_ru": ""
   },
   {
    "id": "kinderuni-muenchen",
@@ -2145,7 +2293,10 @@
    "talks": [],
    "title_en": "KinderUni München (Children's University)",
    "teaser_en": "Come to the KinderUni congress: children present their own research to other children! (German)",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "KinderUni München (детский университет)",
+   "teaser_ru": "Конгресс детского университета: дети рассказывают детям о своих исследованиях! (на немецком)",
+   "position_note_ru": ""
   },
   {
    "id": "lrz",
@@ -2189,7 +2340,10 @@
    "talks": [],
    "title_en": "Leibniz Supercomputing Centre (LRZ)",
    "teaser_en": "Powerful supercomputers, novel quantum computers and virtual reality: a tour of the LRZ.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Суперкомпьютерный центр Лейбница (LRZ)",
+   "teaser_ru": "Мощные суперкомпьютеры, новые квантовые компьютеры и виртуальная реальность: экскурсия по LRZ.",
+   "position_note_ru": ""
   },
   {
    "id": "mpe",
@@ -2269,7 +2423,10 @@
    ],
    "title_en": "Max Planck Institute for Extraterrestrial Physics",
    "teaser_en": "Exciting science, experiments & technology – galaxies & black holes! Children's programme: Maus-Tag.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт внеземной физики Общества Макса Планка (MPE)",
+   "teaser_ru": "Наука, эксперименты и техника – галактики и чёрные дыры! Детская программа: Maus-Tag.",
+   "position_note_ru": ""
   },
   {
    "id": "mpa",
@@ -2353,7 +2510,10 @@
    ],
    "title_en": "Max Planck Institute for Astrophysics",
    "teaser_en": "The history of the universe in the computer – from gas and dust to the largest structures in space.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт астрофизики Общества Макса Планка (MPA)",
+   "teaser_ru": "История Вселенной в компьютере – от газа и пыли до крупнейших структур космоса.",
+   "position_note_ru": ""
   },
   {
    "id": "eso",
@@ -2485,7 +2645,10 @@
    ],
    "title_en": "",
    "teaser_en": "Huge telescopes, big questions: discover the fascination of the universe with ESO!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Европейская южная обсерватория (ESO)",
+   "teaser_ru": "Огромные телескопы, большие вопросы: откройте с ESO очарование Вселенной! Планетарий.",
+   "position_note_ru": ""
   },
   {
    "id": "mpq",
@@ -2577,7 +2740,10 @@
    ],
    "title_en": "Max Planck Institute of Quantum Optics",
    "teaser_en": "What can quantum optics do? Use lasers to explore how light and matter interact!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт квантовой оптики Общества Макса Планка (MPQ)",
+   "teaser_ru": "На что способна квантовая оптика? Исследуйте с лазерами взаимодействие света и материи!",
+   "position_note_ru": ""
   },
   {
    "id": "feuerwehr-tum",
@@ -2609,7 +2775,10 @@
    "talks": [],
    "title_en": "Fire Brigade of the Technical University of Munich",
    "teaser_en": "Fire brigade – rescue – extinguish – recover – protect.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Пожарная команда Технического университета Мюнхена",
+   "teaser_ru": "Пожарные – спасать, тушить, эвакуировать, защищать.",
+   "position_note_ru": ""
   },
   {
    "id": "sap-labs",
@@ -2647,7 +2816,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "See at SAP Labs Munich Campus how we live our credo \"Creating Impact Together\"!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "",
+   "teaser_ru": "Узнайте в SAP Labs Munich Campus, как мы воплощаем девиз «Creating Impact Together»!",
+   "position_note_ru": ""
   },
   {
    "id": "siemens",
@@ -2694,7 +2866,10 @@
    "talks": [],
    "title_en": "",
    "teaser_en": "What does central SIEMENS research and development do? Come by and see for yourself!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Технологический центр Siemens в Гархинге",
+   "teaser_ru": "Чем занимается центральный отдел исследований и разработок SIEMENS? Приходите и посмотрите сами!",
+   "position_note_ru": ""
   },
   {
    "id": "robotik-tum",
@@ -2802,7 +2977,10 @@
    ],
    "title_en": "",
    "teaser_en": "How can a hand be controlled with electrical signals, does a unicorn understand what children draw, and how precisely do robots actually throw?",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Robotik@TUM (робототехника)",
+   "teaser_ru": "Как управлять рукой с помощью электрических сигналов, понимает ли единорог детские рисунки и насколько точно бросают роботы?",
+   "position_note_ru": ""
   },
   {
    "id": "tum-ei",
@@ -2923,7 +3101,10 @@
    ],
    "title_en": "TUM Electrical and Computer Engineering",
    "teaser_en": "From quanta to neuroelectronics: experience electrical and computer engineering with demos & lab tours!",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "TUM: электротехника и информационные технологии",
+   "teaser_ru": "От квантов до нейроэлектроники: электротехника вживую – демонстрации и экскурсии по лабораториям!",
+   "position_note_ru": ""
   },
   {
    "id": "fraunhofer-igcv",
@@ -2967,7 +3148,10 @@
    "talks": [],
    "title_en": "Fraunhofer Institute for Casting, Composite and Processing Technology IGCV",
    "teaser_en": "Plan your own factory and dive into the world of foundry technology.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт Фраунгофера литейных, композитных и обрабатывающих технологий IGCV",
+   "teaser_ru": "Спланируйте свой завод и погрузитесь в мир литейных технологий.",
+   "position_note_ru": ""
   },
   {
    "id": "fraunhofer-iks",
@@ -3008,7 +3192,10 @@
    "talks": [],
    "title_en": "Fraunhofer Institute for Cognitive Systems IKS",
    "teaser_en": "Experience quantum computing, AI-supported healthcare solutions and applications of generative AI.",
-   "position_note_en": ""
+   "position_note_en": "",
+   "title_ru": "Институт Фраунгофера когнитивных систем IKS",
+   "teaser_ru": "Квантовые вычисления, решения для здравоохранения на основе ИИ и генеративный ИИ.",
+   "position_note_ru": ""
   },
   {
    "id": "unterhaltungsprogramm",
@@ -3041,7 +3228,10 @@
    "talks": [],
    "title_en": "Entertainment programme",
    "teaser_en": "A musical treat for a short break.",
-   "position_note_en": "Various places – forecourt/entrance Mechanical Engineering, gallery Maths/Informatics, Fraunhofer IKS, Electrical Engineering (see description)"
+   "position_note_en": "Various places – forecourt/entrance Mechanical Engineering, gallery Maths/Informatics, Fraunhofer IKS, Electrical Engineering (see description)",
+   "title_ru": "Развлекательная программа",
+   "teaser_ru": "Музыкальная пауза – отдохнуть и послушать.",
+   "position_note_ru": "Разные места – площадь/вход Maschinenwesen, галерея здания математики и информатики, Fraunhofer IKS, здание электротехники (см. описание)"
   }
  ]
 }

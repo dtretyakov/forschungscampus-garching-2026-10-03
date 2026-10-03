@@ -37,8 +37,8 @@
     return 2 * R * Math.asin(Math.sqrt(h));
   }
   function fmtDist(m) {
-    if (m < 1000) return "≈ " + Math.max(10, Math.round(m / 10) * 10) + " m";
-    return "≈ " + (m / 1000).toFixed(1).replace(".", LANG === "de" ? "," : ".") + " km";
+    if (m < 1000) return "≈ " + Math.max(10, Math.round(m / 10) * 10) + " " + T("unitM");
+    return "≈ " + (m / 1000).toFixed(1).replace(".", LANG === "en" ? "." : ",") + " " + T("unitKm");
   }
   function walkMin(m) { return Math.max(1, Math.round(m / 75)); } // ~4.5 km/h
   function catById(id) { return state.data.catIndex[id]; }
@@ -67,7 +67,7 @@
   const STR = {
     de: {
       title: "Tag der offenen Tür · Garching", search: "Station, Institut, Thema suchen …",
-      locate: "Meinen Standort zeigen", lang: "EN", langTitle: "English",
+      locate: "Meinen Standort zeigen", langTitle: "Sprache", docTitle: "Campus-Karte Garching",
       sheet: "Liste ein-/ausklappen", cats: "Kategorien",
       lStations: "Stationen", lInfra: "Infrastruktur (U-Bahn, Info, Essen …)", lPlan: "Offizieller Lageplan", lMap: "Karte",
       multiTitle: (n, r) => `${n} Stationen in Gebäude ${r}`, multiHead: (r, n) => `Gebäude ${r} · ${n} Stationen`,
@@ -76,7 +76,7 @@
       rLocation: "Standort", rPlan: "Lageplan", planNo: "Nr. ", rNote: "Hinweis", rTargets: "Zielgruppe", rFormats: "Format", rLang: "Sprache",
       talks: "Vorträge", back: "‹ Zurück zur Liste", away: (d, m) => `📍 ${d} entfernt · ca. ${m} Min. zu Fuß`,
       show: "Auf Karte zeigen", inPlan: "★ Im Plan", save: "☆ Merken", route: "Route", original: "Original", contact: "Kontakt",
-      descNote: "", locating: "Standort wird gesucht …", me: "Mein Standort",
+      descNote: "", locating: "Standort wird gesucht …", me: "Mein Standort", unitM: "m", unitKm: "km",
       offCampus: "Du bist nicht auf dem Campus – Entfernungen sind trotzdem berechnet.",
       loadFail: "Stationsdaten konnten nicht geladen werden.",
       locTitle: "📍 Standort nicht verfügbar",
@@ -100,7 +100,7 @@
     },
     en: {
       title: "Open Day · Garching", search: "Search station, institute, topic …",
-      locate: "Show my location", lang: "DE", langTitle: "Deutsch",
+      locate: "Show my location", langTitle: "Language",
       sheet: "Expand/collapse list", cats: "Categories",
       lStations: "Stations", lInfra: "Facilities (U-Bahn, info, food …)", lPlan: "Official site plan", lMap: "Map",
       multiTitle: (n, r) => `${n} stations in building ${r}`, multiHead: (r, n) => `Building ${r} · ${n} stations`,
@@ -110,7 +110,7 @@
       talks: "Talks", back: "‹ Back to list", away: (d, m) => `📍 ${d} away · approx. ${m} min walk`,
       show: "Show on map", inPlan: "★ In my plan", save: "☆ Save", route: "Directions", original: "Original page", contact: "Contact",
       descNote: "The programme description is only available in German.", translate: "Translate page",
-      locating: "Finding your location …", me: "My location",
+      locating: "Finding your location …", me: "My location", unitM: "m", unitKm: "km", docTitle: "Campus Map Garching",
       offCampus: "You are not on campus – distances are calculated anyway.",
       loadFail: "Could not load the station data.",
       locTitle: "📍 Location not available",
@@ -132,17 +132,64 @@
       poi: { info: "Info stand", food: "Food & drinks", bus: "Bus stop", parking: "Parking", ubahn: "U6 Garching-Forschungszentrum" },
       ubahnNote: "U-Bahn runs every 10 minutes from 9:30 to 11:30.",
     },
+    ru: {
+      title: "День открытых дверей", search: "Поиск: станция, институт, тема …",
+      locate: "Показать моё местоположение", langTitle: "Язык",
+      sheet: "Развернуть/свернуть список", cats: "Категории",
+      lStations: "Станции", lInfra: "Инфраструктура (метро, инфо, еда …)", lPlan: "Официальный план", lMap: "Карта",
+      multiTitle: (n, r) => `${n} ${plural(n, "станция", "станции", "станций")} в здании ${r}`,
+      multiHead: (r, n) => `Здание ${r} · ${n} ${plural(n, "станция", "станции", "станций")}`,
+      myPlan: "Мой план", count: (n) => `${n} ${plural(n, "станция", "станции", "станций")}`, countOf: (n, t) => `${n} из ${t} станций`,
+      empty: "Ни одна станция не подходит под фильтр.", reset: "Сбросить фильтры",
+      rLocation: "Где", rPlan: "План", planNo: "№ ", rNote: "Примечание", rTargets: "Для кого", rFormats: "Формат", rLang: "Язык",
+      talks: "Доклады", back: "‹ Назад к списку", away: (d, m) => `📍 ${d} отсюда · ≈ ${m} мин пешком`,
+      show: "Показать на карте", inPlan: "★ В моём плане", save: "☆ Сохранить", route: "Маршрут", original: "Оригинал", contact: "Контакты",
+      descNote: "Подробное описание программы есть только на немецком.", translate: "Перевести страницу",
+      locating: "Определяем местоположение …", me: "Я здесь", unitM: "м", unitKm: "км", docTitle: "Карта кампуса Гархинг",
+      offCampus: "Вы не на кампусе – расстояния всё равно посчитаны.",
+      loadFail: "Не удалось загрузить данные о станциях.",
+      locTitle: "📍 Местоположение недоступно",
+      locIOS: `<p>Safari сейчас не может использовать ваше местоположение. Как включить:</p><ol>
+        <li>Включите <b>Настройки → Конфиденциальность и безопасность → Службы геолокации</b>.</li>
+        <li>Там для <b>Веб-сайты Safari</b> выберите <b>При использовании приложения</b> и включите <b>Точная геопозиция</b>.</li>
+        <li>В Safari нажмите <b>aA</b> → <b>Настройки веб-сайта</b> → <b>Геопозиция</b>: <b>Спросить</b> или <b>Разрешить</b>.</li>
+        <li>Перезагрузите страницу и снова нажмите 📍.</li></ol>`,
+      locAndroid: `<p>Браузеру сейчас запрещено использовать ваше местоположение. Как включить:</p><ol>
+        <li>Включите геолокацию/GPS в быстрых настройках.</li>
+        <li>В браузере нажмите на значок слева от адреса → <b>Разрешения</b> → разрешите <b>Местоположение</b>.</li>
+        <li>Перезагрузите страницу и снова нажмите 📍.</li></ol>`,
+      locDenied: `<p>Доступ к местоположению для этой страницы заблокирован. Разрешите его в настройках сайта в браузере (значок рядом с адресом) и перезагрузите страницу.</p>`,
+      locUnsupported: `<p>Этот браузер не поддерживает определение местоположения.</p>`,
+      locFailed: `<p>Не удалось определить местоположение (нет сигнала GPS?). Попробуйте ещё раз на улице.</p>`,
+      locManualHint: "Или отметьте себя на карте вручную – расстояния и сортировка всё равно будут работать.",
+      tech: "Техническая информация", manual: "Отметить на карте", reload: "Перезагрузить", retry: "Ещё раз", close: "Закрыть",
+      tapMap: "Нажмите на карте, где вы находитесь.", posSet: "Местоположение отмечено – синюю точку можно перетащить.",
+      poi: { info: "Инфостенд", food: "Еда и напитки", bus: "Автобусная остановка", parking: "Парковка", ubahn: "U6 Garching-Forschungszentrum (метро)" },
+      ubahnNote: "Метро ходит каждые 10 минут с 9:30 до 11:30.",
+    },
   };
+  // Russian plural forms: 1 станция, 2 станции, 5 станций.
+  function plural(n, one, few, many) {
+    const a = n % 10, b = n % 100;
+    return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many;
+  }
+  const LANGS = ["de", "en", "ru"];
   let LANG = pickLang();
   function pickLang() {
     const h = new URLSearchParams(location.hash.slice(1)).get("lang");
-    if (h === "de" || h === "en") return h;
-    try { const v = localStorage.getItem("garching-lang"); if (v === "de" || v === "en") return v; } catch (e) { /* ignore */ }
-    return (navigator.languages || [navigator.language || "de"]).some((l) => /^de\b/i.test(l)) ? "de" : "en";
+    if (LANGS.includes(h)) return h;
+    try { const v = localStorage.getItem("garching-lang"); if (LANGS.includes(v)) return v; } catch (e) { /* ignore */ }
+    // First of the device's languages we support; English otherwise.
+    for (const l of navigator.languages || [navigator.language || "de"]) {
+      const c = String(l).slice(0, 2).toLowerCase();
+      if (LANGS.includes(c)) return c;
+    }
+    return "en";
   }
-  const T = (k, ...a) => { const v = STR[LANG][k] ?? STR.de[k]; return typeof v === "function" ? v(...a) : v; };
-  const tx = (s, f) => (LANG === "en" && s[f + "_en"]) || s[f];               // station text in current language
-  const cl = (c) => (LANG === "en" && c.label_en) || c.label;                   // category / group label
+  const T = (k, ...a) => { const v = STR[LANG][k] ?? STR.en[k] ?? STR.de[k]; return typeof v === "function" ? v(...a) : v; };
+  // Station texts and labels: current language, then English, then the German original.
+  const tx = (s, f) => (LANG !== "de" && (s[`${f}_${LANG}`] || s[`${f}_en`])) || s[f];
+  const cl = (c) => (LANG !== "de" && (c[`label_${LANG}`] || c.label_en)) || c.label;
 
   // ---------- URL hash state: #cat=kinder,familie&q=laser&s=12 ----------
   function readHash() {
@@ -156,7 +203,7 @@
     if (state.cats.size) p.set("cat", [...state.cats].join(","));
     if (state.q) p.set("q", state.q);
     if (state.sel) p.set("s", state.sel);
-    if (LANG === "en") p.set("lang", "en");
+    if (LANG !== "de") p.set("lang", LANG);
     const h = p.toString().replace(/%2C/g, ",").replace(/%3A/g, ":");
     history.replaceState(null, "", h ? "#" + h : location.pathname + location.search);
   }
@@ -332,8 +379,8 @@
     const nav = s.lat != null ? `https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=${s.lat},${s.lng}` : null;
     // description_html / contact_html are whitelist-sanitised by scripts/build_data.py
     const same = norm(s.description).replace(/\W/g, "") === norm(s.teaser).replace(/\W/g, "");
-    const translate = s.url ? `https://translate.google.com/translate?sl=de&tl=en&u=${encodeURIComponent(s.url)}` : "";
-    const descNote = LANG === "en" && !same && s.description ? `<p class="tnote">${esc(T("descNote"))}${translate ? ` <a href="${translate}" target="_blank" rel="noopener">${esc(T("translate"))} ↗</a>` : ""}</p>` : "";
+    const translate = s.url ? `https://translate.google.com/translate?sl=de&tl=${LANG}&u=${encodeURIComponent(s.url)}` : "";
+    const descNote = LANG !== "de" && !same && s.description ? `<p class="tnote">${esc(T("descNote"))}${translate ? ` <a href="${translate}" target="_blank" rel="noopener">${esc(T("translate"))} ↗</a>` : ""}</p>` : "";
     const desc = same ? "" : s.description_html || String(s.description || "").split(/\n\s*\n/).filter(Boolean).map((t) => `<p>${esc(t.trim())}</p>`).join("");
     els.detail.innerHTML =
       `<button type="button" class="back" data-act="back">${esc(T("back"))}</button>` +
@@ -429,8 +476,8 @@
       else if (dy > 30) els.sheet.dataset.state = st === "full" ? "peek" : "min";
     });
     els.locate.addEventListener("click", locate);
-    els.lang.addEventListener("click", () => setLang(LANG === "de" ? "en" : "de"));
-    window.addEventListener("hashchange", () => { const hl = new URLSearchParams(location.hash.slice(1)).get("lang"); if (hl === "en" || hl === "de") setLang(hl); readHash(); els.search.value = state.q; renderChips(); render(); });
+    els.lang.addEventListener("change", () => setLang(els.lang.value));
+    window.addEventListener("hashchange", () => { const hl = new URLSearchParams(location.hash.slice(1)).get("lang"); if (LANGS.includes(hl)) setLang(hl); readHash(); els.search.value = state.q; renderChips(); render(); });
   }
 
   function fitVisible() {
@@ -536,12 +583,12 @@
   // Texts that live in index.html.
   function applyStatic() {
     document.documentElement.lang = LANG;
-    document.title = LANG === "en" ? "Campus Map Garching" : "Campus-Karte Garching";
+    document.title = T("docTitle") || "Campus-Karte Garching";
     els.title.textContent = T("title");
     els.search.placeholder = T("search");
     els.search.setAttribute("aria-label", T("search"));
     els.locate.title = T("locate"); els.locate.setAttribute("aria-label", T("locate"));
-    els.lang.textContent = T("lang"); els.lang.title = T("langTitle"); els.lang.setAttribute("aria-label", T("langTitle"));
+    els.lang.value = LANG; els.lang.title = T("langTitle"); els.lang.setAttribute("aria-label", T("langTitle"));
     els.grip.setAttribute("aria-label", T("sheet"));
     els.chips.setAttribute("aria-label", T("cats"));
     els.reset.textContent = T("reset");
@@ -574,9 +621,9 @@
     data.stations.forEach((s) => {
       s.id = String(s.id);
       s.categories = s.categories || [];
-      s._text = norm([s.number, s.title, s.title_en, s.teaser, s.teaser_en, s.location, s.description, ...(s.tags || []),
+      s._text = norm([s.number, s.title, s.title_en, s.title_ru, s.teaser, s.teaser_en, s.teaser_ru, s.location, s.description, ...(s.tags || []),
         ...(s.talks || []).map((t) => t.title + " " + t.speaker),
-        ...s.categories.flatMap((c) => [(data.catIndex[c] || {}).label, (data.catIndex[c] || {}).label_en])].join(" "));
+        ...s.categories.flatMap((c) => { const k = data.catIndex[c] || {}; return [k.label, k.label_en, k.label_ru]; })].join(" "));
       data.byId[s.id] = s;
     });
     state.data = data;
