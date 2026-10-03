@@ -113,6 +113,35 @@ await page.screenshot({ path: `${shots}/5-desktop.png` });
   await ctx2.close();
 }
 
+// English: a browser set to English gets the English UI; the button switches to German and back.
+{
+  const ctx3 = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, locale: "en-US" });
+  const p3 = await ctx3.newPage();
+  p3.on("pageerror", (e) => errors.push(e.message));
+  await p3.route(/tile\.openstreetmap\.org/, (r) => r.abort());
+  if (useFixture) {
+    await p3.route(/data\/stations\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_stations.json") }));
+    await p3.route(/data\/pois\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_pois.json") }));
+  }
+  await p3.goto(base);
+  await p3.waitForSelector(".list .item");
+  assert.equal(await p3.getAttribute("html", "lang"), "en");
+  assert.match(await p3.textContent("#title"), /Open Day/);
+  assert.match(await p3.textContent("#count"), /stations/);
+  const kid = data.categories.find((c) => /kind/i.test(c.label));
+  if (kid && kid.label_en) assert.match(await p3.textContent(`.chip[data-cat="${kid.id}"]`), new RegExp(kid.label_en));
+  await p3.click(`.chip[data-cat="${cat.id}"]`);
+  assert.match(await p3.evaluate(() => location.hash), /lang=en/);
+  await p3.locator(".list .item").first().click();
+  await p3.waitForSelector("#detail:not([hidden]) h2");
+  assert.match(await p3.textContent("#detail .back"), /Back to list/);
+  await p3.screenshot({ path: `${shots}/8-english-detail.png` });
+  await p3.click("#lang");
+  assert.equal(await p3.getAttribute("html", "lang"), "de");
+  assert.match(await p3.textContent("#detail .back"), /Zurück/);
+  await ctx3.close();
+}
+
 assert.deepEqual(errors, [], "no page errors");
 await browser.close();
 console.log(`OK: ${total} stations, ${expected.length} in "${cat.label}"`);

@@ -57,6 +57,7 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
 }
 .iconbtn svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
 .iconbtn svg circle:first-child { fill: currentColor; stroke: none; }
+.langbtn { font-size: 13px; font-weight: 700; letter-spacing: .03em; }
 .iconbtn.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 #search {
   width: 100%; margin-top: 8px; padding: 9px 12px;
@@ -135,6 +136,7 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
 .detail dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 10px 0; font-size: 14px; }
 .detail dt { color: var(--muted); }
 .detail dd { margin: 0; }
+.detail .tnote { font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
 .detail .lead { font-weight: 600; margin: 4px 0 8px; }
 .detail dd { white-space: pre-line; }
 .detail h3 { font-size: 16px; margin: 18px 0 6px; }

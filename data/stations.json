@@ -9,15 +9,18 @@
  "groups": [
   {
    "id": "targets",
-   "label": "Zielgruppe"
+   "label": "Zielgruppe",
+   "label_en": "Audience"
   },
   {
    "id": "formats",
-   "label": "Format"
+   "label": "Format",
+   "label_en": "Format"
   },
   {
    "id": "languages",
-   "label": "Sprache"
+   "label": "Sprache",
+   "label_en": "Language"
   }
  ],
  "categories": [
@@ -26,6 +29,7 @@
    "group": "targets",
    "group_label": "Zielgruppe",
    "label": "Kinder",
+   "label_en": "Children",
    "color": "#d9480f"
   },
   {
@@ -33,6 +37,7 @@
    "group": "targets",
    "group_label": "Zielgruppe",
    "label": "Jugendliche",
+   "label_en": "Teens",
    "color": "#7048e8"
   },
   {
@@ -40,6 +45,7 @@
    "group": "targets",
    "group_label": "Zielgruppe",
    "label": "Studieninteressierte",
+   "label_en": "Prospective students",
    "color": "#1971c2"
   },
   {
@@ -47,6 +53,7 @@
    "group": "targets",
    "group_label": "Zielgruppe",
    "label": "Erwachsene",
+   "label_en": "Adults",
    "color": "#2b8a3e"
   },
   {
@@ -54,6 +61,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Experimente",
+   "label_en": "Experiments",
    "color": "#5c677d"
   },
   {
@@ -61,6 +69,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Information/Beratung",
+   "label_en": "Information/advice",
    "color": "#5c677d"
   },
   {
@@ -68,6 +77,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Laborführungen",
+   "label_en": "Lab tours",
    "color": "#5c677d"
   },
   {
@@ -75,6 +85,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Maustag",
+   "label_en": "Maus-Tag (kids)",
    "color": "#5c677d"
   },
   {
@@ -82,6 +93,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Mitmachstationen",
+   "label_en": "Hands-on stations",
    "color": "#5c677d"
   },
   {
@@ -89,6 +101,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Offene Labore",
+   "label_en": "Open labs",
    "color": "#5c677d"
   },
   {
@@ -96,6 +109,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Science Shows",
+   "label_en": "Science shows",
    "color": "#5c677d"
   },
   {
@@ -103,6 +117,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Verpflegung",
+   "label_en": "Food & drinks",
    "color": "#5c677d"
   },
   {
@@ -110,6 +125,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Vorträge",
+   "label_en": "Talks",
    "color": "#5c677d"
   },
   {
@@ -117,6 +133,7 @@
    "group": "formats",
    "group_label": "Format",
    "label": "Workshops",
+   "label_en": "Workshops",
    "color": "#5c677d"
   },
   {
@@ -124,6 +141,7 @@
    "group": "languages",
    "group_label": "Sprache",
    "label": "Deutsch",
+   "label_en": "German",
    "color": "#0b7285"
   },
   {
@@ -131,6 +149,7 @@
    "group": "languages",
    "group_label": "Sprache",
    "label": "Englisch",
+   "label_en": "English",
    "color": "#0b7285"
   }
  ],
@@ -177,7 +196,10 @@
    "lng": 11.669148,
    "plan_ref": "1.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Join in & discover: experiments, lab tours, workshops and talks on physics & chemistry!",
+   "position_note_en": ""
   },
   {
    "id": "bnmrz-tum",
@@ -209,7 +231,10 @@
    "lng": 11.669735,
    "plan_ref": "1.2",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Bavarian NMR Center – TUM/Helmholtz",
+   "teaser_en": "Lively molecules in mighty magnets – research at the Bavarian NMR Center.",
+   "position_note_en": ""
   },
   {
    "id": "crc",
@@ -245,7 +270,10 @@
    "lng": 11.669814,
    "plan_ref": "1.3",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Catalysis in action: making reactions more efficient, saving energy, protecting the environment!",
+   "position_note_en": ""
   },
   {
    "id": "tumint-energy",
@@ -298,7 +326,10 @@
      "speaker": "",
      "where": "TUM Chemie Department · TUMint.Energy Research GmbH 4.Stock orangener Turm Raum 46220 Lichtenbergstr. 4b"
     }
-   ]
+   ],
+   "title_en": "",
+   "teaser_en": "What will the battery of the future look like? Dive into the world of solid-state batteries!",
+   "position_note_en": ""
   },
   {
    "id": "tum-cpa",
@@ -335,7 +366,10 @@
    "lng": 11.672374,
    "plan_ref": "2",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Understanding proteins: structure, function and interaction – in VR, 3D and living systems.",
+   "position_note_en": ""
   },
   {
    "id": "tum-aipd",
@@ -373,7 +407,10 @@
    "lng": 11.672374,
    "plan_ref": "2",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "TUM Professorship of AI-Guided Protein Design",
+   "teaser_en": "How artificial intelligence is revolutionising drug development.",
+   "position_note_en": ""
   },
   {
    "id": "cala",
@@ -416,7 +453,10 @@
    "lng": 11.674543,
    "plan_ref": "3",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Learn about radiation-medicine research at one of the most powerful lasers in the world.",
+   "position_note_en": ""
   },
   {
    "id": "wsi-znn",
@@ -461,7 +501,10 @@
    "lng": 11.675733,
    "plan_ref": "4",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Walter Schottky Institute and ZNN (Nano)",
+   "teaser_en": "Semiconductors are our thing – from quantum computers and sensors to renewable energy.",
+   "position_note_en": ""
   },
   {
    "id": "tum-alumni-career",
@@ -495,7 +538,10 @@
    "lng": 11.670877,
    "plan_ref": "5",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "The TUM Community team welcomes TUM alumni on campus and presents what the TUM network offers.",
+   "position_note_en": ""
   },
   {
    "id": "mep",
@@ -535,7 +581,10 @@
    "lng": 11.668502,
    "plan_ref": "6",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "MEP offers insights into its interdisciplinary research for a sustainable future.",
+   "position_note_en": ""
   },
   {
    "id": "frm-ii",
@@ -577,7 +626,10 @@
    "lng": 11.672094,
    "plan_ref": "8.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Research Neutron Source Heinz Maier-Leibnitz (FRM II)",
+   "teaser_en": "Research with neutrons: see inside matter, cure cancer and solve the world's future challenges!",
+   "position_note_en": ""
   },
   {
    "id": "stellaris-apartment-hotel",
@@ -606,7 +658,10 @@
    "lng": 11.672151,
    "plan_ref": "8.2",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Hospitality up close: discover the Stellaris Apartment Hotel, the Courtyard by Marriott Munich Garching and the Science Congress Center on an exclusive tour.",
+   "position_note_en": ""
   },
   {
    "id": "utg",
@@ -645,7 +700,10 @@
    "lng": 11.673439,
    "plan_ref": "9",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "TUM Chair of Metal Forming and Casting",
+   "teaser_en": "How does a car come out of sheet metal or molten metal? Production technology live!",
+   "position_note_en": ""
   },
   {
    "id": "wmi",
@@ -717,7 +775,10 @@
      "speaker": "Dr. Matthias Althammer",
      "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143"
     }
-   ]
+   ],
+   "title_en": "Walther-Meißner-Institute for Low Temperature Research",
+   "teaser_en": "Dive into a world colder than outer space, full of artificial atoms. Caution, cold!",
+   "position_note_en": ""
   },
   {
    "id": "mqv",
@@ -781,7 +842,10 @@
      "speaker": "Prof. Dr. Stefan Filipp",
      "where": "Munich Quantum Valley · Walther-Meißner-Institut Walther-Meißner-Straße 8"
     }
-   ]
+   ],
+   "title_en": "",
+   "teaser_en": "Quantum computers, the technology of the future: find out how, where and why we build them.",
+   "position_note_en": ""
   },
   {
    "id": "ipp",
@@ -855,7 +919,10 @@
      "speaker": "PD Dr. Thomas Pütterich",
      "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2"
     }
-   ]
+   ],
+   "title_en": "Max Planck Institute for Plasma Physics (IPP)",
+   "teaser_en": "Fusion: find out how we bring the sun's way of producing energy down to Earth.",
+   "position_note_en": ""
   },
   {
    "id": "proxima-fusion",
@@ -894,7 +961,10 @@
    "lng": 11.673658,
    "plan_ref": "11.7",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "From stellarator to fusion power plant: see how Proxima Fusion plans to generate energy.",
+   "position_note_en": ""
   },
   {
    "id": "mpcdf",
@@ -941,7 +1011,10 @@
      "speaker": "Prof. Dr. Erwin Laure",
      "where": "Max Planck Computing & Data Facility · D2 Gebäude EG Zugang über Isarstraße Gießenbachstr. 2"
     }
-   ]
+   ],
+   "title_en": "",
+   "teaser_en": "What is behind the doors of a data centre, how does it work and what do supercomputers achieve?",
+   "position_note_en": ""
   },
   {
    "id": "eurofusion",
@@ -972,7 +1045,10 @@
    "lng": 11.673145,
    "plan_ref": "13",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "From stars to sustainable energy: discover fusion!",
+   "position_note_en": ""
   },
   {
    "id": "krp-mechatec-gmbh",
@@ -1012,7 +1088,10 @@
    "lng": 11.673809,
    "plan_ref": "14",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "How much can a material take before it gives way?",
+   "position_note_en": ""
   },
   {
    "id": "hll",
@@ -1046,7 +1125,10 @@
    "lng": 11.676581,
    "plan_ref": "15",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Semiconductor Laboratory of the Max Planck Society",
+   "teaser_en": "\"Sensing the Invisible\" – detectors for science.",
+   "position_note_en": ""
   },
   {
    "id": "mpp",
@@ -1156,7 +1238,10 @@
      "speaker": "David Paneque",
      "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
     }
-   ]
+   ],
+   "title_en": "Max Planck Institute for Physics",
+   "teaser_en": "The world at the smallest and the very largest scales: what do elementary particles have to do with the universe?",
+   "position_note_en": ""
   },
   {
    "id": "tum-ais",
@@ -1197,7 +1282,10 @@
    "lng": 11.668773,
    "plan_ref": "17.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "TUM Chair of Automation and Information Systems",
+   "teaser_en": "How are machines, robots and production plants controlled today? Can AI help us?",
+   "position_note_en": ""
   },
   {
    "id": "tum-les",
@@ -1246,7 +1334,10 @@
      "speaker": "Dr.-Ing. Sebastian Fendt",
      "where": "TUM Lehrstuhl für Energiesysteme · Magistrale Maschinenwesen Boltzmannstraße 15 Raum MW1801"
     }
-   ]
+   ],
+   "title_en": "TUM Chair of Energy Systems",
+   "teaser_en": "The future of energy up close! Discover our chair through a talk, a tour and a hands-on station.",
+   "position_note_en": ""
   },
   {
    "id": "tum-lfe",
@@ -1288,7 +1379,10 @@
    "lng": 11.668773,
    "plan_ref": "17.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "TUM Chair of Ergonomics",
+   "teaser_en": "How can humans and machines become one? Discover the world of ergonomics!",
+   "position_note_en": ""
   },
   {
    "id": "fml",
@@ -1325,7 +1419,10 @@
    "lng": 11.668773,
    "plan_ref": "17.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "TUM Chair of Materials Handling, Material Flow, Logistics",
+   "teaser_en": "Robotics, AI, sustainability? Explore the world of logistics with us!",
+   "position_note_en": ""
   },
   {
    "id": "fzg",
@@ -1361,7 +1458,10 @@
    "lng": 11.668773,
    "plan_ref": "17.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "TUM Chair of Machine Elements (FZG)",
+   "teaser_en": "What is special about gears? Why do we research them? Where are gears used?",
+   "position_note_en": ""
   },
   {
    "id": "science-slam",
@@ -1413,7 +1513,10 @@
      "speaker": "verschiedene",
      "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching 1. Stock Hörsaal MW 1801"
     }
-   ]
+   ],
+   "title_en": "",
+   "teaser_en": "Discover. Check. Slam. Come to the Science Slam and be amazed! (One session in English.)",
+   "position_note_en": ""
   },
   {
    "id": "akaflieg-muenchen",
@@ -1451,7 +1554,10 @@
    "lng": 11.670084,
    "plan_ref": "17.3",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Akaflieg München e.V. – TUM student initiative",
+   "teaser_en": "Design. Build. Fly. Since 1924.",
+   "position_note_en": ""
   },
   {
    "id": "hummingbird",
@@ -1489,7 +1595,10 @@
    "lng": 11.670084,
    "plan_ref": "17.3",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Hummingbird Gas Turbines – TUM student initiative",
+   "teaser_en": "Aircraft engines in miniature – small but powerful!",
+   "position_note_en": ""
   },
   {
    "id": "igem",
@@ -1523,7 +1632,10 @@
    "lng": 11.670084,
    "plan_ref": "17.3",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "iGEM Munich – TUM student initiative",
+   "teaser_en": "Biology meets engineering: discover the world of synthetic biology with us!",
+   "position_note_en": ""
   },
   {
    "id": "exzellenzcluster-muenchen",
@@ -1558,7 +1670,10 @@
    "lng": 11.670486,
    "plan_ref": "17.4",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Clusters of Excellence of TUM and LMU",
+   "teaser_en": "From the atom to outer space: experience quanta & energy, the magic of the universe & of biomolecules – up close.",
+   "position_note_en": ""
   },
   {
    "id": "qookies",
@@ -1602,7 +1717,10 @@
      "speaker": "verschiedene",
      "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching Erdgeschoss Hörsaal 350"
     }
-   ]
+   ],
+   "title_en": "",
+   "teaser_en": "A game about quantum logic and crumb chaos – released right here at the open day.",
+   "position_note_en": ""
   },
   {
    "id": "tum-cst-studienberatung",
@@ -1635,7 +1753,10 @@
    "lng": 11.670337,
    "plan_ref": "17.5",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "TUM CST Student Advising and Information",
+   "teaser_en": "Questions about degree programmes or applying to TUM? We look forward to your visit!",
+   "position_note_en": ""
   },
   {
    "id": "tum-additive",
@@ -1668,7 +1789,10 @@
    "lng": 11.669747,
    "plan_ref": "17.6",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Additive manufacturing live – discover the future of production!",
+   "position_note_en": ""
   },
   {
    "id": "khg-tum",
@@ -1703,7 +1827,10 @@
    "lng": 11.669213,
    "plan_ref": "17.7",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Catholic University Community at TUM",
+   "teaser_en": "Wonder and understanding – where science and faith meet.",
+   "position_note_en": ""
   },
   {
    "id": "studierendenwerk-muenchen",
@@ -1740,7 +1867,10 @@
    "lng": 11.668678,
    "plan_ref": "17.8",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Studierendenwerk München Oberbayern (student services)",
+   "teaser_en": "From general advice and student financing (BAföG) to childcare, the Mensa and housing.",
+   "position_note_en": ""
   },
   {
    "id": "pushquantum",
@@ -1779,7 +1909,10 @@
    "lng": 11.667743,
    "plan_ref": "18",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Play Quantum TiqTaqToe and explore quantum mechanics with PushQuantum students from TUM & LMU",
+   "position_note_en": ""
   },
   {
    "id": "tum-cit",
@@ -1822,7 +1955,10 @@
    "lng": 11.667698,
    "plan_ref": "18.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Discover AI, robotics and digital systems through talks, demos and hands-on activities.",
+   "position_note_en": ""
   },
   {
    "id": "mdsi-tum",
@@ -1862,7 +1998,10 @@
    "lng": 11.669124,
    "plan_ref": "18.2",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "Shaping the Future with Data. MDSI is TUM's hub for data science, machine learning and AI.",
+   "position_note_en": ""
   },
   {
    "id": "relai",
@@ -1896,7 +2035,10 @@
    "lng": 11.668661,
    "plan_ref": "18.3",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "AI to try out! Learn how our research makes AI safe, fair and reliable.",
+   "position_note_en": ""
   },
   {
    "id": "stadt-garching",
@@ -1925,7 +2067,10 @@
    "lng": 11.668467,
    "plan_ref": "18.4",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "City of Garching b. München",
+   "teaser_en": "Everything about the city of Garching b. München!",
+   "position_note_en": ""
   },
   {
    "id": "universitaetsbibliothek",
@@ -1959,7 +2104,10 @@
    "lng": 11.667766,
    "plan_ref": "18.5",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "University Library",
+   "teaser_en": "Learning and research: literature, study spaces and support for open access & research data.",
+   "position_note_en": ""
   },
   {
    "id": "kinderuni-muenchen",
@@ -1994,7 +2142,10 @@
    "lng": 11.667298,
    "plan_ref": "18.6",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "KinderUni München (Children's University)",
+   "teaser_en": "Come to the KinderUni congress: children present their own research to other children! (German)",
+   "position_note_en": ""
   },
   {
    "id": "lrz",
@@ -2035,7 +2186,10 @@
    "lng": 11.668113,
    "plan_ref": "19",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Leibniz Supercomputing Centre (LRZ)",
+   "teaser_en": "Powerful supercomputers, novel quantum computers and virtual reality: a tour of the LRZ.",
+   "position_note_en": ""
   },
   {
    "id": "mpe",
@@ -2112,7 +2266,10 @@
      "speaker": "Prof. Dr. Reinhard Genzel",
      "where": "Rudolf-Diesel-Hörsaal der TUM Bolzmannstr. 15"
     }
-   ]
+   ],
+   "title_en": "Max Planck Institute for Extraterrestrial Physics",
+   "teaser_en": "Exciting science, experiments & technology – galaxies & black holes! Children's programme: Maus-Tag.",
+   "position_note_en": ""
   },
   {
    "id": "mpa",
@@ -2193,7 +2350,10 @@
      "speaker": "Simon White",
      "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1"
     }
-   ]
+   ],
+   "title_en": "Max Planck Institute for Astrophysics",
+   "teaser_en": "The history of the universe in the computer – from gas and dust to the largest structures in space.",
+   "position_note_en": ""
   },
   {
    "id": "eso",
@@ -2322,7 +2482,10 @@
      "speaker": "",
      "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
     }
-   ]
+   ],
+   "title_en": "",
+   "teaser_en": "Huge telescopes, big questions: discover the fascination of the universe with ESO!",
+   "position_note_en": ""
   },
   {
    "id": "mpq",
@@ -2411,7 +2574,10 @@
      "speaker": "Dr. Patrick Emonts",
      "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1"
     }
-   ]
+   ],
+   "title_en": "Max Planck Institute of Quantum Optics",
+   "teaser_en": "What can quantum optics do? Use lasers to explore how light and matter interact!",
+   "position_note_en": ""
   },
   {
    "id": "feuerwehr-tum",
@@ -2440,7 +2606,10 @@
    "lng": 11.659861,
    "plan_ref": "24",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Fire Brigade of the Technical University of Munich",
+   "teaser_en": "Fire brigade – rescue – extinguish – recover – protect.",
+   "position_note_en": ""
   },
   {
    "id": "sap-labs",
@@ -2475,7 +2644,10 @@
    "lng": 11.660479,
    "plan_ref": "25",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "See at SAP Labs Munich Campus how we live our credo \"Creating Impact Together\"!",
+   "position_note_en": ""
   },
   {
    "id": "siemens",
@@ -2519,7 +2691,10 @@
    "lng": 11.661695,
    "plan_ref": "26.1",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "",
+   "teaser_en": "What does central SIEMENS research and development do? Come by and see for yourself!",
+   "position_note_en": ""
   },
   {
    "id": "robotik-tum",
@@ -2624,7 +2799,10 @@
      "speaker": "Hussam Amrouch",
      "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
     }
-   ]
+   ],
+   "title_en": "",
+   "teaser_en": "How can a hand be controlled with electrical signals, does a unicorn understand what children draw, and how precisely do robots actually throw?",
+   "position_note_en": ""
   },
   {
    "id": "tum-ei",
@@ -2742,7 +2920,10 @@
      "speaker": "Prof. Oliver Hayden",
      "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2"
     }
-   ]
+   ],
+   "title_en": "TUM Electrical and Computer Engineering",
+   "teaser_en": "From quanta to neuroelectronics: experience electrical and computer engineering with demos & lab tours!",
+   "position_note_en": ""
   },
   {
    "id": "fraunhofer-igcv",
@@ -2783,7 +2964,10 @@
    "lng": 11.662971,
    "plan_ref": "28",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Fraunhofer Institute for Casting, Composite and Processing Technology IGCV",
+   "teaser_en": "Plan your own factory and dive into the world of foundry technology.",
+   "position_note_en": ""
   },
   {
    "id": "fraunhofer-iks",
@@ -2821,7 +3005,10 @@
    "lng": 11.664655,
    "plan_ref": "29",
    "position_note": "",
-   "talks": []
+   "talks": [],
+   "title_en": "Fraunhofer Institute for Cognitive Systems IKS",
+   "teaser_en": "Experience quantum computing, AI-supported healthcare solutions and applications of generative AI.",
+   "position_note_en": ""
   },
   {
    "id": "unterhaltungsprogramm",
@@ -2851,7 +3038,10 @@
    "lng": 11.669442,
    "plan_ref": "17",
    "position_note": "Verschiedene Orte – Vorplatz/Eingang Maschinenwesen, Empore Mathe/Informatik, Fraunhofer IKS, Elektro-/Informationstechnik (siehe Beschreibung)",
-   "talks": []
+   "talks": [],
+   "title_en": "Entertainment programme",
+   "teaser_en": "A musical treat for a short break.",
+   "position_note_en": "Various places – forecourt/entrance Mechanical Engineering, gallery Maths/Informatics, Fraunhofer IKS, Electrical Engineering (see description)"
   }
  ]
 }

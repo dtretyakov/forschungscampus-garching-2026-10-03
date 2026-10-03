@@ -33,6 +33,14 @@ COLORS = {
     "kinder": "#d9480f", "jugendliche": "#7048e8", "studieninteressierte": "#1971c2", "erwachsene": "#2b8a3e",
 }
 GROUP_COLOR = {"formats": "#5c677d", "languages": "#0b7285"}
+GROUP_EN = {"targets": "Audience", "formats": "Format", "languages": "Language"}
+LABEL_EN = {
+    "kinder": "Children", "jugendliche": "Teens", "studieninteressierte": "Prospective students", "erwachsene": "Adults",
+    "experiment": "Experiments", "information": "Information/advice", "laborfuehrungen": "Lab tours",
+    "maustag": "Maus-Tag (kids)", "mitmachstationen": "Hands-on stations", "offene-labore": "Open labs",
+    "science-shows": "Science shows", "verpflegung": "Food & drinks", "vortraege": "Talks", "workshops": "Workshops",
+    "deutsch": "German", "englisch": "English",
+}
 
 ALLOWED = {"p", "br", "ul", "ol", "li", "strong", "b", "em", "i", "h3", "h4", "h5", "a"}
 
@@ -212,7 +220,13 @@ def main():
         for v in order:
             if v in values:
                 cats.append({"id": f"{g}:{v}", "group": g, "group_label": gl, "label": values[v],
+                             "label_en": LABEL_EN.get(v, values[v]),
                              "color": COLORS.get(v) or GROUP_COLOR.get(g)})
+    en_path = os.path.join(DATA, "i18n_en.json")
+    en = json.load(open(en_path, encoding="utf-8")) if os.path.exists(en_path) else {}
+    missing = [s["slug"] for s in stations if s["slug"] not in en]
+    if missing:
+        print(f"  ! no English text for: {', '.join(missing)}", file=sys.stderr)
     out_st = []
     for i, st in enumerate(sorted(stations, key=lambda s: ([int(x) for x in s["number"].split(".")] if s["number"] else [999], s["title"]))):
         out_st.append({
@@ -233,13 +247,16 @@ def main():
             "plan_ref": st.get("plan_ref", ""),
             "position_note": st.get("position_note", ""),
             "talks": talks.get(st["slug"], []),
+            "title_en": en.get(st["slug"], {}).get("title", ""),
+            "teaser_en": en.get(st["slug"], {}).get("teaser", ""),
+            "position_note_en": en.get(st["slug"], {}).get("position_note", ""),
         })
     data = {
         "event": "Tag der offenen Tür · Forschungscampus Garching · 3. Oktober 2026 · 10–17 Uhr",
         "source": BASE + "/3-okt-2026/stationen/",
         "center": [48.2645, 11.6700],
         "zoom": 16,
-        "groups": [{"id": g, "label": gl} for g, gl in GROUPS],
+        "groups": [{"id": g, "label": gl, "label_en": GROUP_EN[g]} for g, gl in GROUPS],
         "categories": cats,
         "talks_updated": talks_updated,
         "stations": out_st,

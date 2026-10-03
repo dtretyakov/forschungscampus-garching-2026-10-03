@@ -10,19 +10,22 @@
    "id": "targets:kinder",
    "group": "targets",
    "label": "Kinder",
-   "color": "#d9480f"
+   "color": "#d9480f",
+   "label_en": "Children"
   },
   {
    "id": "targets:erwachsene",
    "group": "targets",
    "label": "Erwachsene",
-   "color": "#2f9e44"
+   "color": "#2f9e44",
+   "label_en": "Adults"
   },
   {
    "id": "tags:physik",
    "group": "tags",
    "label": "Physik",
-   "color": "#1971c2"
+   "color": "#1971c2",
+   "label_en": "Physics"
   }
  ],
  "stations": [
@@ -41,7 +44,8 @@
    "lat": 48.2626,
    "lng": 11.6679,
    "plan_ref": "1",
-   "teaser": "Teaser Test Station A"
+   "teaser": "Teaser Test Station A",
+   "teaser_en": "Teaser in English"
   },
   {
    "id": "t2",
@@ -90,11 +94,13 @@
  "groups": [
   {
    "id": "targets",
-   "label": "Zielgruppe"
+   "label": "Zielgruppe",
+   "label_en": "Audience"
   },
   {
    "id": "tags",
-   "label": "Thema"
+   "label": "Thema",
+   "label_en": "Topic"
   }
  ]
 }
