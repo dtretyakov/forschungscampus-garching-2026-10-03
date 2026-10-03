@@ -27,6 +27,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 PDF = os.path.join(ROOT, "sources/files/wp-content_uploads_2026_09_TdoT2026_Lageplan.pdf")
 OSM = os.path.join(ROOT, "sources/osm_geom.json")
 OUT = os.path.join(ROOT, "data/georef.json")
+WEBPLAN = os.path.join(ROOT, "sources/pages/3-okt-2026_lageplan.html")
 DPI = 150
 S = DPI / 72.0           # pixels per PDF point
 MAP_MAX_Y = 590          # PDF points: everything below is the brochure text
@@ -143,6 +144,17 @@ def labels():
     return out
 
 
+def web_plan_points():
+    """Clickable circles of the online Lageplan (SVG over the web PNG), incl. sub-stations like 17.3."""
+    if not os.path.exists(WEBPLAN):
+        return {}
+    h = open(WEBPLAN, encoding="utf-8").read()
+    out = {}
+    for cx, cy, num in re.findall(r'<circle cx="([\d.]+)" cy="([\d.]+)"[^>]*></circle><title>\(([\d.]+)\)', h):
+        out.setdefault(num, (float(cx), float(cy)))
+    return out
+
+
 def osm_buildings():
     d = json.load(open(OSM))
     res = []
@@ -235,6 +247,26 @@ def main():
         out["labels"][k] = {"lat_lng": [round(v, 6) for v in to_ll(*apply(M, (x, y)))],
                             "plan_pt": [round(x, 1), round(y, 1)], "label_pt": [round(labs[k][0], 1), round(labs[k][1], 1)], "how": how}
         print(f"  label {k:5s} {how}", file=sys.stderr)
+
+    # Sub-stations (17.1, 18.6, ...) exist only on the online plan: map web-PNG pixels -> PDF points
+    # with an affine fit on the numbers present in both, then through the same georeference.
+    web = web_plan_points()
+    common = [k for k in web if k in labs]
+    if len(common) >= 6:
+        src = [web[k] for k in common]
+        dst = [labs[k][:2] for k in common]
+        A = fit(src, dst)
+        res = [math.dist(apply(A, a), b) for a, b in zip(src, dst)]
+        keep = [i for i, r in enumerate(res) if r < 5]  # building-level "info" circles sometimes moved
+        A = fit([src[i] for i in keep], [dst[i] for i in keep])
+        res = [math.dist(apply(A, src[i]), dst[i]) for i in keep]
+        print(f"web plan: {len(web)} circles, fit on {len(keep)}, rms {np.sqrt(np.mean(np.square(res))):.1f} pt", file=sys.stderr)
+        for k, w in web.items():
+            if k in out["labels"]:
+                continue
+            x, y = apply(A, w)
+            out["labels"][k] = {"lat_lng": [round(v, 6) for v in to_ll(*apply(M, (x, y)))],
+                                "plan_pt": [round(x, 1), round(y, 1)], "label_pt": [round(x, 1), round(y, 1)], "how": "web-plan"}
 
     # Map symbols by colour: info stands (pink), gastronomy (orange), bus (yellow), parking/U (blue)
     sym = {
