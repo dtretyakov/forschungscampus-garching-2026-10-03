@@ -163,6 +163,13 @@ await page.screenshot({ path: `${shots}/5-desktop.png` });
     await page.waitForTimeout(300);
     assert.ok(await page.locator(".item.talk").count() > 0, "talk results");
   }
+  // Searching an acronym from a station name ("ESO") puts that station first.
+  const acr = data.stations.map((s) => [s, (s.title.match(/\(([A-Z]{3,5})\)/) || [])[1]]).find(([, a]) => a);
+  if (acr) {
+    await page.fill("#search", acr[1]);
+    await page.waitForTimeout(300);
+    assert.equal(await page.getAttribute(".list .item:not(.talk):not(.food) >> nth=0", "data-id"), acr[0].id, `"${acr[1]}" ranks ${acr[0].id} first`);
+  }
   const pois = await page.evaluate(() => fetch("data/pois.json").then((r) => r.json()));
   if (pois.some((p) => p.type === "food" && /pizza/i.test(p.name))) {
     await page.fill("#search", "пицца");

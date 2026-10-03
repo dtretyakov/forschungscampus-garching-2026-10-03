@@ -54,15 +54,45 @@
     if (!item._words) item._words = [...new Set(item._text.split(/[^a-z0-9\u0430-\u044f\u0451]+/).filter((w) => w.length >= 3))];
     return item._words;
   }
+  // Text with every non-letter turned into a space, padded, so " eso" finds word starts.
+  const spaced = (t) => " " + norm(t).replace(/[^a-z0-9\u0430-\u044f\u0451]+/g, " ") + " ";
+  // Index an item: _tt = name/number, _tl = short texts (teaser, tags, place), _ts = everything.
+  function indexItem(item, title, lead, rest) {
+    item._tt = spaced(title.join(" "));
+    item._tl = spaced(lead.join(" "));
+    item._ts = spaced([...title, ...lead, ...rest].join(" "));
+    item._text = item._ts;
+    item._words = null;
+  }
+  // Score of an item for a query (0 = no match). Every word must match somewhere; a hit in the
+  // name counts far more than one in the description. Words of up to 3 letters ("ESO") only
+  // match at a word start, longer ones anywhere; 5+ letters also with a typo.
   function makeQuery(q) {
-    const words = norm(q).split(/\s+/).filter(Boolean);
+    const words = norm(q).split(/\s+/).map((w) => w.replace(/[^a-z0-9\u0430-\u044f\u0451.]/g, "")).filter(Boolean);
     if (!words.length) return null;
-    return (item) => words.every((w) => {
-      if (item._text.includes(w)) return true;
-      if (w.length < 5) return false;
+    const scoreWord = (item, w) => {
+      if (item.number && item.number === w) return 300;
+      const start = " " + w, whole = " " + w + " ", long = w.length >= 4;
+      if (item._tt.includes(whole)) return 120;
+      if (item._tt.includes(start)) return 80;
+      if (long && item._tt.includes(w)) return 40;
+      if (item._tl.includes(start)) return 25;
+      if (long && item._tl.includes(w)) return 10;
+      if (item._ts.includes(start)) return 5;
+      if (long && item._ts.includes(w)) return 2;
+      if (w.length < 5) return 0;
       const k = w.length >= 7 ? 2 : 1;
-      return wordsOf(item).some((t) => lev(w, t.slice(0, w.length), k) <= k || lev(w, t, k) <= k);
-    });
+      return wordsOf(item).some((t) => lev(w, t.slice(0, w.length), k) <= k || lev(w, t, k) <= k) ? 1 : 0;
+    };
+    return (item) => {
+      let total = 0;
+      for (const w of words) {
+        const sc = scoreWord(item, w);
+        if (!sc) return 0;
+        total += sc;
+      }
+      return total;
+    };
   }
 
   function dist(a, b) {
@@ -261,7 +291,9 @@
     for (const g in byGroup) {
       if (!byGroup[g].some((c) => (c === FAV ? state.favs.has(st.id) : st.categories.includes(c)))) return false;
     }
-    return ignoreQuery || !state.qm || state.qm(st);
+    if (ignoreQuery || !state.qm) return true;
+    st._score = state.qm(st);
+    return st._score > 0;
   }
   function visible() {
     const out = state.data.stations.filter((st) => matches(st) && (!state.group || state.group.includes(st.id)));
@@ -269,6 +301,8 @@
       out.forEach((s) => (s._d = s.lat != null ? dist(state.me, s) : Infinity));
       out.sort((a, b) => a._d - b._d);
     }
+    // With a search query the best matches come first (stable: distance / plan order as tie-break).
+    if (state.qm) out.sort((a, b) => b._score - a._score);
     return out;
   }
 
@@ -445,7 +479,7 @@
     if (state.qm) {
       const now = nowHM();
       const ok = new Set(state.data.stations.filter((st) => matches(st, true)).map((st) => st.id));
-      const talks = state.data.talks.filter((x) => ok.has(x.s.id) && state.qm(x))
+      const talks = state.data.talks.filter((x) => ok.has(x.s.id) && state.qm(x) >= 5)
         .sort((a, b) => ((a.t.end || a.t.start) < now) - ((b.t.end || b.t.start) < now) || a.t.start.localeCompare(b.t.start));
       if (talks.length) {
         extra += `<li class="sec">🎤 ${esc(T("secTalks"))} · ${talks.length}</li>` + talks.map((x) =>
@@ -454,7 +488,8 @@
           `<span class="s">${x.s.number ? esc(x.s.number) + " · " : ""}${esc(tx(x.s, "title"))}</span>` +
           (x.t.where ? `<span class="s clamp">${esc(x.t.where)}</span>` : "") + `</span></button></li>`).join("");
       }
-      const food = state.data.food.filter((f) => state.qm(f));
+      const food = state.data.food.map((f) => [f, state.qm(f)]).filter(([, sc]) => sc > 0)
+        .sort((a, b) => b[1] - a[1]).map(([f]) => f);
       if (food.length) {
         extra += `<li class="sec">🍴 ${esc(T("secFood"))} · ${food.length}</li>` + food.map((f) =>
           `<li><button type="button" class="item food" data-food="${state.data.food.indexOf(f)}">` +
@@ -603,10 +638,23 @@
       state.sel = null; state.group = null;
       renderChips(); render(); fitVisible();
     });
-    let t;
+    let t, tf;
+    const runSearch = () => { state.q = els.search.value.trim(); state.qm = makeQuery(state.q); state.sel = null; state.group = null; render(); els.list.scrollTop = 0; };
+    // Show where the results are once typing pauses; the list is already up to date.
+    const fitResults = () => { if (state.qm && visible().length) fitVisible(); };
     els.search.addEventListener("input", () => {
-      clearTimeout(t);
-      t = setTimeout(() => { state.q = els.search.value.trim(); state.qm = makeQuery(state.q); state.sel = null; state.group = null; render(); }, 120);
+      clearTimeout(t); clearTimeout(tf);
+      t = setTimeout(runSearch, 120);
+      tf = setTimeout(fitResults, 900);
+    });
+    // "Search" on the phone keyboard: close the keyboard so the results become visible.
+    els.search.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      clearTimeout(t); clearTimeout(tf);
+      runSearch(); fitResults();
+      els.search.blur();
+      if (window.innerWidth < 900 && els.sheet.dataset.state === "min") els.sheet.dataset.state = "peek";
     });
     els.reset.addEventListener("click", () => {
       if (state.group) { state.group = null; state.sel = null; render(); return; }
@@ -845,16 +893,19 @@
     data.stations.forEach((s) => {
       s.id = String(s.id);
       s.categories = s.categories || [];
-      s._text = norm([s.number, s.title, s.title_en, s.title_ru, s.teaser, s.teaser_en, s.teaser_ru, s.location, s.description, ...(s.tags || []),
-        ...(s.talks || []).map((t) => [t.title, t.title_en, t.title_ru, t.speaker].join(" ")),
-        ...s.categories.flatMap((c) => { const k = data.catIndex[c] || {}; return [k.label, k.label_en, k.label_ru]; })].join(" "));
+      indexItem(s, [s.number, s.title, s.title_en, s.title_ru],
+        [s.teaser, s.teaser_en, s.teaser_ru, s.location, ...(s.tags || []),
+          ...s.categories.flatMap((c) => { const k = data.catIndex[c] || {}; return [k.label, k.label_en, k.label_ru]; })],
+        [s.description, ...(s.talks || []).map((t) => [t.title, t.title_en, t.title_ru, t.speaker].join(" "))]);
       data.byId[s.id] = s;
     });
     data.food = data.pois.filter((p) => p.type === "food");
-    data.food.forEach((f) => (f._text = norm([f.search || "", f.name, f.where, f.building ? "gebaude building здание " + f.building : ""].join(" "))));
-    data.talks = data.stations.flatMap((s) => (s.talks || []).map((t) => ({
-      t, s, _text: norm([t.title, t.title_en, t.title_ru, t.speaker, t.where, s.title, s.title_en, s.title_ru, "vortrag talk доклад"].join(" ")),
-    })));
+    data.food.forEach((f) => indexItem(f, [f.name], [f.search || "", f.where], [f.building ? "gebaude building здание " + f.building : ""]));
+    data.talks = data.stations.flatMap((s) => (s.talks || []).map((t) => {
+      const x = { t, s };
+      indexItem(x, [t.title, t.title_en, t.title_ru], [t.speaker, s.title, s.title_en, s.title_ru], [t.where, "vortrag talk доклад"]);
+      return x;
+    }));
     state.data = data;
     applyStatic();
     readHash();
