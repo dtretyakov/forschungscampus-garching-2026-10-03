@@ -403,7 +403,7 @@
       if (talks.length) {
         extra += `<li class="sec">🎤 ${esc(T("secTalks"))} · ${talks.length}</li>` + talks.map((x) =>
           `<li><button type="button" class="item talk${(x.t.end || x.t.start) < now ? " past" : ""}" data-id="${esc(x.s.id)}">` +
-          `<span class="badge time">${esc(x.t.start)}</span><span class="main"><span class="t">${esc(x.t.title)}</span>` +
+          `<span class="badge time">${esc(x.t.start)}</span><span class="main"><span class="t">${esc(tx(x.t, "title"))}</span>` +
           `<span class="s">${x.s.number ? esc(x.s.number) + " · " : ""}${esc(tx(x.s, "title"))}</span>` +
           (x.t.where ? `<span class="s clamp">${esc(x.t.where)}</span>` : "") + `</span></button></li>`).join("");
       }
@@ -429,16 +429,20 @@
         `<span class="badge" style="--c:${colorOf(s)}">${esc(s.number || "•")}</span>` +
         `<span class="main"><span class="t">${state.favs.has(s.id) ? '<span class="star">★</span> ' : ""}${esc(tx(s, "title"))}</span>` +
         (s.teaser ? `<span class="s clamp">${esc(tx(s, "teaser"))}</span>` : "") +
-        (nt ? `<span class="s next">🎤 ${esc(nt.start)} ${esc(nt.title)}</span>` : "") +
+        (nt ? `<span class="s next">🎤 ${esc(nt.start)} ${esc(tx(nt, "title"))}</span>` : "") +
         (tags ? `<span class="tags">${tags}</span>` : "") +
         `</span>${d}</button></li>`;
     }).join("") + extra;
   }
 
   // ---------- detail ----------
+  let detailId = null;
   function renderDetail() {
     const s = state.sel && state.data.byId[state.sel];
-    if (!s) { els.detail.hidden = true; els.listview.hidden = false; return; }
+    if (!s) { els.detail.hidden = true; els.listview.hidden = false; detailId = null; return; }
+    // Same station again (language switch, favourite, position): keep the reader's scroll position.
+    const keep = s.id === detailId ? els.detail.scrollTop : 0;
+    detailId = s.id;
     const fav = state.favs.has(s.id);
     const label = (g) => s.categories.filter((c) => c.startsWith(g + ":")).map(catById).filter(Boolean).map(cl).join(", ");
     const rows = [
@@ -449,7 +453,7 @@
     const now = nowHM();
     const talks = (s.talks || []).length ? `<h3>${esc(T("talks"))}</h3><ul class="talks">` + s.talks.map((t) =>
       `<li class="${(t.end || t.start) < now ? "past" : ""}"><span class="tm">${esc(t.start)}${t.end ? "–" + esc(t.end) : ""}</span>` +
-      `<span><strong>${esc(t.title)}</strong>${t.speaker ? "<br>" + esc(t.speaker) : ""}${t.where ? `<br><small>${esc(t.where)}</small>` : ""}</span></li>`).join("") +
+      `<span><strong>${esc(tx(t, "title"))}</strong>${t.speaker ? "<br>" + esc(t.speaker) : ""}${t.where ? `<br><small>${esc(t.where)}</small>` : ""}</span></li>`).join("") +
       `</ul>` : "";
     const d = state.me && s.lat != null ? dist(state.me, s) : null;
     const nav = s.lat != null ? `https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=${s.lat},${s.lng}` : null;
@@ -473,10 +477,34 @@
       ((s.links || []).length ? `<p>${s.links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label || l.url)}</a>`).join(" · ")}</p>` : "") +
       (s.contact_html ? `<h3>${esc(T("contact"))}</h3><div class="desc">${s.contact_html}</div>` : "") +
       (tags ? `<div class="tags">${tags}</div>` : "");
-    els.listview.hidden = true; els.detail.hidden = false; els.detail.scrollTop = 0;
+    els.listview.hidden = true; els.detail.hidden = false; els.detail.scrollTop = keep;
   }
 
   // ---------- actions ----------
+  // A new GPS fix only changes distances: update those texts in place instead of rebuilding
+  // the list and the card, which would interrupt scrolling (and jump to the top on iOS).
+  function renderPosition() {
+    const s = state.sel && state.data.byId[state.sel];
+    if (s) {
+      const el = els.detail.querySelector(".inst");
+      if (el && s.lat != null) el.textContent = T("away", fmtDist(dist(state.me, s)), walkMin(dist(state.me, s)));
+      else if (!el) renderDetail();
+    }
+    const shown = [...els.list.querySelectorAll(".item:not(.talk):not(.food)")].map((b) => b.dataset.id);
+    const list = visible();
+    const same = shown.length === list.length && list.every((st, i) => st.id === shown[i]);
+    if (!same || !els.list.querySelector(".dist")) {
+      const top = els.list.scrollTop;
+      renderList(list);
+      els.list.scrollTop = top;
+      return;
+    }
+    list.forEach((st, i) => {
+      const d = els.list.querySelectorAll(".item:not(.talk):not(.food) .dist")[i];
+      if (d && isFinite(st._d)) d.textContent = fmtDist(st._d);
+    });
+  }
+
   function render() {
     const list = visible();
     renderList(list);
@@ -491,7 +519,7 @@
     render();
     if (els.sheet.dataset.state === "min") els.sheet.dataset.state = "peek";
     if (s && s.lat != null && opts.pan !== false) {
-      map.setView([s.lat, s.lng], Math.max(map.getZoom(), 17), { animate: true });
+      viewTo([s.lat, s.lng], Math.max(map.getZoom(), 17));
     }
     if (s && s.lat != null) setTimeout(() => panIntoView(s), 250);
   }
@@ -500,8 +528,15 @@
     if (!f) return;
     if (!map.hasLayer(poiLayer)) poiLayer.addTo(map);
     if (window.innerWidth < 900) els.sheet.dataset.state = "peek";
-    map.setView([f.lat, f.lng], 18);
+    viewTo([f.lat, f.lng], 18);
     setTimeout(() => { const m = foodMarkers.get(keyOf(f)); if (m) m.openPopup(); panIntoView(f); }, 300);
+  }
+
+  // Leaflet ignores a zoom requested while another zoom animation is running (e.g. the first
+  // GPS fix arriving during the initial fit or a pinch), so wait for that animation to end.
+  function viewTo(ll, zoom) {
+    const go = () => map.setView(ll, zoom == null ? map.getZoom() : zoom);
+    if (map._animatingZoom) map.once("zoomend", () => setTimeout(go, 0)); else go();
   }
 
   // Keep the selected pin above the bottom sheet on phones.
@@ -510,7 +545,7 @@
     const sheetH = window.innerWidth >= 900 ? 0 : els.sheet.getBoundingClientRect().height;
     const p = map.latLngToContainerPoint([s.lat, s.lng]);
     const free = mapH - sheetH;
-    if (p.y > free - 40 || p.y < 40) map.panBy([0, p.y - free / 2], { animate: true });
+    if (p.y > free - 90 || p.y < 60) map.panBy([0, p.y - free / 2], { animate: true });
   }
 
   function bind() {
@@ -579,11 +614,51 @@
   const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   const isAndroid = /Android/.test(navigator.userAgent);
 
+  // ---------- heading (direction the phone points to) ----------
+  // Compass: iOS gives webkitCompassHeading (needs permission from a tap), Android/Chrome
+  // gives an absolute alpha. Without a compass the GPS course is used while walking.
+  let compass = null, gpsHeading = null, shownHeading = null, compassStarted = false, headingFrame = 0;
+  function screenAngle() {
+    return (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+  }
+  function startCompass() {
+    if (compassStarted || typeof window.DeviceOrientationEvent === "undefined") return;
+    compassStarted = true;
+    const listen = () => {
+      const absolute = "ondeviceorientationabsolute" in window;
+      window.addEventListener(absolute ? "deviceorientationabsolute" : "deviceorientation", (e) => {
+        let h = null;
+        if (typeof e.webkitCompassHeading === "number" && !isNaN(e.webkitCompassHeading)) h = e.webkitCompassHeading;
+        else if ((e.absolute || absolute) && typeof e.alpha === "number") h = 360 - e.alpha;
+        if (h == null) return;
+        compass = { h: (h + screenAngle() + 360) % 360, at: Date.now() };
+        if (!headingFrame) headingFrame = requestAnimationFrame(() => { headingFrame = 0; applyHeading(); });
+      }, true);
+    };
+    // iOS 13+: must be requested inside the tap handler.
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+      DeviceOrientationEvent.requestPermission().then((r) => { if (r === "granted") listen(); }).catch(() => {});
+    } else listen();
+  }
+  function applyHeading() {
+    const cone = meMarker && meMarker.getElement() && meMarker.getElement().querySelector(".me-cone");
+    if (!cone) return;
+    const now = Date.now();
+    const src = compass && now - compass.at < 3000 ? compass : gpsHeading && now - gpsHeading.at < 10000 ? gpsHeading : null;
+    if (!src) { cone.classList.remove("on"); return; }
+    // Smooth and keep the angle continuous so 359° → 1° does not spin around.
+    if (shownHeading == null) shownHeading = src.h;
+    else shownHeading += ((((src.h - shownHeading) % 360) + 540) % 360 - 180) * 0.35; // shortest way round
+    cone.style.transform = `rotate(${shownHeading}deg)`;
+    cone.classList.add("on");
+  }
+
   function locate() {
+    startCompass();
     closeLocHelp();
     if (!("geolocation" in navigator)) { showLocHelp(0); return; }
     if (watchId != null) {
-      if (state.me) map.setView([state.me.lat, state.me.lng], Math.max(map.getZoom(), 17));
+      if (state.me) viewTo([state.me.lat, state.me.lng], Math.max(map.getZoom(), 17));
       return;
     }
     els.locate.classList.add("active");
@@ -596,27 +671,40 @@
     state.me = { lat, lng, acc, manual };
     const ll = [lat, lng];
     if (!meMarker) {
-      meMarker = L.marker(ll, { icon: L.divIcon({ className: "", html: '<div class="me"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }), zIndexOffset: 2000, keyboard: false, title: T("me") }).addTo(map);
+      meMarker = L.marker(ll, {
+        icon: L.divIcon({ className: "", html: '<div class="me-wrap"><div class="me-cone"></div><div class="me"></div></div>', iconSize: [96, 96], iconAnchor: [48, 48] }),
+        zIndexOffset: 2000, keyboard: false, title: T("me"),
+      }).addTo(map);
       meCircle = L.circle(ll, { radius: acc, color: "#1a73e8", weight: 1, fillOpacity: 0.08, interactive: false }).addTo(map);
       meMarker.on("dragend", () => { const p = meMarker.getLatLng(); setMe(p.lat, p.lng, 15, true); });
     } else { meMarker.setLatLng(ll); meCircle.setLatLng(ll).setRadius(acc); }
     // A hand-placed position can be dragged; a GPS position follows the device.
     if (meMarker.dragging) manual ? meMarker.dragging.enable() : meMarker.dragging.disable();
-    render();
+    applyHeading();
+    renderPosition();
   }
 
   function onPos(p) {
-    setMe(p.coords.latitude, p.coords.longitude, p.coords.accuracy, false);
+    const c = p.coords;
+    // Moving: the GPS course is a fallback direction when there is no compass.
+    if (c.heading != null && !isNaN(c.heading) && c.speed > 0.7) gpsHeading = { h: c.heading, at: Date.now() };
+    // Ignore jitter: same place (< 3 m) and similar accuracy.
+    if (state.me && !state.me.manual && !firstFix && dist(state.me, { lat: c.latitude, lng: c.longitude }) < 3 &&
+        Math.abs(state.me.acc - c.accuracy) < 5) { applyHeading(); return; }
+    setMe(c.latitude, c.longitude, c.accuracy, false);
     if (firstFix) {
       firstFix = false;
       const c = state.data.center || [48.2655, 11.6705];
       if (dist(state.me, { lat: c[0], lng: c[1] }) > 5000) toast(T("offCampus"));
       else els.toast.hidden = true;
-      map.setView([state.me.lat, state.me.lng], Math.max(map.getZoom(), 17));
+      viewTo([state.me.lat, state.me.lng], Math.max(map.getZoom(), 17));
+      setTimeout(() => state.me && panIntoView(state.me), 600);
     }
   }
 
   function onPosErr(e) {
+    // Brief signal loss (indoors, code 2/3) while we already have a fix: keep watching quietly.
+    if (e.code !== 1 && state.me && !firstFix) return;
     els.locate.classList.remove("active");
     if (watchId != null) navigator.geolocation.clearWatch(watchId);
     watchId = null;
@@ -655,6 +743,7 @@
   }
 
   function pickManually() {
+    startCompass();
     closeLocHelp();
     if (window.innerWidth < 900) els.sheet.dataset.state = "min";
     toast(T("tapMap"));
@@ -709,14 +798,14 @@
       s.id = String(s.id);
       s.categories = s.categories || [];
       s._text = norm([s.number, s.title, s.title_en, s.title_ru, s.teaser, s.teaser_en, s.teaser_ru, s.location, s.description, ...(s.tags || []),
-        ...(s.talks || []).map((t) => t.title + " " + t.speaker),
+        ...(s.talks || []).map((t) => [t.title, t.title_en, t.title_ru, t.speaker].join(" ")),
         ...s.categories.flatMap((c) => { const k = data.catIndex[c] || {}; return [k.label, k.label_en, k.label_ru]; })].join(" "));
       data.byId[s.id] = s;
     });
     data.food = data.pois.filter((p) => p.type === "food");
     data.food.forEach((f) => (f._text = norm([f.search || "", f.name, f.where, f.building ? "gebaude building здание " + f.building : ""].join(" "))));
     data.talks = data.stations.flatMap((s) => (s.talks || []).map((t) => ({
-      t, s, _text: norm([t.title, t.speaker, t.where, s.title, s.title_en, s.title_ru, "vortrag talk доклад"].join(" ")),
+      t, s, _text: norm([t.title, t.title_en, t.title_ru, t.speaker, t.where, s.title, s.title_en, s.title_ru, "vortrag talk доклад"].join(" ")),
     })));
     state.data = data;
     applyStatic();

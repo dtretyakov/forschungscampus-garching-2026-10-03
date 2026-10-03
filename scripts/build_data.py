@@ -381,6 +381,18 @@ def main():
     }
     with open(os.path.join(DATA, "stations.json"), "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
+    # Talk titles: translations keyed by the original title (the timetable changes during the day).
+    tt_path = os.path.join(DATA, "i18n_talks.json")
+    tt = json.load(open(tt_path, encoding="utf-8")) if os.path.exists(tt_path) else {}
+    untranslated = set()
+    for st in out_st:
+        for t in st["talks"]:
+            for l in LANGS:
+                t[f"title_{l}"] = tt.get(t["title"], {}).get(l, "")
+            if t["title"] and t["title"] not in tt:
+                untranslated.add(t["title"])
+    if untranslated:
+        print(f"  ! {len(untranslated)} talk titles without translation: {sorted(untranslated)[:5]}", file=sys.stderr)
     known = {s["id"] for s in out_st}
     for slug, tl in talks.items():
         if slug not in known:

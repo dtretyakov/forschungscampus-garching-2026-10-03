@@ -70,6 +70,22 @@ const meters = d.map((t) => parseFloat(t.replace(/[^\d,]/g, "").replace(",", "."
 assert.deepEqual(meters, [...meters].sort((a, b) => a - b), "sorted by distance");
 await page.screenshot({ path: `${shots}/4-located.png` });
 
+// A GPS update must not reset the scroll position of an open card.
+await page.locator(".list .item").first().click();
+await page.waitForSelector("#detail:not([hidden]) h2");
+await page.evaluate(() => { document.querySelector("#sheet").dataset.state = "full"; document.querySelector("#detail").scrollTop = 150; });
+const before = await page.evaluate(() => document.querySelector("#detail").scrollTop);
+await ctx.setGeolocation({ latitude: 48.2662, longitude: 11.6702 });
+await page.waitForTimeout(1200);
+assert.equal(await page.evaluate(() => document.querySelector("#detail").scrollTop), before, "scroll kept after GPS update");
+// Compass: an absolute orientation event turns the direction beam (alpha 270 → heading 90°).
+await page.evaluate(() => window.dispatchEvent(new DeviceOrientationEvent("deviceorientationabsolute", { alpha: 270, absolute: true })));
+await page.waitForSelector(".me-cone.on");
+assert.match(await page.$eval(".me-cone", (e) => e.style.transform), /rotate\(90deg\)/, "heading beam");
+await page.screenshot({ path: `${shots}/4b-heading.png` });
+await page.click('[data-act="back"]');
+await page.evaluate(() => { document.querySelector("#sheet").dataset.state = "peek"; });
+
 // Deep link restores the filter.
 await page.goto(base + `#cat=${cat.id}`);
 await page.waitForSelector(".list .item");

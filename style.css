@@ -190,6 +190,16 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
   width: 26px; height: 26px; border-radius: 7px; background: #fff; border: 1px solid #8895a3;
   display: grid; place-items: center; font-size: 15px; box-shadow: 0 1px 3px rgba(0,0,0,.3);
 }
+.me-wrap { position: relative; width: 96px; height: 96px; pointer-events: none; }
+.me-wrap .me { position: absolute; left: 39px; top: 39px; pointer-events: auto; }
+/* Direction beam: a 60° wedge pointing "up" (north), rotated to the heading, fading outwards. */
+.me-cone {
+  position: absolute; inset: 0; opacity: 0; transition: opacity .3s;
+  background: conic-gradient(from -30deg, rgba(26, 115, 232, .85) 0deg 60deg, transparent 60deg 360deg);
+  -webkit-mask: radial-gradient(circle closest-side, #000 18%, rgba(0, 0, 0, .55) 60%, transparent 100%);
+  mask: radial-gradient(circle closest-side, #000 18%, rgba(0, 0, 0, .55) 60%, transparent 100%);
+}
+.me-cone.on { opacity: 1; }
 .me { width: 18px; height: 18px; border-radius: 50%; background: #1a73e8; border: 3px solid #fff; box-shadow: 0 0 0 2px rgba(26,115,232,.35), 0 1px 4px rgba(0,0,0,.4); }
 .leaflet-container { font: inherit; }
 .leaflet-control-attribution { font-size: 10px; }
