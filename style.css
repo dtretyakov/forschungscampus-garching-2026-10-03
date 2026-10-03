@@ -188,6 +188,21 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
   background: #15202b; color: #fff; font-size: 14px; box-shadow: var(--shadow);
 }
 
+.lochelp {
+  position: fixed; left: 16px; right: 16px; top: 140px; z-index: 2100; max-width: 460px; margin: 0 auto;
+  max-height: calc(100% - 170px); overflow-y: auto;
+  padding: 14px 16px; border-radius: 14px; background: var(--bg); color: var(--text);
+  border: 1px solid var(--line); box-shadow: var(--shadow); font-size: 14px;
+}
+.lochelp h3 { margin: 0 0 8px; font-size: 16px; }
+.lochelp p { margin: 0 0 8px; }
+.lochelp ol { margin: 0 0 8px; padding-left: 20px; }
+.lochelp li { margin-bottom: 4px; }
+.lochelp .actions { margin: 10px 0 0; }
+/* While placing the position by hand, taps go through pins to the map. */
+.picking { cursor: crosshair; }
+.picking .leaflet-marker-icon, .picking .leaflet-interactive { pointer-events: none !important; }
+
 /* ---------- desktop: side panel ---------- */
 @media (min-width: 900px) {
   .topbar { padding: 10px 16px; display: grid; grid-template-columns: 380px 1fr; gap: 6px 16px; align-items: center; }

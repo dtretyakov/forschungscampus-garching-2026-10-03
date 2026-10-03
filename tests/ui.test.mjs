@@ -81,6 +81,38 @@ await page.setViewportSize({ width: 1280, height: 800 });
 await page.waitForTimeout(300);
 await page.screenshot({ path: `${shots}/5-desktop.png` });
 
+// Location denied (iOS Safari answers like this when location is off for Safari websites):
+// the help dialog explains the settings and the position can be set by tapping the map.
+{
+  const ctx2 = await browser.newContext({
+    viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, locale: "de-DE",
+    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+  });
+  const p2 = await ctx2.newPage();
+  p2.on("pageerror", (e) => errors.push(e.message));
+  await p2.route(/tile\.openstreetmap\.org/, (r) => r.abort());
+  if (useFixture) {
+    await p2.route(/data\/stations\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_stations.json") }));
+    await p2.route(/data\/pois\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_pois.json") }));
+  }
+  await p2.addInitScript(() => {
+    navigator.geolocation.watchPosition = (ok, err) => { setTimeout(() => err({ code: 1, message: "denied" }), 50); return 1; };
+  });
+  await p2.goto(base);
+  await p2.waitForSelector(".list .item");
+  await p2.click("#locate");
+  await p2.waitForSelector(".lochelp");
+  assert.match(await p2.textContent(".lochelp"), /Safari-Websites/, "iOS help shown");
+  await p2.screenshot({ path: `${shots}/6-location-help.png` });
+  await p2.click('.lochelp [data-act="manual"]');
+  const box = await p2.locator("#map").boundingBox();
+  await p2.mouse.click(box.x + box.width / 2, box.y + box.height / 3);
+  await p2.waitForSelector(".me");
+  await p2.waitForSelector(".item .dist");
+  await p2.screenshot({ path: `${shots}/7-manual-position.png` });
+  await ctx2.close();
+}
+
 assert.deepEqual(errors, [], "no page errors");
 await browser.close();
 console.log(`OK: ${total} stations, ${expected.length} in "${cat.label}"`);

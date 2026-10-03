@@ -349,8 +349,12 @@
 
   // ---------- geolocation ----------
   let watchId = null, firstFix = true;
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(navigator.userAgent);
+
   function locate() {
-    if (!("geolocation" in navigator)) { toast("Standort wird von diesem Browser nicht unterstützt."); return; }
+    closeLocHelp();
+    if (!("geolocation" in navigator)) { showLocHelp(0); return; }
     if (watchId != null) {
       if (state.me) map.setView([state.me.lat, state.me.lng], Math.max(map.getZoom(), 17));
       return;
@@ -360,27 +364,96 @@
     firstFix = true;
     watchId = navigator.geolocation.watchPosition(onPos, onPosErr, { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 });
   }
-  function onPos(p) {
-    state.me = { lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy };
-    const ll = [state.me.lat, state.me.lng];
+
+  function setMe(lat, lng, acc, manual) {
+    state.me = { lat, lng, acc, manual };
+    const ll = [lat, lng];
     if (!meMarker) {
       meMarker = L.marker(ll, { icon: L.divIcon({ className: "", html: '<div class="me"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }), zIndexOffset: 2000, keyboard: false, title: "Mein Standort" }).addTo(map);
-      meCircle = L.circle(ll, { radius: state.me.acc, color: "#1a73e8", weight: 1, fillOpacity: 0.08, interactive: false }).addTo(map);
-    } else { meMarker.setLatLng(ll); meCircle.setLatLng(ll).setRadius(state.me.acc); }
+      meCircle = L.circle(ll, { radius: acc, color: "#1a73e8", weight: 1, fillOpacity: 0.08, interactive: false }).addTo(map);
+      meMarker.on("dragend", () => { const p = meMarker.getLatLng(); setMe(p.lat, p.lng, 15, true); });
+    } else { meMarker.setLatLng(ll); meCircle.setLatLng(ll).setRadius(acc); }
+    // A hand-placed position can be dragged; a GPS position follows the device.
+    if (meMarker.dragging) manual ? meMarker.dragging.enable() : meMarker.dragging.disable();
+    render();
+  }
+
+  function onPos(p) {
+    setMe(p.coords.latitude, p.coords.longitude, p.coords.accuracy, false);
     if (firstFix) {
       firstFix = false;
       const c = state.data.center || [48.2655, 11.6705];
       if (dist(state.me, { lat: c[0], lng: c[1] }) > 5000) toast("Du bist nicht auf dem Campus – Entfernungen sind trotzdem berechnet.");
       else els.toast.hidden = true;
-      map.setView(ll, Math.max(map.getZoom(), 17));
+      map.setView([state.me.lat, state.me.lng], Math.max(map.getZoom(), 17));
     }
-    render();
   }
+
   function onPosErr(e) {
     els.locate.classList.remove("active");
     if (watchId != null) navigator.geolocation.clearWatch(watchId);
     watchId = null;
-    toast(e.code === 1 ? "Standortzugriff verweigert – bitte in den Browser-Einstellungen erlauben." : "Standort konnte nicht bestimmt werden.");
+    els.toast.hidden = true;
+    showLocHelp(e.code);
+  }
+
+  // Safari on iOS answers "denied" without asking when location is off for Safari websites,
+  // so explain where to switch it on and offer to place the position by hand.
+  let helpEl = null;
+  function closeLocHelp() { if (helpEl) { helpEl.remove(); helpEl = null; } }
+  function showLocHelp(code) {
+    closeLocHelp();
+    let steps;
+    if (code === 1 && isIOS) {
+      steps = `<p>Safari darf deinen Standort gerade nicht verwenden. So schaltest du ihn ein:</p><ol>
+        <li><b>Einstellungen → Datenschutz &amp; Sicherheit → Ortungsdienste</b> einschalten.</li>
+        <li>Dort <b>Safari-Websites</b> → <b>Beim Verwenden der App</b> wählen und <b>Genauer Standort</b> aktivieren.</li>
+        <li>In Safari auf <b>aA</b> tippen → <b>Website-Einstellungen</b> → <b>Standort</b>: <b>Fragen</b> oder <b>Erlauben</b>.</li>
+        <li>Seite neu laden und 📍 erneut antippen.</li></ol>`;
+    } else if (code === 1 && isAndroid) {
+      steps = `<p>Der Browser darf deinen Standort gerade nicht verwenden. So schaltest du ihn ein:</p><ol>
+        <li>Standort/GPS in den Schnelleinstellungen einschalten.</li>
+        <li>Im Browser auf das Symbol links neben der Adresse tippen → <b>Berechtigungen</b> → <b>Standort</b> erlauben.</li>
+        <li>Seite neu laden und 📍 erneut antippen.</li></ol>`;
+    } else if (code === 1) {
+      steps = `<p>Der Standortzugriff ist für diese Seite blockiert. Erlaube ihn in den Website-Einstellungen deines Browsers (Symbol neben der Adresse) und lade die Seite neu.</p>`;
+    } else if (code === 0) {
+      steps = `<p>Dieser Browser unterstützt keine Standortbestimmung.</p>`;
+    } else {
+      steps = `<p>Der Standort konnte nicht bestimmt werden (kein GPS-Empfang?). Versuch es draußen noch einmal.</p>`;
+    }
+    helpEl = document.createElement("div");
+    helpEl.className = "lochelp";
+    helpEl.setAttribute("role", "dialog");
+    helpEl.setAttribute("aria-label", "Standort");
+    helpEl.innerHTML = `<h3>📍 Standort nicht verfügbar</h3>${steps}
+      <p>Oder setze deinen Standort von Hand – dann funktionieren Entfernungen und Sortierung trotzdem.</p>
+      <div class="actions">
+        <button type="button" class="btn primary" data-act="manual">Auf Karte antippen</button>
+        ${code === 1 ? '<button type="button" class="btn" data-act="reload">Seite neu laden</button>' : '<button type="button" class="btn" data-act="retry">Erneut versuchen</button>'}
+        <button type="button" class="btn" data-act="close">Schließen</button>
+      </div>`;
+    helpEl.addEventListener("click", (e) => {
+      const a = (e.target.closest("[data-act]") || {}).dataset?.act;
+      if (a === "close") closeLocHelp();
+      else if (a === "retry") locate();
+      else if (a === "reload") location.reload();
+      else if (a === "manual") pickManually();
+    });
+    document.body.appendChild(helpEl);
+  }
+
+  function pickManually() {
+    closeLocHelp();
+    if (window.innerWidth < 900) els.sheet.dataset.state = "min";
+    toast("Tippe auf der Karte auf deinen Standort.");
+    map.getContainer().classList.add("picking");
+    map.once("click", (e) => {
+      map.getContainer().classList.remove("picking");
+      setMe(e.latlng.lat, e.latlng.lng, 15, true);
+      els.sheet.dataset.state = "peek";
+      toast("Standort gesetzt – du kannst den blauen Punkt verschieben.");
+    });
   }
 
   // ---------- boot ----------
