@@ -2,3 +2,7 @@ node_modules/
 __pycache__/
 .DS_Store
 tests/screenshots/
+# downloaded photos / API dumps are not needed to rebuild the data
+sources/files/*
+!sources/files/wp-content_uploads_2026_09_TdoT2026_Lageplan.pdf
+sources/wp-json/

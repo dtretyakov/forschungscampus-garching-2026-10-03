@@ -2,6 +2,9 @@
 import { chromium } from "playwright";
 import { readFileSync, mkdirSync } from "node:fs";
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+const run = promisify(execFile);
 
 const base = process.argv[2] || "http://127.0.0.1:8000/";
 const useFixture = process.argv.includes("--fixture");
@@ -17,7 +20,14 @@ const page = await ctx.newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
 page.on("console", (m) => m.type() === "error" && !/tile|ERR_|Failed to load resource/.test(m.text()) && errors.push(m.text()));
-await page.route(/tile\.openstreetmap\.org/, (r) => r.abort());
+// Tiles are off by default; TILES=1 fetches them with curl (which honours the environment's proxy settings).
+await page.route(/tile\.openstreetmap\.org/, async (r) => {
+  if (!process.env.TILES) return r.abort();
+  try {
+    const { stdout } = await run("curl", ["-sf", "--max-time", "15", "-A", "garching-map-test", r.request().url()], { encoding: "buffer", maxBuffer: 1 << 22 });
+    await r.fulfill({ contentType: "image/png", body: stdout });
+  } catch { await r.abort(); }
+});
 if (useFixture) {
   await page.route(/data\/stations\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_stations.json") }));
   await page.route(/data\/pois\.json/, (r) => r.fulfill({ contentType: "application/json", body: readFileSync("tests/fixture_pois.json") }));
@@ -38,7 +48,7 @@ const expected = data.stations.filter((s) => (s.categories || []).includes(cat.i
 assert.equal(await page.locator(".list .item").count(), expected.length, "filtered list");
 assert.match(await page.evaluate(() => location.hash), new RegExp(`cat=${cat.id}`));
 // Markers: each visible station is on the map (grouped pins count their stations).
-const pinned = await page.$$eval(".pin b", (bs) => bs.map((b) => b.closest(".pin").classList.contains("multi") ? +b.textContent : 1).reduce((a, b) => a + b, 0));
+const pinned = await page.$$eval(".pin", (ps) => ps.map((p) => +(p.dataset.n || 1)).reduce((a, b) => a + b, 0));
 assert.equal(pinned, expected.filter((s) => s.lat != null).length, "markers match filter");
 await page.screenshot({ path: `${shots}/2-filter-${cat.id}.png` });
 

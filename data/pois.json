@@ -1,0 +1,220 @@
+[
+ {
+  "type": "ubahn",
+  "icon": "🚇",
+  "name": "U6 Garching-Forschungszentrum",
+  "note": "U-Bahn verkehrt von 9:30 bis 11:30 im 10-Minuten-Takt.",
+  "lat": 48.2647408,
+  "lng": 11.6714052
+ },
+ {
+  "type": "info",
+  "icon": "ℹ️",
+  "name": "Infostand",
+  "lat": 48.265429,
+  "lng": 11.670616
+ },
+ {
+  "type": "info",
+  "icon": "ℹ️",
+  "name": "Infostand",
+  "lat": 48.263772,
+  "lng": 11.671423
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.268938,
+  "lng": 11.668784
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.268211,
+  "lng": 11.672216
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.267011,
+  "lng": 11.671692
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.265985,
+  "lng": 11.671127
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.265864,
+  "lng": 11.672388
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.265699,
+  "lng": 11.669531
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.265676,
+  "lng": 11.667717
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.265106,
+  "lng": 11.660984
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.264314,
+  "lng": 11.660828
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.263912,
+  "lng": 11.670698
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.262885,
+  "lng": 11.6693
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.262514,
+  "lng": 11.668263
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.262398,
+  "lng": 11.671255
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.26213,
+  "lng": 11.67303
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.259762,
+  "lng": 11.671014
+ },
+ {
+  "type": "food",
+  "icon": "🍴",
+  "name": "Gastronomie",
+  "lat": 48.259372,
+  "lng": 11.666894
+ },
+ {
+  "type": "bus",
+  "icon": "🚌",
+  "name": "Bushaltestelle",
+  "lat": 48.267528,
+  "lng": 11.665243
+ },
+ {
+  "type": "bus",
+  "icon": "🚌",
+  "name": "Bushaltestelle",
+  "lat": 48.265003,
+  "lng": 11.6713
+ },
+ {
+  "type": "bus",
+  "icon": "🚌",
+  "name": "Bushaltestelle",
+  "lat": 48.261982,
+  "lng": 11.661362
+ },
+ {
+  "type": "bus",
+  "icon": "🚌",
+  "name": "Bushaltestelle",
+  "lat": 48.261188,
+  "lng": 11.668967
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.268778,
+  "lng": 11.665995
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.267994,
+  "lng": 11.664559
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.267265,
+  "lng": 11.663279
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.266635,
+  "lng": 11.665543
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.264289,
+  "lng": 11.67133
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.263355,
+  "lng": 11.660455
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.262654,
+  "lng": 11.663466
+ },
+ {
+  "type": "parking",
+  "icon": "🅿️",
+  "name": "Parkplatz",
+  "lat": 48.26212,
+  "lng": 11.660005
+ }
+]

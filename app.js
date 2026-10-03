@@ -42,9 +42,20 @@
   }
   function walkMin(m) { return Math.max(1, Math.round(m / 75)); } // ~4.5 km/h
   function catById(id) { return state.data.catIndex[id]; }
-  function colorOf(st) {
-    const c = st.categories.map(catById).find((c) => c && c.color);
-    return c ? c.color : "#0b5cad";
+  // Same purple as the highlighted buildings on the official Lageplan.
+  function colorOf() { return "#94054f"; }
+  const TARGET_ICON = { "targets:kinder": "🧒", "targets:jugendliche": "🧑", "targets:studieninteressierte": "🎓", "targets:erwachsene": "🧑‍💼" };
+  // Event day only: talks before "now" are shown as past.
+  function nowHM() {
+    const p = Object.fromEntries(new Intl.DateTimeFormat("de-DE", {
+      timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(new Date()).map((x) => [x.type, x.value]));
+    if (`${p.year}-${p.month}-${p.day}` !== "2026-10-03") return "00:00";
+    return `${p.hour}:${p.minute}`;
+  }
+  function nextTalk(st) {
+    const now = nowHM();
+    return (st.talks || []).find((t) => (t.end || t.start) >= now);
   }
   let toastTimer;
   function toast(msg) {
@@ -64,15 +75,20 @@
     if (state.cats.size) p.set("cat", [...state.cats].join(","));
     if (state.q) p.set("q", state.q);
     if (state.sel) p.set("s", state.sel);
-    const h = p.toString().replace(/%2C/g, ",");
+    const h = p.toString().replace(/%2C/g, ",").replace(/%3A/g, ":");
     history.replaceState(null, "", h ? "#" + h : location.pathname + location.search);
   }
 
   // ---------- filtering ----------
   function matches(st) {
-    if (state.cats.size) {
-      const ok = [...state.cats].some((c) => (c === FAV ? state.favs.has(st.id) : st.categories.includes(c)));
-      if (!ok) return false;
+    // OR within a filter group (Kinder or Jugendliche), AND across groups (Kinder and Vorträge).
+    const byGroup = {};
+    state.cats.forEach((c) => {
+      const g = c === FAV ? FAV : (catById(c) || {}).group;
+      if (g) (byGroup[g] = byGroup[g] || []).push(c);
+    });
+    for (const g in byGroup) {
+      if (!byGroup[g].some((c) => (c === FAV ? state.favs.has(st.id) : st.categories.includes(c)))) return false;
     }
     if (state.q) {
       const words = norm(state.q).split(/\s+/).filter(Boolean);
@@ -104,6 +120,13 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
     poiLayer = L.layerGroup().addTo(map);
+    const poiDetail = L.layerGroup();
+    const syncPoi = () => {
+      const on = map.getZoom() >= 17 && map.hasLayer(poiLayer);
+      if (on && !map.hasLayer(poiDetail)) poiDetail.addTo(map);
+      if (!on && map.hasLayer(poiDetail)) map.removeLayer(poiDetail);
+    };
+    map.on("zoomend overlayadd overlayremove", syncPoi);
     stationLayer = L.layerGroup().addTo(map);
 
     const overlays = { "Stationen": stationLayer, "Infrastruktur (U-Bahn, Info, Essen …)": poiLayer };
@@ -117,8 +140,10 @@
       L.marker([p.lat, p.lng], {
         icon: L.divIcon({ className: "", html: `<div class="poi" title="${esc(p.name)}">${esc(p.icon || "ℹ️")}</div>`, iconSize: [26, 26], iconAnchor: [13, 13] }),
         keyboard: false, zIndexOffset: -500,
-      }).bindPopup(`<strong>${esc(p.name)}</strong>${p.note ? "<br>" + esc(p.note) : ""}`).addTo(poiLayer);
+      }).bindPopup(`<strong>${esc(p.name)}</strong>${p.note ? "<br>" + esc(p.note) : ""}`)
+        .addTo(p.type === "ubahn" || p.type === "info" ? poiLayer : poiDetail);
     });
+    syncPoi();
   }
 
   function renderMarkers(list) {
@@ -133,19 +158,19 @@
     groups.forEach((arr, k) => {
       const single = arr.length === 1;
       const sel = arr.some((s) => s.id === state.sel);
-      const label = single ? (arr[0].number || "•") : arr.length;
-      const color = single ? colorOf(arr[0]) : "#334155";
-      const html = `<div class="pin${single ? "" : " multi"}${sel ? " sel" : ""}" style="--c:${color}"><b>${esc(label)}</b></div>`;
+      // A building with several stations shows its Lageplan number plus a count bubble.
+      const label = single ? (arr[0].number || "•") : (arr[0].plan_ref || "•");
+      const html = `<div class="pin${single ? "" : " multi"}${sel ? " sel" : ""}" style="--c:${colorOf(arr[0])}"${single ? "" : ` data-n="${arr.length}"`}><b>${esc(label)}</b></div>`;
       const m = L.marker([arr[0].lat, arr[0].lng], {
         icon: L.divIcon({ className: "", html, iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -28] }),
-        title: single ? arr[0].title : `${arr.length} Stationen: ${arr[0].building || ""}`,
+        title: single ? arr[0].title : `${arr.length} Stationen in Gebäude ${arr[0].plan_ref || ""}`,
         zIndexOffset: sel ? 1000 : 0,
       });
       if (single) {
         m.on("click", () => select(arr[0].id, { pan: false }));
       } else {
         const ul = document.createElement("div");
-        ul.innerHTML = `<strong>${esc(arr[0].building || arr.length + " Stationen")}</strong><ul class="popup-list">` +
+        ul.innerHTML = `<strong>Gebäude ${esc(arr[0].plan_ref || "")} · ${arr.length} Stationen</strong><ul class="popup-list">` +
           arr.map((s) => `<li><button type="button" data-id="${esc(s.id)}">${s.number ? esc(s.number) + " · " : ""}${esc(s.title)}</button></li>`).join("") + "</ul>";
         ul.addEventListener("click", (e) => { const b = e.target.closest("button[data-id]"); if (b) { map.closePopup(); select(b.dataset.id, { pan: false }); } });
         m.bindPopup(ul, { maxWidth: 280 });
@@ -160,11 +185,16 @@
     const d = state.data;
     const counts = {};
     d.stations.forEach((s) => s.categories.forEach((c) => (counts[c] = (counts[c] || 0) + 1)));
-    const cats = d.categories.filter((c) => counts[c.id]);
-    const chips = cats.map((c) =>
-      `<button type="button" class="chip" data-cat="${esc(c.id)}" aria-pressed="${state.cats.has(c.id)}" style="--c:${esc(c.color || "")}">` +
-      `<span class="dot"></span>${esc(c.label)} <span class="n">${counts[c.id]}</span></button>`);
-    chips.push(`<button type="button" class="chip" data-cat="${FAV}" aria-pressed="${state.cats.has(FAV)}" style="--c:#e3a008">★ Mein Plan <span class="n">${state.favs.size}</span></button>`);
+    const chips = [];
+    (d.groups || [{ id: undefined }]).forEach((g) => {
+      const cats = d.categories.filter((c) => counts[c.id] && c.group === g.id);
+      if (!cats.length) return;
+      if (g.label) chips.push(`<span class="glabel">${esc(g.label)}</span>`);
+      cats.forEach((c) => chips.push(
+        `<button type="button" class="chip" data-cat="${esc(c.id)}" aria-pressed="${state.cats.has(c.id)}" style="--c:${esc(c.color || "")}">` +
+        `${TARGET_ICON[c.id] ? TARGET_ICON[c.id] + " " : '<span class="dot"></span>'}${esc(c.label)} <span class="n">${counts[c.id]}</span></button>`));
+    });
+    chips.splice(d.groups ? 5 : 0, 0, `<button type="button" class="chip" data-cat="${FAV}" aria-pressed="${state.cats.has(FAV)}" style="--c:#e3a008">★ Mein Plan <span class="n">${state.favs.size}</span></button>`);
     els.chips.innerHTML = chips.join("");
   }
 
@@ -178,14 +208,15 @@
       return;
     }
     els.list.innerHTML = list.map((s) => {
-      const tags = s.categories.map(catById).filter(Boolean).map((c) => `<span class="tag">${esc(c.label)}</span>`).join("");
-      const sub = [s.institution, s.building].filter(Boolean).join(" · ");
+      const tags = s.categories.filter((c) => c.startsWith("targets:")).map(catById).filter(Boolean)
+        .map((c) => `<span class="tag">${TARGET_ICON[c.id] || ""} ${esc(c.label)}</span>`).join("");
       const d = state.me && isFinite(s._d) ? `<span class="dist">${fmtDist(s._d)}</span>` : "";
+      const nt = nextTalk(s);
       return `<li><button type="button" class="item" data-id="${esc(s.id)}">` +
         `<span class="badge" style="--c:${colorOf(s)}">${esc(s.number || "•")}</span>` +
         `<span class="main"><span class="t">${state.favs.has(s.id) ? '<span class="star">★</span> ' : ""}${esc(s.title)}</span>` +
-        (sub ? `<span class="s">${esc(sub)}</span>` : "") +
-        (s.times ? `<span class="s">🕒 ${esc(s.times)}</span>` : "") +
+        (s.teaser ? `<span class="s clamp">${esc(s.teaser)}</span>` : "") +
+        (nt ? `<span class="s next">🎤 ${esc(nt.start)} ${esc(nt.title)}</span>` : "") +
         (tags ? `<span class="tags">${tags}</span>` : "") +
         `</span>${d}</button></li>`;
     }).join("");
@@ -196,18 +227,26 @@
     const s = state.sel && state.data.byId[state.sel];
     if (!s) { els.detail.hidden = true; els.listview.hidden = false; return; }
     const fav = state.favs.has(s.id);
+    const label = (g) => s.categories.filter((c) => c.startsWith(g + ":")).map(catById).filter(Boolean).map((c) => c.label).join(", ");
     const rows = [
-      ["Institution", s.institution], ["Gebäude", s.building], ["Adresse", s.address], ["Raum", s.room],
-      ["Zeiten", s.times], ["Zielgruppe", s.audience],
+      ["Standort", s.location], ["Lageplan", s.number ? "Nr. " + s.number : ""], ["Hinweis", s.position_note],
+      ["Zielgruppe", label("targets")], ["Format", label("formats")], ["Sprache", label("languages")],
     ].filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
-    const tags = s.categories.map(catById).filter(Boolean).map((c) => `<span class="tag">${esc(c.label)}</span>`).join(" ");
+    const tags = (s.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join(" ");
+    const now = nowHM();
+    const talks = (s.talks || []).length ? `<h3>Vorträge</h3><ul class="talks">` + s.talks.map((t) =>
+      `<li class="${(t.end || t.start) < now ? "past" : ""}"><span class="tm">${esc(t.start)}${t.end ? "–" + esc(t.end) : ""}</span>` +
+      `<span><strong>${esc(t.title)}</strong>${t.speaker ? "<br>" + esc(t.speaker) : ""}${t.where ? `<br><small>${esc(t.where)}</small>` : ""}</span></li>`).join("") +
+      `</ul>` : "";
     const d = state.me && s.lat != null ? dist(state.me, s) : null;
     const nav = s.lat != null ? `https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=${s.lat},${s.lng}` : null;
-    const desc = String(s.description || "").split(/\n\s*\n/).filter(Boolean).map((t) => `<p>${esc(t.trim())}</p>`).join("");
+    // description_html / contact_html are whitelist-sanitised by scripts/build_data.py
+    const same = norm(s.description).replace(/\W/g, "") === norm(s.teaser).replace(/\W/g, "");
+    const desc = same ? "" : s.description_html || String(s.description || "").split(/\n\s*\n/).filter(Boolean).map((t) => `<p>${esc(t.trim())}</p>`).join("");
     els.detail.innerHTML =
       `<button type="button" class="back" data-act="back">‹ Zurück zur Liste</button>` +
       `<h2><span class="badge" style="--c:${colorOf(s)}">${esc(s.number || "•")}</span><span>${esc(s.title)}</span></h2>` +
-      (tags ? `<div class="tags">${tags}</div>` : "") +
+      (s.teaser ? `<p class="lead">${esc(s.teaser)}</p>` : "") +
       (rows ? `<dl>${rows}</dl>` : "") +
       (d != null ? `<p class="inst">📍 ${fmtDist(d)} entfernt · ca. ${walkMin(d)} Min. zu Fuß</p>` : "") +
       `<div class="actions">` +
@@ -215,7 +254,10 @@
       `<button type="button" class="btn" data-act="fav">${fav ? "★ Im Plan" : "☆ Merken"}</button>` +
       (nav ? `<a class="btn" href="${nav}" target="_blank" rel="noopener">Route</a>` : "") +
       (s.url ? `<a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener">Original</a>` : "") +
-      `</div><div class="desc">${desc}</div>`;
+      `</div>${talks}<div class="desc">${desc}</div>` +
+      ((s.links || []).length ? `<p>${s.links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label || l.url)}</a>`).join(" · ")}</p>` : "") +
+      (s.contact_html ? `<h3>Kontakt</h3><div class="desc">${s.contact_html}</div>` : "") +
+      (tags ? `<div class="tags">${tags}</div>` : "");
     els.listview.hidden = true; els.detail.hidden = false; els.detail.scrollTop = 0;
   }
 
@@ -357,7 +399,8 @@
     data.stations.forEach((s) => {
       s.id = String(s.id);
       s.categories = s.categories || [];
-      s._text = norm([s.number, s.title, s.institution, s.building, s.address, s.room, s.description, s.audience,
+      s._text = norm([s.number, s.title, s.teaser, s.location, s.description, ...(s.tags || []),
+        ...(s.talks || []).map((t) => t.title + " " + t.speaker),
         ...s.categories.map((c) => (data.catIndex[c] || {}).label)].join(" "));
       data.byId[s.id] = s;
     });
