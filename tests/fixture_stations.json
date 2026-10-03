@@ -1,0 +1,16 @@
+{
+  "event": "TEST FIXTURE – not real data",
+  "center": [48.2655, 11.6705],
+  "zoom": 16,
+  "categories": [
+    {"id": "kinder", "label": "Kinder", "color": "#d9480f"},
+    {"id": "familie", "label": "Familien", "color": "#2f9e44"},
+    {"id": "physik", "label": "Physik", "color": "#1971c2"}
+  ],
+  "stations": [
+    {"id": "t1", "number": "1", "title": "Test Station A", "institution": "Inst A", "building": "Bau A", "categories": ["kinder", "familie"], "times": "10–17 Uhr", "description": "Absatz eins.\n\nAbsatz zwei <script>x</script>", "lat": 48.2626, "lng": 11.6679},
+    {"id": "t2", "number": "2", "title": "Test Station B", "institution": "Inst B", "building": "Bau B", "categories": ["physik"], "lat": 48.2675, "lng": 11.6760},
+    {"id": "t3", "number": "3", "title": "Test Station C", "institution": "Inst B", "building": "Bau B", "categories": ["physik", "kinder"], "lat": 48.2675, "lng": 11.6760},
+    {"id": "t4", "number": "4", "title": "Test Station D", "institution": "Inst D", "building": "Bau D", "categories": ["familie"], "lat": 48.2650, "lng": 11.6713}
+  ]
+}

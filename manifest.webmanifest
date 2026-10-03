@@ -1,0 +1,10 @@
+{
+  "name": "Campus-Karte Garching – Tag der offenen Tür",
+  "short_name": "Campus-Karte",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b5cad",
+  "lang": "de",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

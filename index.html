@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Campus-Karte Garching</title>
+  <meta name="description" content="Interaktive Karte aller Stationen beim Tag der offenen Tür am Forschungscampus Garching, 3. Oktober 2026 – nach Zielgruppe filtern, eigenen Standort sehen.">
+  <meta name="theme-color" content="#0b5cad">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='13' r='9' fill='%230b5cad'/%3E%3Cpath d='M16 31 8 18h16z' fill='%230b5cad'/%3E%3Ccircle cx='16' cy='13' r='4' fill='white'/%3E%3C/svg%3E">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="titlerow">
+      <h1>Tag der offenen Tür · Garching</h1>
+      <button id="locate" class="iconbtn" type="button" aria-label="Meinen Standort zeigen" title="Meinen Standort zeigen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8" fill="none"/></svg>
+      </button>
+    </div>
+    <input id="search" type="search" placeholder="Station, Institut, Thema suchen …" autocomplete="off" aria-label="Suche">
+    <div id="chips" class="chips" role="group" aria-label="Kategorien"></div>
+  </header>
+
+  <main class="layout">
+    <div id="map" aria-label="Karte"></div>
+
+    <section id="sheet" class="sheet" data-state="peek" aria-label="Stationen">
+      <button id="grip" class="grip" type="button" aria-label="Liste ein-/ausklappen"><span></span></button>
+      <div id="listview">
+        <div class="listhead">
+          <span id="count"></span>
+          <button id="reset" type="button" class="linkbtn" hidden>Filter zurücksetzen</button>
+        </div>
+        <ol id="list" class="list"></ol>
+      </div>
+      <article id="detail" class="detail" hidden></article>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
