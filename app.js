@@ -14,6 +14,7 @@
     data: null,       // { stations, categories, pois, center, ... }
     cats: new Set(),  // active category ids (OR-filter)
     q: "",
+    qm: null,         // compiled query (makeQuery)
     sel: null,        // selected station id
     me: null,         // {lat, lng, acc}
     favs: loadFavs(),
@@ -30,6 +31,39 @@
   // ---------- helpers ----------
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const norm = (s) => String(s ?? "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  // ---------- search ----------
+  // Every query word must occur in the item's text; words of 5+ letters may also match a
+  // word in the text with one typo (two for 7+ letters), e.g. "lazer" → "Laser".
+  function lev(a, b, max) {
+    if (Math.abs(a.length - b.length) > max) return max + 1;
+    let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) {
+      const cur = [i];
+      let best = i;
+      for (let j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+        if (cur[j] < best) best = cur[j];
+      }
+      if (best > max) return max + 1;
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+  function wordsOf(item) {
+    if (!item._words) item._words = [...new Set(item._text.split(/[^a-z0-9\u0430-\u044f\u0451]+/).filter((w) => w.length >= 3))];
+    return item._words;
+  }
+  function makeQuery(q) {
+    const words = norm(q).split(/\s+/).filter(Boolean);
+    if (!words.length) return null;
+    return (item) => words.every((w) => {
+      if (item._text.includes(w)) return true;
+      if (w.length < 5) return false;
+      const k = w.length >= 7 ? 2 : 1;
+      return wordsOf(item).some((t) => lev(w, t.slice(0, w.length), k) <= k || lev(w, t, k) <= k);
+    });
+  }
+
   function dist(a, b) {
     const R = 6371000, r = Math.PI / 180;
     const dLat = (b.lat - a.lat) * r, dLng = (b.lng - a.lng) * r;
@@ -66,7 +100,8 @@
   // ---------- i18n (DE / EN) ----------
   const STR = {
     de: {
-      title: "Tag der offenen Tür · Garching", search: "Station, Institut, Thema suchen …",
+      title: "Tag der offenen Tür · Garching", search: "Stationen, Vorträge, Essen suchen …",
+      secTalks: "Vorträge", secFood: "Essen & Trinken", building: "Gebäude",
       locate: "Meinen Standort zeigen", langTitle: "Sprache", docTitle: "Campus-Karte Garching",
       sheet: "Liste ein-/ausklappen", cats: "Kategorien",
       lStations: "Stationen", lInfra: "Infrastruktur (U-Bahn, Info, Essen …)", lPlan: "Offizieller Lageplan", lMap: "Karte",
@@ -99,7 +134,8 @@
       ubahnNote: "U-Bahn verkehrt von 9:30 bis 11:30 im 10-Minuten-Takt.",
     },
     en: {
-      title: "Open Day · Garching", search: "Search station, institute, topic …",
+      title: "Open Day · Garching", search: "Search stations, talks, food …",
+      secTalks: "Talks", secFood: "Food & drinks", building: "Building",
       locate: "Show my location", langTitle: "Language",
       sheet: "Expand/collapse list", cats: "Categories",
       lStations: "Stations", lInfra: "Facilities (U-Bahn, info, food …)", lPlan: "Official site plan", lMap: "Map",
@@ -133,7 +169,8 @@
       ubahnNote: "U-Bahn runs every 10 minutes from 9:30 to 11:30.",
     },
     ru: {
-      title: "День открытых дверей", search: "Поиск: станция, институт, тема …",
+      title: "День открытых дверей", search: "Поиск: станции, доклады, еда …",
+      secTalks: "Доклады", secFood: "Еда и напитки", building: "Здание",
       locate: "Показать моё местоположение", langTitle: "Язык",
       sheet: "Развернуть/свернуть список", cats: "Категории",
       lStations: "Станции", lInfra: "Инфраструктура (метро, инфо, еда …)", lPlan: "Официальный план", lMap: "Карта",
@@ -196,6 +233,7 @@
     const p = new URLSearchParams(location.hash.slice(1));
     state.cats = new Set((p.get("cat") || "").split(",").filter(Boolean));
     state.q = p.get("q") || "";
+    state.qm = makeQuery(state.q);
     state.sel = p.get("s") || null;
   }
   function writeHash() {
@@ -209,7 +247,7 @@
   }
 
   // ---------- filtering ----------
-  function matches(st) {
+  function matches(st, ignoreQuery) {
     // OR within a filter group (Kinder or Jugendliche), AND across groups (Kinder and Vorträge).
     const byGroup = {};
     state.cats.forEach((c) => {
@@ -219,14 +257,10 @@
     for (const g in byGroup) {
       if (!byGroup[g].some((c) => (c === FAV ? state.favs.has(st.id) : st.categories.includes(c)))) return false;
     }
-    if (state.q) {
-      const words = norm(state.q).split(/\s+/).filter(Boolean);
-      return words.every((w) => st._text.includes(w));
-    }
-    return true;
+    return ignoreQuery || !state.qm || state.qm(st);
   }
   function visible() {
-    const out = state.data.stations.filter(matches);
+    const out = state.data.stations.filter((st) => matches(st));
     if (state.me) {
       out.forEach((s) => (s._d = s.lat != null ? dist(state.me, s) : Infinity));
       out.sort((a, b) => a._d - b._d);
@@ -236,6 +270,8 @@
 
   // ---------- map ----------
   let map, stationLayer, poiLayer, poiDetail, meMarker, meCircle, planOverlay, osmLayer, layersCtl;
+  const foodMarkers = new Map();
+  const keyOf = (p) => p.lat.toFixed(5) + "," + p.lng.toFixed(5);
   const markerByKey = new Map();
 
   function initMap() {
@@ -251,7 +287,7 @@
     poiLayer = L.layerGroup().addTo(map);
     poiDetail = L.layerGroup();
     const syncPoi = () => {
-      const on = map.getZoom() >= 17 && map.hasLayer(poiLayer);
+      const on = map.getZoom() >= 16 && map.hasLayer(poiLayer);
       if (on && !map.hasLayer(poiDetail)) poiDetail.addTo(map);
       if (!on && map.hasLayer(poiDetail)) map.removeLayer(poiDetail);
     };
@@ -271,8 +307,25 @@
     const overlays = { [T("lStations")]: stationLayer, [T("lInfra")]: poiLayer };
     if (planOverlay) overlays[T("lPlan")] = planOverlay;
     layersCtl = L.control.layers({ [T("lMap")]: osmLayer }, overlays, { position: "topright", collapsed: true }).addTo(map);
-    poiLayer.clearLayers(); poiDetail.clearLayers();
-    (state.data.pois || []).forEach((p) => {
+    poiLayer.clearLayers(); poiDetail.clearLayers(); foodMarkers.clear();
+    // Food vendors at the same spot share one marker that lists all of them.
+    const food = new Map();
+    state.data.food.forEach((f) => {
+      const k = keyOf(f);
+      if (!food.has(k)) food.set(k, []);
+      food.get(k).push(f);
+    });
+    food.forEach((arr, k) => {
+      const html = `<strong>🍴 ${esc(T("secFood"))}</strong><ul class="food-list">` + arr.map((f) =>
+        `<li>${f.url ? `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.name)}</a>` : esc(f.name)}` +
+        `${f.hours ? ` <small>(${esc(f.hours)})</small>` : ""}<br><small>${f.building ? esc(T("building")) + " " + esc(f.building) + " · " : ""}<span lang="de">${esc(f.where)}</span></small></li>`).join("") + "</ul>";
+      const m = L.marker([arr[0].lat, arr[0].lng], {
+        icon: L.divIcon({ className: "", html: `<div class="poi" title="${esc(arr.map((f) => f.name).join(", "))}">🍴${arr.length > 1 ? `<i>${arr.length}</i>` : ""}</div>`, iconSize: [26, 26], iconAnchor: [13, 13] }),
+        keyboard: false, zIndexOffset: -400,
+      }).bindPopup(html, { maxWidth: 280 }).addTo(poiDetail);
+      foodMarkers.set(k, m);
+    });
+    (state.data.pois || []).filter((p) => p.type !== "food").forEach((p) => {
       const name = (T("poi") || {})[p.type] || p.name;
       const note = p.type === "ubahn" ? T("ubahnNote") : p.note;
       L.marker([p.lat, p.lng], {
@@ -340,8 +393,31 @@
     const total = state.data.stations.length;
     els.count.textContent = list.length === total ? T("count", total) : T("countOf", list.length, total);
     els.reset.hidden = !(state.cats.size || state.q);
+    // With a search query, matching talks (of stations that pass the chips) and food places follow the stations.
+    let extra = "";
+    if (state.qm) {
+      const now = nowHM();
+      const ok = new Set(state.data.stations.filter((st) => matches(st, true)).map((st) => st.id));
+      const talks = state.data.talks.filter((x) => ok.has(x.s.id) && state.qm(x))
+        .sort((a, b) => ((a.t.end || a.t.start) < now) - ((b.t.end || b.t.start) < now) || a.t.start.localeCompare(b.t.start));
+      if (talks.length) {
+        extra += `<li class="sec">🎤 ${esc(T("secTalks"))} · ${talks.length}</li>` + talks.map((x) =>
+          `<li><button type="button" class="item talk${(x.t.end || x.t.start) < now ? " past" : ""}" data-id="${esc(x.s.id)}">` +
+          `<span class="badge time">${esc(x.t.start)}</span><span class="main"><span class="t">${esc(x.t.title)}</span>` +
+          `<span class="s">${x.s.number ? esc(x.s.number) + " · " : ""}${esc(tx(x.s, "title"))}</span>` +
+          (x.t.where ? `<span class="s clamp">${esc(x.t.where)}</span>` : "") + `</span></button></li>`).join("");
+      }
+      const food = state.data.food.filter((f) => state.qm(f));
+      if (food.length) {
+        extra += `<li class="sec">🍴 ${esc(T("secFood"))} · ${food.length}</li>` + food.map((f) =>
+          `<li><button type="button" class="item food" data-food="${state.data.food.indexOf(f)}">` +
+          `<span class="badge food">🍴</span><span class="main"><span class="t">${esc(f.name)}${f.hours ? ` <small>(${esc(f.hours)})</small>` : ""}</span>` +
+          `<span class="s">${f.building ? esc(T("building")) + " " + esc(f.building) + " · " : ""}<span lang="de">${esc(f.where)}</span></span></span>` +
+          (state.me ? `<span class="dist">${fmtDist(dist(state.me, f))}</span>` : "") + `</button></li>`).join("");
+      }
+    }
     if (!list.length) {
-      els.list.innerHTML = `<li class="empty">${esc(T("empty"))}</li>`;
+      els.list.innerHTML = (extra ? "" : `<li class="empty">${esc(T("empty"))}</li>`) + extra;
       return;
     }
     els.list.innerHTML = list.map((s) => {
@@ -356,7 +432,7 @@
         (nt ? `<span class="s next">🎤 ${esc(nt.start)} ${esc(nt.title)}</span>` : "") +
         (tags ? `<span class="tags">${tags}</span>` : "") +
         `</span>${d}</button></li>`;
-    }).join("");
+    }).join("") + extra;
   }
 
   // ---------- detail ----------
@@ -420,6 +496,14 @@
     if (s && s.lat != null) setTimeout(() => panIntoView(s), 250);
   }
 
+  function focusFood(f) {
+    if (!f) return;
+    if (!map.hasLayer(poiLayer)) poiLayer.addTo(map);
+    if (window.innerWidth < 900) els.sheet.dataset.state = "peek";
+    map.setView([f.lat, f.lng], 18);
+    setTimeout(() => { const m = foodMarkers.get(keyOf(f)); if (m) m.openPopup(); panIntoView(f); }, 300);
+  }
+
   // Keep the selected pin above the bottom sheet on phones.
   function panIntoView(s) {
     const mapH = map.getSize().y;
@@ -440,14 +524,17 @@
     let t;
     els.search.addEventListener("input", () => {
       clearTimeout(t);
-      t = setTimeout(() => { state.q = els.search.value.trim(); state.sel = null; render(); }, 120);
+      t = setTimeout(() => { state.q = els.search.value.trim(); state.qm = makeQuery(state.q); state.sel = null; render(); }, 120);
     });
     els.reset.addEventListener("click", () => {
-      state.cats.clear(); state.q = ""; els.search.value = ""; state.sel = null;
+      state.cats.clear(); state.q = ""; state.qm = null; els.search.value = ""; state.sel = null;
       renderChips(); render(); fitVisible();
     });
     els.list.addEventListener("click", (e) => {
-      const b = e.target.closest(".item"); if (b) select(b.dataset.id);
+      const b = e.target.closest(".item");
+      if (!b) return;
+      if (b.dataset.food != null) focusFood(state.data.food[+b.dataset.food]);
+      else select(b.dataset.id);
     });
     els.detail.addEventListener("click", (e) => {
       const b = e.target.closest("[data-act]"); if (!b) return;
@@ -626,6 +713,11 @@
         ...s.categories.flatMap((c) => { const k = data.catIndex[c] || {}; return [k.label, k.label_en, k.label_ru]; })].join(" "));
       data.byId[s.id] = s;
     });
+    data.food = data.pois.filter((p) => p.type === "food");
+    data.food.forEach((f) => (f._text = norm([f.search || "", f.name, f.where, f.building ? "gebaude building здание " + f.building : ""].join(" "))));
+    data.talks = data.stations.flatMap((s) => (s.talks || []).map((t) => ({
+      t, s, _text: norm([t.title, t.speaker, t.where, s.title, s.title_en, s.title_ru, "vortrag talk доклад"].join(" ")),
+    })));
     state.data = data;
     applyStatic();
     readHash();

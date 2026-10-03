@@ -129,6 +129,16 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
 .item .dist { flex: none; color: var(--muted); font-size: 12px; white-space: nowrap; margin-top: 2px; }
 .star { color: #e3a008; }
 .empty { padding: 24px 16px; color: var(--muted); text-align: center; }
+.list .sec { padding: 14px 16px 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.badge.time { background: var(--chip); color: var(--text); font-size: 12px; min-width: 46px; border-radius: 8px; }
+.badge.food { background: var(--chip); font-size: 15px; }
+.item.past { opacity: .5; }
+.poi i { position: absolute; top: -6px; right: -6px; min-width: 15px; height: 15px; padding: 0 3px; border-radius: 8px;
+  background: #15202b; color: #fff; font: 700 9px/15px system-ui, sans-serif; font-style: normal; text-align: center; }
+.poi { position: relative; }
+.food-list { margin: 6px 0 0; padding: 0; list-style: none; }
+.food-list li { padding: 4px 0; border-top: 1px solid #e5e8ec; }
+.food-list small { color: #5b6876; }
 
 /* ---------- detail ---------- */
 .detail { flex: 1; overflow-y: auto; padding: 0 16px 24px; overscroll-behavior: contain; }

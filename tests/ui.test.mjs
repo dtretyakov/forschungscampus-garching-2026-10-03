@@ -81,6 +81,37 @@ await page.setViewportSize({ width: 1280, height: 800 });
 await page.waitForTimeout(300);
 await page.screenshot({ path: `${shots}/5-desktop.png` });
 
+// Search: typo tolerance, talk results, food results.
+{
+  await page.goto(base);
+  await page.waitForSelector(".list .item");
+  const long = data.stations.map((s) => [s, (s.title.match(/[A-Za-zÄÖÜäöüß]{8,}/g) || [])[0]]).find(([, w]) => w);
+  if (long) {
+    const [st, w] = long;
+    const typo = w.slice(0, 3) + (w[3] === "x" ? "y" : "x") + w.slice(4);
+    await page.fill("#search", typo);
+    await page.waitForTimeout(300);
+    assert.ok(await page.locator(`.item[data-id="${st.id}"]:not(.talk)`).count(), `typo "${typo}" finds ${st.id}`);
+  }
+  const withTalk = data.stations.find((s) => (s.talks || []).length);
+  if (withTalk) {
+    const word = (withTalk.talks[0].title.match(/[A-Za-zÄÖÜäöüß]{6,}/) || [withTalk.talks[0].title])[0];
+    await page.fill("#search", word);
+    await page.waitForTimeout(300);
+    assert.ok(await page.locator(".item.talk").count() > 0, "talk results");
+  }
+  const pois = await page.evaluate(() => fetch("data/pois.json").then((r) => r.json()));
+  if (pois.some((p) => p.type === "food" && /pizza/i.test(p.name))) {
+    await page.fill("#search", "пицца");
+    await page.waitForTimeout(300);
+    assert.ok(await page.locator(".item.food").count() > 0, "food results (ru query)");
+    await page.screenshot({ path: `${shots}/10-search-food.png` });
+    await page.locator(".item.food").first().click();
+    await page.waitForSelector(".leaflet-popup .food-list");
+  }
+  await page.fill("#search", "");
+}
+
 // Location denied (iOS Safari answers like this when location is off for Safari websites):
 // the help dialog explains the settings and the position can be set by tapping the map.
 {

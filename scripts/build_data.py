@@ -10,6 +10,7 @@ Inputs (see fetch_sources.py / georef.py):
 """
 import html
 import json
+import math
 import os
 import re
 import sys
@@ -172,6 +173,109 @@ def parse_detail(st):
     st["links"] = links
 
 
+# Food search words per kind, in DE / EN / RU, so "кофе", "coffee" and "Kaffee" all find the cafés.
+FOOD_KINDS = [
+    (r"caff|espresso|bean|café|cafe", "Kaffee Café coffee кофе кофейня"),
+    (r"pizza", "Pizza пицца"),
+    (r"burger", "Burger бургер"),
+    (r"waffel", "Waffeln waffles вафли десерт dessert süß сладкое"),
+    (r"churro", "Churros чуррос десерт dessert süß сладкое"),
+    (r"lukumades", "Lukumades griechische Donuts dessert десерт пончики сладкое süß"),
+    (r"pommes", "Pommes fries картошка фри"),
+    (r"döner|doner", "Döner kebab кебаб шаурма"),
+    (r"curry", "Curry карри"),
+    (r"kässpatzen|spatzen", "Kässpätzle spätzle шпецле"),
+    (r"luu", "asiatisch asian азиатская кухня"),
+    (r"grieche", "griechisch greek греческая кухня"),
+    (r"tibet", "tibetisch tibetan тибетская кухня"),
+    (r"mensa|kantine|bistro|cafeteria|five", "Kantine Mensa canteen cafeteria столовая обед lunch Mittagessen"),
+    (r"cneipe|kneipe", "Kneipe pub Bier beer бар пиво"),
+]
+FOOD_ALL = "Essen Trinken Verpflegung Gastronomie food drinks eat еда напитки поесть кафе ресторан"
+# FAQ vendors whose name differs from OpenStreetMap: (name pattern, where pattern) -> OSM name
+FOOD_OSM = [
+    (r"StuBistro", r"Mensa", "StuBistro Garching Mensa"),
+    (r"StuBistro", r"Maschinenwesen", "StuBistro Garching Maschinenwesen"),
+    (r"IPP Kantine", r"", "Max-Planck Kantine Garching"),
+    (r"Campus Cneipe", r"", "Campus-Cneipe C2"),
+]
+
+
+def squash(t):
+    return re.sub(r"[^a-z0-9äöüß]+", "", t.lower())
+
+
+def parse_food(geo, osm):
+    """Food & drinks from the FAQ, placed via OSM name, a plan food symbol near the building, or the building."""
+    path = os.path.join(SRC, "pages", "3-okt-2026_faq.html")
+    if not os.path.exists(path):
+        return []
+    soup = BeautifulSoup(open(path, encoding="utf-8").read(), "html.parser")
+    box = soup.find(id="gastronomie")
+    if not box:
+        return []
+    named = {}
+    for e in osm["elements"]:
+        t = e.get("tags", {})
+        if "name" in t and t.get("amenity") or "name" in t and "building" in t:
+            c = e.get("center") or {"lat": e.get("lat"), "lon": e.get("lon")}
+            named.setdefault(squash(t["name"]), (c["lat"], c["lon"]))
+    labels = geo["labels"]
+    symbols = [(a, b) for a, b, *_ in geo["symbols"].get("food", [])]
+    ubahn = next(((e.get("lat"), e.get("lon")) for e in osm["elements"]
+                  if e.get("tags", {}).get("railway") == "station" and "Forschungszentrum" in e["tags"].get("name", "")), None)
+
+    def meters(a, b):
+        return math.hypot((a[0] - b[0]) * 111132, (a[1] - b[1]) * 111320 * math.cos(math.radians(a[0])))
+
+    out = []
+    for li in box.select("li"):
+        txt = text(li)
+        name, _, where = txt.partition(" – ")
+        hours = ""
+        m = re.search(r"\(([^)]*Uhr)\)", name)
+        if m:
+            hours, name = m.group(1), name.replace(m.group(0), "").strip()
+        a = li.find("a", href=True)
+        url = a["href"] if a and "forschungscampus-garching.de" not in a["href"] else ""
+        b = re.search(r"Gebäude ([\d/]+)", where)
+        buildings = b.group(1).split("/") if b else []
+        where = re.sub(r"\s*\(\s*Gebäude [\d/]+\s*\)", "", where).strip()
+        pos, how = None, ""
+        for pat, wpat, osm_name in FOOD_OSM:
+            if re.search(pat, name) and re.search(wpat, where):
+                pos, how = named.get(squash(osm_name)), "osm"
+        if not pos:
+            key = squash(name.replace("’s", "s").replace("'s", "s"))
+            for k, v in named.items():
+                if key and (k == key or k.startswith(key)) and len(key) >= 4:
+                    pos, how = v, "osm"
+                    break
+        if not pos and "U-Bahn" in where and ubahn:
+            pos, how = ubahn, "ubahn"
+        if not pos and buildings:
+            pts = [labels[x]["lat_lng"] for x in buildings if x in labels]
+            if pts:
+                ref = (sum(p[0] for p in pts) / len(pts), sum(p[1] for p in pts) / len(pts))
+                pos, how = ref, "building"
+                if where.startswith("vor ") or "zwischen" in where:
+                    near = sorted(symbols, key=lambda s_: meters(s_, ref))
+                    if near and meters(near[0], ref) < 150:
+                        pos, how = near[0], "plan-symbol"
+        if not pos:
+            m2 = re.search(r"Chemie", where)
+            if m2 and "1" in labels:
+                pos, how = labels["1"]["lat_lng"], "building"
+        if not pos:
+            print(f"  ! food without position: {txt}", file=sys.stderr)
+            continue
+        kinds = " ".join(words for pat, words in FOOD_KINDS if re.search(pat, name, re.I))
+        out.append({"type": "food", "icon": "🍴", "name": name.strip(), "where": where, "hours": hours, "url": url,
+                    "building": "/".join(buildings), "lat": round(pos[0], 6), "lng": round(pos[1], 6), "placed_by": how,
+                    "search": f"{name} {where} {kinds} {FOOD_ALL}"})
+    return out
+
+
 def parse_talks():
     """Lecture timetable (updated live by the organisers on the day)."""
     path = os.path.join(SRC, "pages", "3-okt-2026_vortraege.html")
@@ -296,8 +400,11 @@ def main():
     sym = geo["symbols"]
     for lat, lng, *_ in sym.get("info", []):
         pois.append({"type": "info", "icon": "ℹ️", "name": "Infostand", "lat": lat, "lng": lng})
-    for lat, lng, *_ in sym.get("food", []):
-        pois.append({"type": "food", "icon": "🍴", "name": "Gastronomie", "lat": lat, "lng": lng})
+    food = parse_food(geo, osm)
+    pois.extend(food)
+    if not food:  # FAQ list missing: fall back to the anonymous food symbols of the plan
+        for lat, lng, *_ in sym.get("food", []):
+            pois.append({"type": "food", "icon": "🍴", "name": "Gastronomie", "lat": lat, "lng": lng})
     for lat, lng, *_ in sym.get("bus", []):
         pois.append({"type": "bus", "icon": "🚌", "name": "Bushaltestelle", "lat": lat, "lng": lng})
     ub = [p for p in pois if p["type"] == "ubahn"]
