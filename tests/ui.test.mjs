@@ -216,6 +216,15 @@ await page.screenshot({ path: `${shots}/5-desktop.png` });
   assert.match(await p4.textContent("#detail .back"), /Назад/);
   if (want) assert.equal((await p4.textContent("#detail .lead")).trim(), want);
   await p4.screenshot({ path: `${shots}/9-russian-detail.png` });
+  // Talk titles are shown translated.
+  const ts = data.stations.find((st) => (st.talks || []).some((t) => t.title_ru));
+  if (ts) {
+    await p4.goto(base + `#lang=ru&s=${ts.id}`);
+    await p4.waitForSelector("#detail .talks");
+    const want2 = ts.talks.find((t) => t.title_ru).title_ru;
+    assert.ok((await p4.textContent("#detail .talks")).includes(want2), "talk title in Russian");
+  }
+  assert.ok(useFixture || data.stations.some((st) => (st.talks || []).some((t) => t.title_ru)), "talk translations present in data");
   await ctx4.close();
 }
 

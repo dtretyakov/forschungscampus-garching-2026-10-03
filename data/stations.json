@@ -345,14 +345,18 @@
      "end": "11:15",
      "title": "Einführung in die Forschung an Festkörperbatterien Deutsch",
      "speaker": "",
-     "where": "TUM Chemie Department · TUMint.Energy Research GmbH 4.Stock orangener Turm Raum 46220 Lichtenbergstr. 4b"
+     "where": "TUM Chemie Department · TUMint.Energy Research GmbH 4.Stock orangener Turm Raum 46220 Lichtenbergstr. 4b",
+     "title_en": "Introduction to solid-state battery research (in German)",
+     "title_ru": "Введение в исследования твердотельных батарей (на немецком)"
     },
     {
      "start": "14:00",
      "end": "14:15",
      "title": "Introduction to Solid-State Battery Research English",
      "speaker": "",
-     "where": "TUM Chemie Department · TUMint.Energy Research GmbH 4.Stock orangener Turm Raum 46220 Lichtenbergstr. 4b"
+     "where": "TUM Chemie Department · TUMint.Energy Research GmbH 4.Stock orangener Turm Raum 46220 Lichtenbergstr. 4b",
+     "title_en": "Introduction to Solid-State Battery Research (in English)",
+     "title_ru": "Введение в исследования твердотельных батарей (на английском)"
     }
    ],
    "title_en": "",
@@ -810,28 +814,36 @@
      "end": "11:00",
      "title": "Faszination Quantencomputer",
      "speaker": "Prof. Dr. Peter Rabl",
-     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143"
+     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143",
+     "title_en": "The fascination of quantum computers",
+     "title_ru": "Удивительные квантовые компьютеры"
     },
     {
      "start": "12:30",
      "end": "13:00",
      "title": "Quantensysteme für die Sensorik",
      "speaker": "Dr. Matthias Althammer",
-     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143"
+     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143",
+     "title_en": "Quantum systems for sensing",
+     "title_ru": "Квантовые системы для сенсорики"
     },
     {
      "start": "14:30",
      "end": "15:00",
      "title": "Faszination Quantencomputer",
      "speaker": "Prof. Dr. Peter Rabl",
-     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143"
+     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143",
+     "title_en": "The fascination of quantum computers",
+     "title_ru": "Удивительные квантовые компьютеры"
     },
     {
      "start": "16:30",
      "end": "17:00",
      "title": "Quantensysteme für die Sensorik",
      "speaker": "Dr. Matthias Althammer",
-     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143"
+     "where": "Walther-Meißner-Institut für Tieftemperaturforschung · Walther-Meißner-Strasse 8 Seminarraum 143",
+     "title_en": "Quantum systems for sensing",
+     "title_ru": "Квантовые системы для сенсорики"
     }
    ],
    "title_en": "Walther-Meißner-Institute for Low Temperature Research",
@@ -887,21 +899,27 @@
      "end": "12:00",
      "title": "Warum kann Quantencomputing unlösbare Probleme lösen?",
      "speaker": "Prof. Dr. Stefan Filipp",
-     "where": "Munich Quantum Valley · Walther-Meißner-Institut Walther-Meißner-Straße 8"
+     "where": "Munich Quantum Valley · Walther-Meißner-Institut Walther-Meißner-Straße 8",
+     "title_en": "Why can quantum computing solve unsolvable problems?",
+     "title_ru": "Почему квантовые вычисления решают «нерешаемые» задачи?"
     },
     {
      "start": "13:30",
      "end": "14:00",
      "title": "Quantenwelten im Labor Wie wir einzelne Atome kontrollieren",
      "speaker": "Prof. Dr. Monika Aidelsburger",
-     "where": "Munich Quantum Valley – Walther-Meißner-Institut Walther-Meißner-Straße 8"
+     "where": "Munich Quantum Valley – Walther-Meißner-Institut Walther-Meißner-Straße 8",
+     "title_en": "Quantum worlds in the lab: how we control single atoms",
+     "title_ru": "Квантовые миры в лаборатории: как мы управляем отдельными атомами"
     },
     {
      "start": "15:30",
      "end": "16:00",
      "title": "Warum kann Quantencomputing unlösbare Probleme lösen?",
      "speaker": "Prof. Dr. Stefan Filipp",
-     "where": "Munich Quantum Valley · Walther-Meißner-Institut Walther-Meißner-Straße 8"
+     "where": "Munich Quantum Valley · Walther-Meißner-Institut Walther-Meißner-Straße 8",
+     "title_en": "Why can quantum computing solve unsolvable problems?",
+     "title_ru": "Почему квантовые вычисления решают «нерешаемые» задачи?"
     }
    ],
    "title_en": "",
@@ -960,28 +978,36 @@
      "end": "",
      "title": "Kernfusion: die Energie der Sonne und der Sterne auf der Erde nutzen",
      "speaker": "Prof. Dr. Sibylle Günter",
-     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2"
+     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2",
+     "title_en": "Nuclear fusion: using the energy of the sun and stars on Earth",
+     "title_ru": "Термоядерный синтез: энергия Солнца и звёзд на Земле"
     },
     {
      "start": "12:30",
      "end": "",
      "title": "Fusionsenergie Wann ist es soweit?",
      "speaker": "Prof. Dr. Frank Jenko",
-     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2"
+     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2",
+     "title_en": "Fusion energy: when will it be ready?",
+     "title_ru": "Термоядерная энергия: когда же?"
     },
     {
      "start": "14:00",
      "end": "",
      "title": "Wir machens der Sonne nach Vortrag für Kinder",
      "speaker": "PD Dr. Thomas Pütterich",
-     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2"
+     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2",
+     "title_en": "Doing it like the sun – talk for children",
+     "title_ru": "Делаем как Солнце – доклад для детей"
     },
     {
      "start": "15:00",
      "end": "",
      "title": "Wir machens der Sonne nach Vortrag für Kinder",
      "speaker": "PD Dr. Thomas Pütterich",
-     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2"
+     "where": "Max-Planck-Institut für Plasmaphysik IPP · Hörsaal Gebäude D2 Boltzmannstr. 2",
+     "title_en": "Doing it like the sun – talk for children",
+     "title_ru": "Делаем как Солнце – доклад для детей"
     }
    ],
    "title_en": "Max Planck Institute for Plasma Physics (IPP)",
@@ -1079,7 +1105,9 @@
      "end": "16:30",
      "title": "Hochleistungsrechnen und KI in der Wissenschaft",
      "speaker": "Prof. Dr. Erwin Laure",
-     "where": "Max Planck Computing & Data Facility · D2 Gebäude EG Zugang über Isarstraße Gießenbachstr. 2"
+     "where": "Max Planck Computing & Data Facility · D2 Gebäude EG Zugang über Isarstraße Gießenbachstr. 2",
+     "title_en": "High-performance computing and AI in science",
+     "title_ru": "Высокопроизводительные вычисления и ИИ в науке"
     }
    ],
    "title_en": "",
@@ -1255,70 +1283,90 @@
      "end": "11:00",
      "title": "Belle II und das Rätsel der verschwundenen Antimaterie",
      "speaker": "Hans-Günther Moser",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "Belle II and the mystery of the missing antimatter",
+     "title_ru": "Belle II и загадка исчезнувшей антиматерии"
     },
     {
      "start": "11:00",
      "end": "11:30",
      "title": "Neutrinos geheimnisvolle Botschafter des Universums",
      "speaker": "Georg Raffelt",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "Neutrinos – mysterious messengers of the universe",
+     "title_ru": "Нейтрино – таинственные посланники Вселенной"
     },
     {
      "start": "11:30",
      "end": "12:00",
      "title": "Vom Universum ins Untergrundlabor: Die Jagd nach Dunkler Materie",
      "speaker": "Kilian Heim und Lutz Ziegel",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "From the universe to the underground lab: hunting dark matter",
+     "title_ru": "Из космоса в подземную лабораторию: охота на тёмную материю"
     },
     {
      "start": "12:00",
      "end": "12:30",
      "title": "Von Formel zur Vorhersage: Wie können wir Teilchenkollisionen berechnen?",
      "speaker": "Sara Ditsch und Florian König",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "From formula to prediction: how can we calculate particle collisions?",
+     "title_ru": "От формулы к предсказанию: как рассчитать столкновения частиц?"
     },
     {
      "start": "13:00",
      "end": "13:30",
      "title": "Das NA62-Experiment: Pinguine in der Teilchenphysik?",
      "speaker": "Daniel Grewe",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "The NA62 experiment: penguins in particle physics?",
+     "title_ru": "Эксперимент NA62: пингвины в физике частиц?"
     },
     {
      "start": "13:30",
      "end": "14:00",
      "title": "All about the ATLAS experiment: the myths the facts and the physics",
      "speaker": "Elena Cuppini",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "All about the ATLAS experiment: the myths, the facts and the physics",
+     "title_ru": "Всё об эксперименте ATLAS: мифы, факты и физика"
     },
     {
      "start": "14:00",
      "end": "14:30",
      "title": "Der Aufbau des Universums die kosmische Inflation",
      "speaker": "Lucy Komisel",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "The structure of the universe: cosmic inflation",
+     "title_ru": "Устройство Вселенной: космическая инфляция"
     },
     {
      "start": "14:30",
      "end": "15:00",
      "title": "Schwingungen aus dem frühen Universum: Erklären Axionen das Dunkle-Materie-Problem?",
      "speaker": "Frank Steffen",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "Oscillations from the early universe: do axions explain dark matter?",
+     "title_ru": "Колебания ранней Вселенной: объясняют ли аксионы тёмную материю?"
     },
     {
      "start": "15:00",
      "end": "15:30",
      "title": "Cosmic strings and domain walls in the early universe",
      "speaker": "Davide Chiego",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "Cosmic strings and domain walls in the early universe",
+     "title_ru": "Космические струны и доменные стенки в ранней Вселенной"
     },
     {
      "start": "15:30",
      "end": "16:00",
      "title": "Gamma-Ray-Astronomy: On the trail of the highest-energy radiation in the universe",
      "speaker": "David Paneque",
-     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8"
+     "where": "Max-Planck-Institut für Physik · Boltzmannstr. 8",
+     "title_en": "Gamma-ray astronomy: on the trail of the highest-energy radiation in the universe",
+     "title_ru": "Гамма-астрономия: по следам самого энергичного излучения во Вселенной"
     }
    ],
    "title_en": "Max Planck Institute for Physics",
@@ -1420,7 +1468,9 @@
      "end": "10:45",
      "title": "Neues aus der Energieforschung Vom System zur Technologie",
      "speaker": "Dr.-Ing. Sebastian Fendt",
-     "where": "TUM Lehrstuhl für Energiesysteme · Magistrale Maschinenwesen Boltzmannstraße 15 Raum MW1801"
+     "where": "TUM Lehrstuhl für Energiesysteme · Magistrale Maschinenwesen Boltzmannstraße 15 Raum MW1801",
+     "title_en": "News from energy research: from system to technology",
+     "title_ru": "Новое в энергетических исследованиях: от системы к технологии"
     }
    ],
    "title_en": "TUM Chair of Energy Systems",
@@ -1597,21 +1647,27 @@
      "end": "",
      "title": "Science Slam Deutsch",
      "speaker": "verschiedene",
-     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching 1. Stock Hörsaal MW 1801"
+     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching 1. Stock Hörsaal MW 1801",
+     "title_en": "Science Slam (in German)",
+     "title_ru": "Научный слэм (на немецком)"
     },
     {
      "start": "14:30",
      "end": "",
      "title": "Science Slam English",
      "speaker": "verschiedene",
-     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching 1. Stock Hörsaal MW 1801"
+     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching 1. Stock Hörsaal MW 1801",
+     "title_en": "Science Slam (in English)",
+     "title_ru": "Научный слэм (на английском)"
     },
     {
      "start": "16:00",
      "end": "",
      "title": "Science Slam Deutsch",
      "speaker": "verschiedene",
-     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching 1. Stock Hörsaal MW 1801"
+     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching 1. Stock Hörsaal MW 1801",
+     "title_en": "Science Slam (in German)",
+     "title_ru": "Научный слэм (на немецком)"
     }
    ],
    "title_en": "",
@@ -1830,7 +1886,9 @@
      "end": "12:30",
      "title": "Qookies – A Quantum Quest: Release-Veranstaltung",
      "speaker": "verschiedene",
-     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching Erdgeschoss Hörsaal 350"
+     "where": "TUM Maschinenwesen · Boltzmannstr. 15 85748 Garching Erdgeschoss Hörsaal 350",
+     "title_en": "Qookies – A Quantum Quest: release event",
+     "title_ru": "Qookies – A Quantum Quest: презентация игры"
     }
    ],
    "title_en": "",
@@ -2390,35 +2448,45 @@
      "end": "11:30",
      "title": "Mission Euclid die Erforschung des Dunklen Universums",
      "speaker": "Prof. Dr. Ralf Bender",
-     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1"
+     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1",
+     "title_en": "Mission Euclid – exploring the dark universe",
+     "title_ru": "Миссия Euclid – исследование тёмной Вселенной"
     },
     {
      "start": "11:45",
      "end": "12:45",
      "title": "Sternentstehung: Die Fingerabdrücke der Moleküle",
      "speaker": "Dr. Christian Endres",
-     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1"
+     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1",
+     "title_en": "Star formation: the fingerprints of molecules",
+     "title_ru": "Рождение звёзд: отпечатки молекул"
     },
     {
      "start": "13:00",
      "end": "14:00",
      "title": "eROSITA Wie ein deutsches Röntgenteleskop das verborgene Universum sichtbar macht",
      "speaker": "Prof. Dr. Werner Becker",
-     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1"
+     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1",
+     "title_en": "eROSITA: how a German X-ray telescope reveals the hidden universe",
+     "title_ru": "eROSITA: как немецкий рентгеновский телескоп делает видимой скрытую Вселенную"
     },
     {
      "start": "14:15",
      "end": "15:15",
      "title": "Immer größer immer schärfer Teleskope und Instrumente unser Fenster zum Universum",
      "speaker": "Prof. Dr. Frank Eisenhauer",
-     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1"
+     "where": "Max-Planck-Institut für extraterrestrische Physik · Gießenbachstraße 1",
+     "title_en": "Ever bigger, ever sharper: telescopes and instruments, our window to the universe",
+     "title_ru": "Всё больше, всё чётче: телескопы и приборы – наше окно во Вселенную"
     },
     {
      "start": "16:00",
      "end": "17:00",
      "title": "Gibt es schwarze Löcher wirklich?",
      "speaker": "Prof. Dr. Reinhard Genzel",
-     "where": "Rudolf-Diesel-Hörsaal der TUM Bolzmannstr. 15"
+     "where": "Rudolf-Diesel-Hörsaal der TUM Bolzmannstr. 15",
+     "title_en": "Do black holes really exist?",
+     "title_ru": "Существуют ли чёрные дыры на самом деле?"
     }
    ],
    "title_en": "Max Planck Institute for Extraterrestrial Physics",
@@ -2470,42 +2538,54 @@
      "end": "12:00",
      "title": "Throwing dark matter from the Pisa Tower: A tale of time gravity and galaxies",
      "speaker": "Sveva Castello",
-     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1"
+     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1",
+     "title_en": "Throwing dark matter from the Pisa Tower: a tale of time, gravity and galaxies",
+     "title_ru": "Бросаем тёмную материю с Пизанской башни: история о времени, гравитации и галактиках"
     },
     {
      "start": "12:00",
      "end": "13:00",
      "title": "Gravitationswellen: Erschütterungen der Raumzeit",
      "speaker": "Ewald Müller",
-     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1"
+     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1",
+     "title_en": "Gravitational waves: tremors of spacetime",
+     "title_ru": "Гравитационные волны: колебания пространства-времени"
     },
     {
      "start": "13:00",
      "end": "14:00",
      "title": "Neutrinos: Was sie sind woher sie kommen und was sie bewirken",
      "speaker": "H.-Thomas Janka",
-     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1"
+     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1",
+     "title_en": "Neutrinos: what they are, where they come from and what they do",
+     "title_ru": "Нейтрино: что это, откуда они берутся и на что влияют"
     },
     {
      "start": "14:00",
      "end": "15:00",
      "title": "Das Universum im Supercomputer",
      "speaker": "Volker Springel",
-     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1"
+     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1",
+     "title_en": "The universe in a supercomputer",
+     "title_ru": "Вселенная в суперкомпьютере"
     },
     {
      "start": "15:00",
      "end": "16:00",
      "title": "Galaxies auf Englisch",
      "speaker": "Iker Millan",
-     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1"
+     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1",
+     "title_en": "Galaxies (in English)",
+     "title_ru": "Галактики (на английском)"
     },
     {
      "start": "16:00",
      "end": "17:00",
      "title": "Die kosmische Entwicklungsgeschichte: der Ursprung unseres Universums",
      "speaker": "Simon White",
-     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1"
+     "where": "Max-Planck-Institut für Astrophysik · Hörsaal MPA E.0.11 Karl-Schwarzschildstr. 1",
+     "title_en": "Cosmic history: the origin of our universe",
+     "title_ru": "Космическая история: происхождение нашей Вселенной"
     }
    ],
    "title_en": "Max Planck Institute for Astrophysics",
@@ -2563,84 +2643,108 @@
      "end": "",
      "title": "ESO-Videos Englisch mit deutschen Untertiteln",
      "speaker": "",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "ESO videos (English with German subtitles)",
+     "title_ru": "Видео ESO (на английском с немецкими субтитрами)"
     },
     {
      "start": "10:40",
      "end": "",
      "title": "Astronomy in fiction and fiction in astronomy",
      "speaker": "Valentin Ivanov",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "Astronomy in fiction and fiction in astronomy",
+     "title_ru": "Астрономия в фантастике и фантастика в астрономии"
     },
     {
      "start": "11:15",
      "end": "",
      "title": "Infrarot in der Astronomy: Anhand von Experimenten veranschautlicht",
      "speaker": "Leander Mehrgan",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "Infrared in astronomy, shown with experiments",
+     "title_ru": "Инфракрасное излучение в астрономии – на экспериментах"
     },
     {
      "start": "11:50",
      "end": "",
      "title": "2000 years of twinkling",
      "speaker": "Emily Kerrison",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "2000 years of twinkling",
+     "title_ru": "2000 лет мерцания звёзд"
     },
     {
      "start": "12:25",
      "end": "",
      "title": "Riesen Zwerge und schwarze Löcher Wie oft passt die Erde in ein schwarzes Loch?",
      "speaker": "Magdalena Vukojevic",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "Giants, dwarfs and black holes: how many Earths fit into a black hole?",
+     "title_ru": "Гиганты, карлики и чёрные дыры: сколько Земель поместится в чёрную дыру?"
     },
     {
      "start": "13:00",
      "end": "",
      "title": "Die Suche nach außerirdischem Leben",
      "speaker": "Bibiana Prinoth",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "The search for extraterrestrial life",
+     "title_ru": "Поиск внеземной жизни"
     },
     {
      "start": "13:35",
      "end": "",
      "title": "ALMA: Die Suche nach unserem kosmischen Ursprung",
      "speaker": "María Díaz Trigo",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "ALMA: the search for our cosmic origins",
+     "title_ru": "ALMA: поиски нашего космического происхождения"
     },
     {
      "start": "14:10",
      "end": "",
      "title": "Liveschaltung zum ALMA-Observatorium Chile",
      "speaker": "",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "Live link to the ALMA Observatory, Chile",
+     "title_ru": "Прямое включение из обсерватории ALMA, Чили"
     },
     {
      "start": "14:45",
      "end": "",
      "title": "Wie ein neues Teleskop entsteht aus der Sicht eines Ingenieurs",
      "speaker": "Gerd Jakob",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "How a new telescope is made – an engineer's view",
+     "title_ru": "Как создаётся новый телескоп – взгляд инженера"
     },
     {
      "start": "15:30",
      "end": "",
      "title": "Liveschaltung zum Paranal-Observatorium Chile",
      "speaker": "",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "Live link to the Paranal Observatory, Chile",
+     "title_ru": "Прямое включение из обсерватории Паранал, Чили"
     },
     {
      "start": "16:05",
      "end": "",
      "title": "Protecting the night sky from light pollution: Why does it matter",
      "speaker": "Mariya Lyubenova",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "Protecting the night sky from light pollution: why does it matter?",
+     "title_ru": "Защита ночного неба от светового загрязнения: почему это важно"
     },
     {
      "start": "16:45",
      "end": "",
      "title": "ESO-Videos Englisch mit deutschen Untertiteln",
      "speaker": "",
-     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching"
+     "where": "ESO Hauptgebäude und ESO Supernova Planetarium & Besucherzentrum Karl-Schwarzschild-Straße 2 85748 Garching",
+     "title_en": "ESO videos (English with German subtitles)",
+     "title_ru": "Видео ESO (на английском с немецкими субтитрами)"
     }
    ],
    "title_en": "",
@@ -2700,42 +2804,54 @@
      "end": "13:00",
      "title": "Quanten was kann das?",
      "speaker": "Dr. Moritz Dorbandt",
-     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1"
+     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1",
+     "title_en": "Quanta – what can they do?",
+     "title_ru": "Кванты – на что они способны?"
     },
     {
      "start": "13:00",
      "end": "13:45",
      "title": "",
      "speaker": "Mihaela Zigmann",
-     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1"
+     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1",
+     "title_en": "",
+     "title_ru": ""
     },
     {
      "start": "13:45",
      "end": "14:30",
      "title": "Kamera Kunst und KI Fotografie trifft Forschung",
      "speaker": "Thorsten Naeser",
-     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1"
+     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1",
+     "title_en": "Camera, art and AI: photography meets research",
+     "title_ru": "Камера, искусство и ИИ: фотография встречается с наукой"
     },
     {
      "start": "14:45",
      "end": "15:30",
      "title": "",
      "speaker": "Dr. Philipp Preiss",
-     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1"
+     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1",
+     "title_en": "",
+     "title_ru": ""
     },
     {
      "start": "15:30",
      "end": "16:15",
      "title": "Quantenwelten im Labor Wie wir einzelne Atome kontrollieren",
      "speaker": "Prof. Dr. Monika Aidelsburger",
-     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1"
+     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1",
+     "title_en": "Quantum worlds in the lab: how we control single atoms",
+     "title_ru": "Квантовые миры в лаборатории: как мы управляем отдельными атомами"
     },
     {
      "start": "16:15",
      "end": "17:00",
      "title": "Buchvorstellung Ein Quantum Zukunft Quantenphysik und Quantentechnologien einfach erklärt",
      "speaker": "Dr. Patrick Emonts",
-     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1"
+     "where": "Max-Planck-Institut für Quantenoptik · Hans-Kopfermann-Str. 1",
+     "title_en": "Book presentation \"Ein Quantum Zukunft\": quantum physics and quantum technologies explained simply",
+     "title_ru": "Презентация книги «Ein Quantum Zukunft»: квантовая физика и технологии простыми словами"
     }
    ],
    "title_en": "Max Planck Institute of Quantum Optics",
@@ -2909,70 +3025,90 @@
      "end": "",
      "title": "Wo Wissenschaft auf Industrie trifft: Innovation durch Zusammenarbeit",
      "speaker": "Constanze Welter",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Where science meets industry: innovation through collaboration",
+     "title_ru": "Где наука встречается с промышленностью: инновации через сотрудничество"
     },
     {
      "start": "11:30",
      "end": "",
      "title": "FORMOVE -Tracking-Suit zur Generierung von Daten für robotisches Lernen",
      "speaker": "Alexander Oldemeier",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "FORMOVE: a tracking suit that generates data for robot learning",
+     "title_ru": "FORMOVE: костюм захвата движений для обучения роботов"
     },
     {
      "start": "12:00",
      "end": "",
      "title": "Siemens Research",
      "speaker": "Ludger Meyer",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Siemens Research",
+     "title_ru": "Исследования Siemens"
     },
     {
      "start": "12:30",
      "end": "",
      "title": "Decoding and assisting hand movements via neural interfaces",
      "speaker": "Satoshi Ende",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Decoding and assisting hand movements via neural interfaces",
+     "title_ru": "Распознавание и поддержка движений руки через нейроинтерфейсы"
     },
     {
      "start": "13:00",
      "end": "",
      "title": "Digitale Zwillinge für die perfekte Pringles-Produktion",
      "speaker": "Maximilian von Vaerst",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Digital twins for perfect Pringles production",
+     "title_ru": "Цифровые двойники для идеального производства Pringles"
     },
     {
      "start": "13:30",
      "end": "",
      "title": "Robots in Production: Their Key Skills",
      "speaker": "Valentin Le Mesle",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Robots in production: their key skills",
+     "title_ru": "Роботы на производстве: их ключевые навыки"
     },
     {
      "start": "14:00",
      "end": "",
      "title": "Where Science Meets Industry: Innovation Through Collaboration",
      "speaker": "Philipp Lill",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Where science meets industry: innovation through collaboration",
+     "title_ru": "Где наука встречается с промышленностью: инновации через сотрудничество"
     },
     {
      "start": "14:30",
      "end": "",
      "title": "Roboter verstehen durch gemeinsame Blicke",
      "speaker": "Jens Rüppel",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Understanding robots through shared gaze",
+     "title_ru": "Понимать роботов через общий взгляд"
     },
     {
      "start": "15:00",
      "end": "",
      "title": "Forschung bei Siemens",
      "speaker": "Ludger Meyer",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "Research at Siemens",
+     "title_ru": "Исследования в Siemens"
     },
     {
      "start": "15:30",
      "end": "",
      "title": "AI Chips: Building the Infrastructure for the Society of Tomorrow",
      "speaker": "Hussam Amrouch",
-     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching"
+     "where": "Siemens Technology Center Garching · Friedrich-Ludwig-Bauer-Str. 3 85748 Garching",
+     "title_en": "AI chips: building the infrastructure for the society of tomorrow",
+     "title_ru": "ИИ-чипы: инфраструктура для общества завтрашнего дня"
     }
    ],
    "title_en": "",
@@ -3026,77 +3162,99 @@
      "end": "11:00",
      "title": "Fotorealistische KI-Avatare",
      "speaker": "Prof. Matthias Nießner",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1",
+     "title_en": "Photorealistic AI avatars",
+     "title_ru": "Фотореалистичные ИИ-аватары"
     },
     {
      "start": "10:00",
      "end": "11:00",
      "title": "Vorträge für Familien: Studieren an der TUM School of Computation Information and Technology",
      "speaker": "Prof. Felix Dietrich Prof. Tobias Vogl Prof. Robert König",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2",
+     "title_en": "Talks for families: studying at the TUM School of Computation, Information and Technology",
+     "title_ru": "Доклады для семей: учёба в TUM School of Computation, Information and Technology"
     },
     {
      "start": "11:00",
      "end": "12:00",
      "title": "Kryptographie im Quantenzeitalter",
      "speaker": "Prof. Violetta Weger",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1",
+     "title_en": "Cryptography in the quantum age",
+     "title_ru": "Криптография в квантовую эпоху"
     },
     {
      "start": "13:00",
      "end": "14:00",
      "title": "",
      "speaker": "Prof. Jens Großklags",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1",
+     "title_en": "",
+     "title_ru": ""
     },
     {
      "start": "13:00",
      "end": "14:00",
      "title": "Vorträge für Familien: Schneller zum Ziel kommen mit Mathematik",
      "speaker": "Prof. Andreas Wiese",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2",
+     "title_en": "Talks for families: getting there faster with mathematics",
+     "title_ru": "Доклады для семей: быстрее к цели с помощью математики"
     },
     {
      "start": "14:00",
      "end": "15:00",
      "title": "Carbon Detective",
      "speaker": "Prof. Jia Chen",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1",
+     "title_en": "Carbon Detective",
+     "title_ru": "Углеродный детектив"
     },
     {
      "start": "14:00",
      "end": "15:00",
      "title": "Vorträge für Familien: Spielerisch die Welt verstehen",
      "speaker": "Prof. Johanna Pirker",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2",
+     "title_en": "Talks for families: understanding the world through play",
+     "title_ru": "Доклады для семей: понимать мир играя"
     },
     {
      "start": "15:00",
      "end": "16:00",
      "title": "",
      "speaker": "Prof. Berthold Bäuml",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1",
+     "title_en": "",
+     "title_ru": ""
     },
     {
      "start": "15:00",
      "end": "16:00",
      "title": "Vorträge für Familien: Hasen Karotten Algorithmen",
      "speaker": "Dr. Jürgen Mangler",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2",
+     "title_en": "Talks for families: rabbits, carrots, algorithms",
+     "title_ru": "Доклады для семей: зайцы, морковка, алгоритмы"
     },
     {
      "start": "16:00",
      "end": "17:00",
      "title": "Mathematik im Kirchturm: Die Kunst des Wechselläutens",
      "speaker": "Prof. Christian Liedtke",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 1",
+     "title_en": "Mathematics in the church tower: the art of change ringing",
+     "title_ru": "Математика на колокольне: искусство перезвона"
     },
     {
      "start": "16:00",
      "end": "17:00",
      "title": "Vorträge für Familien: Wie LEGO-Autos uns zeigen wann im Blut Stau entsteht",
      "speaker": "Prof. Oliver Hayden",
-     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2"
+     "where": "TUM School of Computation Information and Technology · Mathematik-Informatik-Gebäude Boltzmannstraße 3 Hörsaal 2",
+     "title_en": "Talks for families: how LEGO cars show us when traffic jams form in the blood",
+     "title_ru": "Доклады для семей: как машинки LEGO показывают, когда в крови возникают «пробки»"
     }
    ],
    "title_en": "TUM Electrical and Computer Engineering",

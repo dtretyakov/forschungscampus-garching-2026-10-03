@@ -369,18 +369,6 @@ def main():
             "talks": talks.get(st["slug"], []),
             **{f"{f}_{l}": tr[l].get(st["slug"], {}).get(f, "") for l in LANGS for f in ("title", "teaser", "position_note")},
         })
-    data = {
-        "event": "Tag der offenen Tür · Forschungscampus Garching · 3. Oktober 2026 · 10–17 Uhr",
-        "source": BASE + "/3-okt-2026/stationen/",
-        "center": [48.2645, 11.6700],
-        "zoom": 16,
-        "groups": [{"id": g, "label": gl, **{f"label_{l}": GROUP_TR[l][g] for l in LANGS}} for g, gl in GROUPS],
-        "categories": cats,
-        "talks_updated": talks_updated,
-        "stations": out_st,
-    }
-    with open(os.path.join(DATA, "stations.json"), "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=1)
     # Talk titles: translations keyed by the original title (the timetable changes during the day).
     tt_path = os.path.join(DATA, "i18n_talks.json")
     tt = json.load(open(tt_path, encoding="utf-8")) if os.path.exists(tt_path) else {}
@@ -393,6 +381,18 @@ def main():
                 untranslated.add(t["title"])
     if untranslated:
         print(f"  ! {len(untranslated)} talk titles without translation: {sorted(untranslated)[:5]}", file=sys.stderr)
+    data = {
+        "event": "Tag der offenen Tür · Forschungscampus Garching · 3. Oktober 2026 · 10–17 Uhr",
+        "source": BASE + "/3-okt-2026/stationen/",
+        "center": [48.2645, 11.6700],
+        "zoom": 16,
+        "groups": [{"id": g, "label": gl, **{f"label_{l}": GROUP_TR[l][g] for l in LANGS}} for g, gl in GROUPS],
+        "categories": cats,
+        "talks_updated": talks_updated,
+        "stations": out_st,
+    }
+    with open(os.path.join(DATA, "stations.json"), "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)
     known = {s["id"] for s in out_st}
     for slug, tl in talks.items():
         if slug not in known:
