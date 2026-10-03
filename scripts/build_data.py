@@ -276,6 +276,41 @@ def parse_food(geo, osm):
     return out
 
 
+# Extra points of a station on the online Lageplan (e.g. FRM II also at 7 = meeting point for
+# children's tours; IPP at 11.1–11.6). Names translated here, the plan has them in German only.
+PLACE_TR = {
+    "Treffpunkt für Kinderführungen": ("Meeting point for children's tours", "Место сбора детских экскурсий"),
+    "Besucherzentrum IPP": ("IPP visitor centre", "Центр для посетителей IPP"),
+    "Hörsaal IPP / Kinderprojektraum": ("IPP lecture hall / children's project room", "Аудитория IPP / детская проектная комната"),
+    "Tandembeschleuniger": ("Tandem accelerator", "Тандемный ускоритель"),
+    "Großforschungsanlage ASDEX Upgrade": ("ASDEX Upgrade fusion facility", "Термоядерная установка ASDEX Upgrade"),
+    "Kugelblitz": ("Ball lightning", "Шаровая молния"),
+    "Energiezentrale": ("Energy centre", "Энергоцентр"),
+}
+
+
+def parse_places(stations, geo):
+    """Plan points that link to a station but are not any station's own number -> extra places."""
+    path = os.path.join(SRC, "pages", "3-okt-2026_lageplan.html")
+    if not os.path.exists(path):
+        return {}
+    h = open(path, encoding="utf-8").read()
+    primary = {s["number"] for s in stations if s["number"]}
+    out = {}
+    for href, num, title in re.findall(r'<a href="([^"]+)"><circle[^>]*></circle><title>\(([\d.]+)\)\s*([^<]*)</title>', h):
+        m = re.search(r"/stationen/([^/?#]+)/", href)
+        if not m or num in primary or num not in geo["labels"]:
+            continue
+        name = html.unescape(title).strip().rstrip(".")
+        name = name.split(": ", 1)[1] if ": " in name else name
+        en, ru = PLACE_TR.get(name, ("", ""))
+        lat, lng = geo["labels"][num]["lat_lng"]
+        lst = out.setdefault(m.group(1), [])
+        if all(p["number"] != num for p in lst):
+            lst.append({"number": num, "name": name, "name_en": en, "name_ru": ru, "lat": lat, "lng": lng})
+    return out
+
+
 def parse_talks():
     """Lecture timetable (updated live by the organisers on the day)."""
     path = os.path.join(SRC, "pages", "3-okt-2026_vortraege.html")
@@ -347,6 +382,7 @@ def main():
         missing = [s["slug"] for s in stations if s["slug"] not in tr[l]]
         if missing:
             print(f"  ! no {l} text for: {', '.join(missing)}", file=sys.stderr)
+    places = parse_places(stations, geo)
     out_st = []
     for i, st in enumerate(sorted(stations, key=lambda s: ([int(x) for x in s["number"].split(".")] if s["number"] else [999], s["title"]))):
         out_st.append({
@@ -367,6 +403,7 @@ def main():
             "plan_ref": st.get("plan_ref", ""),
             "position_note": st.get("position_note", ""),
             "talks": talks.get(st["slug"], []),
+            "places": places.get(st["slug"], []),
             **{f"{f}_{l}": tr[l].get(st["slug"], {}).get(f, "") for l in LANGS for f in ("title", "teaser", "position_note")},
         })
     # Talk titles: translations keyed by the original title (the timetable changes during the day).

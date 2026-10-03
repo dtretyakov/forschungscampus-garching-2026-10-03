@@ -55,7 +55,7 @@ const stationCount = () => page.$$eval(".leaflet-marker-pane .pin, .leaflet-mark
   return m.classList.contains("cluster") ? +m.querySelector("b").textContent : 1;
 }).reduce((a, b) => a + b, 0));
 const pinned = await stationCount();
-assert.equal(pinned, expected.filter((s) => s.lat != null).length, "markers match filter");
+assert.equal(pinned, expected.filter((s) => s.lat != null).reduce((a, s) => a + 1 + (s.places || []).length, 0), "markers match filter");
 await page.screenshot({ path: `${shots}/2-filter-${cat.id}.png` });
 
 // Station markers never overlap: centres at least 30 px apart.
@@ -71,7 +71,7 @@ if (await page.locator(".cluster").count()) {
   await page.locator(".cluster").first().click();
   await page.waitForTimeout(1200);
   assert.ok(await page.locator(".leaflet-marker-pane .pin, .leaflet-marker-pane .cluster").count() > before, "cluster splits on tap");
-  assert.equal(await stationCount(), expected.filter((s) => s.lat != null).length, "markers still match filter after zoom");
+  assert.equal(await stationCount(), expected.filter((s) => s.lat != null).reduce((a, s) => a + 1 + (s.places || []).length, 0), "markers still match filter after zoom");
 }
 
 // Changing a filter keeps the map where it is while a matching station is on screen.
@@ -161,6 +161,25 @@ await page.screenshot({ path: `${shots}/5-desktop.png` });
     await page.click('[data-act="back"]');
     await page.click("#reset");
     assert.equal(await page.locator(".list .item").count(), data.stations.length, "back to all stations");
+  }
+}
+
+// Extra plan places (e.g. FRM II also at 7): own pin, listed in the card, found by number.
+{
+  const withPlace = data.stations.find((s) => (s.places || []).length);
+  if (withPlace) {
+    const pl = withPlace.places[0];
+    await page.goto(base);
+    await page.waitForSelector(".list .item");
+    await page.fill("#search", pl.number);
+    await page.waitForTimeout(300);
+    assert.equal(await page.getAttribute(".list .item:not(.talk):not(.food) >> nth=0", "data-id"), withPlace.id, `search "${pl.number}" finds ${withPlace.id}`);
+    await page.locator(".list .item").first().click();
+    await page.waitForSelector("#detail:not([hidden]) h2");
+    assert.ok((await page.textContent("#detail dl")).includes(pl.number), "place listed in card");
+    await page.click('[data-act="back"]');
+    await page.fill("#search", "");
+    await page.waitForTimeout(300);
   }
 }
 

@@ -71,7 +71,7 @@
     const words = norm(q).split(/\s+/).map((w) => w.replace(/[^a-z0-9\u0430-\u044f\u0451.]/g, "")).filter(Boolean);
     if (!words.length) return null;
     const scoreWord = (item, w) => {
-      if (item.number && item.number === w) return 300;
+      if (item._nums ? item._nums.includes(w) : item.number && item.number === w) return 300;
       const start = " " + w, whole = " " + w + " ", long = w.length >= 4;
       if (item._tt.includes(whole)) return 120;
       if (item._tt.includes(start)) return 80;
@@ -140,7 +140,7 @@
       myPlan: "Mein Plan", allStations: "Alle Stationen",
       groupHead: (r, n) => `Nr. ${r} · ${n} Stationen`, count: (n) => `${n} Stationen`, countOf: (n, t) => `${n} von ${t} Stationen`,
       empty: "Keine Station passt zu diesem Filter.", reset: "Filter zurücksetzen",
-      rLocation: "Standort", rPlan: "Lageplan", planNo: "Nr. ", rNote: "Hinweis", rTargets: "Zielgruppe", rFormats: "Format", rLang: "Sprache",
+      rLocation: "Standort", rPlan: "Lageplan", rPlaces: "Weitere Orte", planNo: "Nr. ", rNote: "Hinweis", rTargets: "Zielgruppe", rFormats: "Format", rLang: "Sprache",
       talks: "Vorträge", back: "‹ Zurück zur Liste", away: (d, m) => `📍 ${d} entfernt · ca. ${m} Min. zu Fuß`,
       show: "Auf Karte zeigen", inPlan: "★ Im Plan", save: "☆ Merken", route: "Route", original: "Original", contact: "Kontakt",
       descNote: "", locating: "Standort wird gesucht …", me: "Mein Standort", unitM: "m", unitKm: "km",
@@ -175,7 +175,7 @@
       myPlan: "My plan", allStations: "All stations",
       groupHead: (r, n) => `No. ${r} · ${n} stations`, count: (n) => `${n} stations`, countOf: (n, t) => `${n} of ${t} stations`,
       empty: "No station matches this filter.", reset: "Reset filters",
-      rLocation: "Location", rPlan: "Site plan", planNo: "No. ", rNote: "Note", rTargets: "Audience", rFormats: "Format", rLang: "Language",
+      rLocation: "Location", rPlan: "Site plan", rPlaces: "More places", planNo: "No. ", rNote: "Note", rTargets: "Audience", rFormats: "Format", rLang: "Language",
       talks: "Talks", back: "‹ Back to list", away: (d, m) => `📍 ${d} away · approx. ${m} min walk`,
       show: "Show on map", inPlan: "★ In my plan", save: "☆ Save", route: "Directions", original: "Original page", contact: "Contact",
       descNote: "The programme description is only available in German.", translate: "Translate page",
@@ -212,7 +212,7 @@
       myPlan: "Мой план", allStations: "Все станции",
       groupHead: (r, n) => `№ ${r} · ${n} ${plural(n, "станция", "станции", "станций")}`, count: (n) => `${n} ${plural(n, "станция", "станции", "станций")}`, countOf: (n, t) => `${n} из ${t} станций`,
       empty: "Ни одна станция не подходит под фильтр.", reset: "Сбросить фильтры",
-      rLocation: "Где", rPlan: "План", planNo: "№ ", rNote: "Примечание", rTargets: "Для кого", rFormats: "Формат", rLang: "Язык",
+      rLocation: "Где", rPlan: "План", rPlaces: "Другие места", planNo: "№ ", rNote: "Примечание", rTargets: "Для кого", rFormats: "Формат", rLang: "Язык",
       talks: "Доклады", back: "‹ Назад к списку", away: (d, m) => `📍 ${d} отсюда · ≈ ${m} мин пешком`,
       show: "Показать на карте", inPlan: "★ В моём плане", save: "☆ Сохранить", route: "Маршрут", original: "Оригинал", contact: "Контакты",
       descNote: "Подробное описание программы есть только на немецком.", translate: "Перевести страницу",
@@ -298,7 +298,7 @@
   function visible() {
     const out = state.data.stations.filter((st) => matches(st) && (!state.group || state.group.includes(st.id)));
     if (state.me) {
-      out.forEach((s) => (s._d = s.lat != null ? dist(state.me, s) : Infinity));
+      out.forEach((s) => (s._d = sdist(s)));
       out.sort((a, b) => a._d - b._d);
     }
     // With a search query the best matches come first (stable: distance / plan order as tie-break).
@@ -378,11 +378,26 @@
   // Pins closer than this on screen are merged into one cluster badge (like map apps);
   // from CLUSTER_OFF_ZOOM on every point gets its own pin.
   const CLUSTER_PX = 38, CLUSTER_OFF_ZOOM = 19;
+  // Map points of a station: its own number plus extra plan places (FRM II also at 7, IPP at 11.1–11.6).
+  function pointsOf(s) {
+    if (s.lat == null) return [];
+    return [{ st: s, id: s.id, number: s.number, plan_ref: s.plan_ref, lat: s.lat, lng: s.lng },
+      ...(s.places || []).map((p) => ({ st: s, id: s.id, number: p.number, plan_ref: p.number, lat: p.lat, lng: p.lng, place: p }))];
+  }
+  const placeName = (p) => (LANG !== "de" && (p[`name_${LANG}`] || p.name_en)) || p.name;
+  // Point of a station closest to the visitor (for distances and the route).
+  function nearestPoint(s) {
+    const pts = pointsOf(s);
+    if (!state.me || pts.length < 2) return pts[0];
+    return pts.reduce((a, b) => (dist(state.me, b) < dist(state.me, a) ? b : a));
+  }
+  const sdist = (s) => (s.lat != null && state.me ? dist(state.me, nearestPoint(s)) : Infinity);
+
   function renderMarkers(list) {
     stationLayer.clearLayers(); markerByKey.clear();
-    // 1. Stations at exactly the same point share a pin.
+    // 1. Points at exactly the same spot share a pin.
     const points = new Map();
-    list.forEach((s) => {
+    list.flatMap(pointsOf).forEach((s) => {
       if (s.lat == null) return;
       const k = keyOf(s);
       if (!points.has(k)) points.set(k, []);
@@ -414,8 +429,8 @@
         html = `<div class="pin${single ? "" : " multi"}${sel ? " sel" : ""}" style="--c:${colorOf(arr[0])}"><b>${esc(label)}</b>` +
           `${single ? "" : `<span class="cnt">${arr.length}</span>`}</div>`;
         size = [36, 36]; anchor = [18, 33];
-        title = single ? tx(arr[0], "title") : T("groupHead", arr[0].plan_ref || "", arr.length);
-        onTap = single ? () => select(arr[0].id, { pan: false }) : () => showGroup(arr);
+        title = single ? (arr[0].place ? placeName(arr[0].place) + " – " : "") + tx(arr[0].st, "title") : T("groupHead", arr[0].plan_ref || "", arr.length);
+        onTap = single ? () => select(arr[0].id, { pan: false, at: arr[0] }) : () => showGroup([...new Map(arr.map((e) => [e.id, e.st])).values()]);
       }
       const m = L.marker(at, {
         icon: L.divIcon({ className: "", html, iconSize: size, iconAnchor: anchor }),
@@ -528,7 +543,8 @@
     const fav = state.favs.has(s.id);
     const label = (g) => s.categories.filter((c) => c.startsWith(g + ":")).map(catById).filter(Boolean).map(cl).join(", ");
     const rows = [
-      [T("rLocation"), s.location], [T("rPlan"), s.number ? T("planNo") + s.number : ""], [T("rNote"), tx(s, "position_note")],
+      [T("rLocation"), s.location], [T("rPlan"), s.number ? T("planNo") + s.number : ""],
+      [T("rPlaces"), (s.places || []).map((p) => `${T("planNo")}${p.number} – ${placeName(p)}`).join("\n")], [T("rNote"), tx(s, "position_note")],
       [T("rTargets"), label("targets")], [T("rFormats"), label("formats")], [T("rLang"), label("languages")],
     ].filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
     const tags = (s.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join(" ");
@@ -537,8 +553,9 @@
       `<li class="${(t.end || t.start) < now ? "past" : ""}"><span class="tm">${esc(t.start)}${t.end ? "–" + esc(t.end) : ""}</span>` +
       `<span><strong>${esc(tx(t, "title"))}</strong>${t.speaker ? "<br>" + esc(t.speaker) : ""}${t.where ? `<br><small>${esc(t.where)}</small>` : ""}</span></li>`).join("") +
       `</ul>` : "";
-    const d = state.me && s.lat != null ? dist(state.me, s) : null;
-    const nav = s.lat != null ? `https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=${s.lat},${s.lng}` : null;
+    const d = state.me && s.lat != null ? sdist(s) : null;
+    const np = nearestPoint(s);
+    const nav = np ? `https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=${np.lat},${np.lng}` : null;
     // description_html / contact_html are whitelist-sanitised by scripts/build_data.py
     const same = norm(s.description).replace(/\W/g, "") === norm(s.teaser).replace(/\W/g, "");
     const translate = s.url ? `https://translate.google.com/translate?sl=de&tl=${LANG}&u=${encodeURIComponent(s.url)}` : "";
@@ -569,7 +586,7 @@
     const s = state.sel && state.data.byId[state.sel];
     if (s) {
       const el = els.detail.querySelector(".inst");
-      if (el && s.lat != null) el.textContent = T("away", fmtDist(dist(state.me, s)), walkMin(dist(state.me, s)));
+      if (el && s.lat != null) el.textContent = T("away", fmtDist(sdist(s)), walkMin(sdist(s)));
       else if (!el) renderDetail();
     }
     const shown = [...els.list.querySelectorAll(".item:not(.talk):not(.food)")].map((b) => b.dataset.id);
@@ -600,10 +617,10 @@
     const s = state.data.byId[id];
     render();
     if (els.sheet.dataset.state === "min") els.sheet.dataset.state = "peek";
-    if (s && s.lat != null && opts.pan !== false) {
-      viewTo([s.lat, s.lng], Math.max(map.getZoom(), 17));
-    }
-    if (s && s.lat != null) setTimeout(() => panIntoView(s), 250);
+    // opts.at: the tapped map point (a station can have several, e.g. FRM II at 8.1 and 7).
+    const at = opts.at || (s && s.lat != null ? s : null);
+    if (at && opts.pan !== false) viewTo([at.lat, at.lng], Math.max(map.getZoom(), 17));
+    if (at) setTimeout(() => panIntoView(at), 250);
   }
 
   function focusFood(f) {
@@ -642,7 +659,15 @@
     const runSearch = () => { state.q = els.search.value.trim(); state.qm = makeQuery(state.q); state.sel = null; state.group = null; render(); els.list.scrollTop = 0; };
     // Show where the results are once typing pauses; the list is already up to date.
     // A specific search (up to 3 stations) jumps there; a broad one keeps the view if a hit is on screen.
-    const fitResults = () => { const n = state.qm ? visible().length : 0; if (n && n <= 3) fitVisible(); else if (n) ensureVisible(); };
+    // A plan number ("7", "17.3") zooms to exactly that point.
+    const fitResults = () => {
+      const list = state.qm ? visible() : [];
+      if (!list.length) return;
+      const w = norm(state.q).trim();
+      const hit = list[0]._score >= 300 && pointsOf(list[0]).find((p) => p.number === w);
+      if (hit) { viewTo([hit.lat, hit.lng], 18); setTimeout(() => panIntoView(hit), 450); return; }
+      if (list.length <= 3) fitVisible(); else ensureVisible();
+    };
     els.search.addEventListener("input", () => {
       clearTimeout(t); clearTimeout(tf);
       t = setTimeout(runSearch, 120);
@@ -905,8 +930,10 @@
     data.stations.forEach((s) => {
       s.id = String(s.id);
       s.categories = s.categories || [];
+      s._nums = [s.number, ...(s.places || []).map((p) => p.number)].filter(Boolean);
       indexItem(s, [s.number, s.title, s.title_en, s.title_ru],
         [s.teaser, s.teaser_en, s.teaser_ru, s.location, ...(s.tags || []),
+          ...(s.places || []).flatMap((p) => [p.number, p.name, p.name_en, p.name_ru]),
           ...s.categories.flatMap((c) => { const k = data.catIndex[c] || {}; return [k.label, k.label_en, k.label_ru]; })],
         [s.description, ...(s.talks || []).map((t) => [t.title, t.title_en, t.title_ru, t.speaker].join(" "))]);
       data.byId[s.id] = s;
