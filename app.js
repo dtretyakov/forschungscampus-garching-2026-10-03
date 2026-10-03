@@ -636,12 +636,13 @@
       const c = b.dataset.cat;
       state.cats.has(c) ? state.cats.delete(c) : state.cats.add(c);
       state.sel = null; state.group = null;
-      renderChips(); render(); fitVisible();
+      renderChips(); render(); ensureVisible();
     });
     let t, tf;
     const runSearch = () => { state.q = els.search.value.trim(); state.qm = makeQuery(state.q); state.sel = null; state.group = null; render(); els.list.scrollTop = 0; };
     // Show where the results are once typing pauses; the list is already up to date.
-    const fitResults = () => { if (state.qm && visible().length) fitVisible(); };
+    // A specific search (up to 3 stations) jumps there; a broad one keeps the view if a hit is on screen.
+    const fitResults = () => { const n = state.qm ? visible().length : 0; if (n && n <= 3) fitVisible(); else if (n) ensureVisible(); };
     els.search.addEventListener("input", () => {
       clearTimeout(t); clearTimeout(tf);
       t = setTimeout(runSearch, 120);
@@ -659,7 +660,7 @@
     els.reset.addEventListener("click", () => {
       if (state.group) { state.group = null; state.sel = null; render(); return; }
       state.cats.clear(); state.q = ""; state.qm = null; els.search.value = ""; state.sel = null;
-      renderChips(); render(); fitVisible();
+      renderChips(); render(); ensureVisible();
     });
     els.list.addEventListener("click", (e) => {
       const b = e.target.closest(".item");
@@ -696,6 +697,17 @@
     els.locate.addEventListener("click", locate);
     els.lang.addEventListener("change", () => setLang(els.lang.value));
     window.addEventListener("hashchange", () => { const hl = new URLSearchParams(location.hash.slice(1)).get("lang"); if (LANGS.includes(hl)) setLang(hl); readHash(); els.search.value = state.q; renderChips(); render(); });
+  }
+
+  // After a filter change keep the map where it is as long as at least one matching station
+  // is on screen (above the bottom sheet); only otherwise move to the results.
+  function ensureVisible() {
+    const list = visible().filter((s) => s.lat != null);
+    if (!list.length) return;
+    const size = map.getSize();
+    const sheetH = window.innerWidth >= 900 ? 0 : els.sheet.getBoundingClientRect().height;
+    const view = L.latLngBounds(map.containerPointToLatLng([0, 0]), map.containerPointToLatLng([size.x, Math.max(40, size.y - sheetH)]));
+    if (!list.some((s) => view.contains([s.lat, s.lng]))) fitVisible();
   }
 
   function fitVisible() {

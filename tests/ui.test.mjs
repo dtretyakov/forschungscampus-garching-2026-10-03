@@ -74,6 +74,26 @@ if (await page.locator(".cluster").count()) {
   assert.equal(await stationCount(), expected.filter((s) => s.lat != null).length, "markers still match filter after zoom");
 }
 
+// Changing a filter keeps the map where it is while a matching station is on screen.
+{
+  const kid = data.stations.find((s) => s.lat != null && s.number && (s.categories || []).includes(cat.id) &&
+    data.stations.filter((o) => o.number === s.number).length === 1);
+  if (kid) {
+    await page.goto(base + `#s=${kid.id}`);
+    await page.waitForSelector("#detail:not([hidden]) h2");
+    await page.waitForTimeout(900);
+    await page.click('[data-act="back"]');
+    const pin = page.locator(".pin", { has: page.locator("b", { hasText: new RegExp(`^${kid.number.replace(".", "\\.")}$`) }) }).first();
+    const before = await pin.boundingBox();
+    await page.click(`.chip[data-cat="${cat.id}"]`);
+    await page.waitForTimeout(900);
+    const after = await pin.boundingBox();
+    assert.ok(before && after && Math.abs(before.x - after.x) < 3 && Math.abs(before.y - after.y) < 3, "map did not move on filter");
+    await page.click(`.chip[data-cat="${cat.id}"]`);
+    await page.waitForTimeout(300);
+  }
+}
+
 // Open details.
 await page.locator(".list .item").first().click();
 await page.waitForSelector("#detail:not([hidden]) h2");
