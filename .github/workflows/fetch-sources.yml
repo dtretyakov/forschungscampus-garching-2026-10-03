@@ -4,10 +4,6 @@ name: Fetch sources
 # commits them to sources/ on the branch the workflow ran on.
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - scripts/fetch_sources.py
-      - .github/workflows/fetch-sources.yml
 
 permissions:
   contents: write
