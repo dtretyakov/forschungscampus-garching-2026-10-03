@@ -1,6 +1,6 @@
 // Offline support for weak campus reception: app shell cache-first,
 // station data network-first, map tiles cached as they are viewed.
-const SHELL = "shell-v6";
+const SHELL = "shell-v7";
 const TILES = "tiles-v1";
 const ASSETS = ["./", "index.html", "style.css", "app.js", "manifest.webmanifest",
   "vendor/leaflet/leaflet.js", "vendor/leaflet/leaflet.css", "data/stations.json", "data/pois.json"];

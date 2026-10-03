@@ -16,6 +16,7 @@
     q: "",
     qm: null,         // compiled query (makeQuery)
     sel: null,        // selected station id
+    group: null,      // ids of stations sharing one map point, listed in the sheet
     me: null,         // {lat, lng, acc}
     favs: loadFavs(),
   };
@@ -106,7 +107,8 @@
       sheet: "Liste ein-/ausklappen", cats: "Kategorien",
       lStations: "Stationen", lInfra: "Infrastruktur (U-Bahn, Info, Essen …)", lPlan: "Offizieller Lageplan", lMap: "Karte",
       multiTitle: (n, r) => `${n} Stationen in Gebäude ${r}`, multiHead: (r, n) => `Gebäude ${r} · ${n} Stationen`,
-      myPlan: "Mein Plan", count: (n) => `${n} Stationen`, countOf: (n, t) => `${n} von ${t} Stationen`,
+      myPlan: "Mein Plan", allStations: "Alle Stationen",
+      groupHead: (r, n) => `Nr. ${r} · ${n} Stationen`, count: (n) => `${n} Stationen`, countOf: (n, t) => `${n} von ${t} Stationen`,
       empty: "Keine Station passt zu diesem Filter.", reset: "Filter zurücksetzen",
       rLocation: "Standort", rPlan: "Lageplan", planNo: "Nr. ", rNote: "Hinweis", rTargets: "Zielgruppe", rFormats: "Format", rLang: "Sprache",
       talks: "Vorträge", back: "‹ Zurück zur Liste", away: (d, m) => `📍 ${d} entfernt · ca. ${m} Min. zu Fuß`,
@@ -140,7 +142,8 @@
       sheet: "Expand/collapse list", cats: "Categories",
       lStations: "Stations", lInfra: "Facilities (U-Bahn, info, food …)", lPlan: "Official site plan", lMap: "Map",
       multiTitle: (n, r) => `${n} stations in building ${r}`, multiHead: (r, n) => `Building ${r} · ${n} stations`,
-      myPlan: "My plan", count: (n) => `${n} stations`, countOf: (n, t) => `${n} of ${t} stations`,
+      myPlan: "My plan", allStations: "All stations",
+      groupHead: (r, n) => `No. ${r} · ${n} stations`, count: (n) => `${n} stations`, countOf: (n, t) => `${n} of ${t} stations`,
       empty: "No station matches this filter.", reset: "Reset filters",
       rLocation: "Location", rPlan: "Site plan", planNo: "No. ", rNote: "Note", rTargets: "Audience", rFormats: "Format", rLang: "Language",
       talks: "Talks", back: "‹ Back to list", away: (d, m) => `📍 ${d} away · approx. ${m} min walk`,
@@ -176,7 +179,8 @@
       lStations: "Станции", lInfra: "Инфраструктура (метро, инфо, еда …)", lPlan: "Официальный план", lMap: "Карта",
       multiTitle: (n, r) => `${n} ${plural(n, "станция", "станции", "станций")} в здании ${r}`,
       multiHead: (r, n) => `Здание ${r} · ${n} ${plural(n, "станция", "станции", "станций")}`,
-      myPlan: "Мой план", count: (n) => `${n} ${plural(n, "станция", "станции", "станций")}`, countOf: (n, t) => `${n} из ${t} станций`,
+      myPlan: "Мой план", allStations: "Все станции",
+      groupHead: (r, n) => `№ ${r} · ${n} ${plural(n, "станция", "станции", "станций")}`, count: (n) => `${n} ${plural(n, "станция", "станции", "станций")}`, countOf: (n, t) => `${n} из ${t} станций`,
       empty: "Ни одна станция не подходит под фильтр.", reset: "Сбросить фильтры",
       rLocation: "Где", rPlan: "План", planNo: "№ ", rNote: "Примечание", rTargets: "Для кого", rFormats: "Формат", rLang: "Язык",
       talks: "Доклады", back: "‹ Назад к списку", away: (d, m) => `📍 ${d} отсюда · ≈ ${m} мин пешком`,
@@ -260,7 +264,7 @@
     return ignoreQuery || !state.qm || state.qm(st);
   }
   function visible() {
-    const out = state.data.stations.filter((st) => matches(st));
+    const out = state.data.stations.filter((st) => matches(st) && (!state.group || state.group.includes(st.id)));
     if (state.me) {
       out.forEach((s) => (s._d = s.lat != null ? dist(state.me, s) : Infinity));
       out.sort((a, b) => a._d - b._d);
@@ -287,11 +291,12 @@
     poiLayer = L.layerGroup().addTo(map);
     poiDetail = L.layerGroup();
     const syncPoi = () => {
-      const on = map.getZoom() >= 16 && map.hasLayer(poiLayer);
+      const on = map.getZoom() >= 17 && map.hasLayer(poiLayer);
       if (on && !map.hasLayer(poiDetail)) poiDetail.addTo(map);
       if (!on && map.hasLayer(poiDetail)) map.removeLayer(poiDetail);
     };
     map.on("zoomend overlayadd overlayremove", syncPoi);
+    map.on("zoomend", () => state.data && renderMarkers(visible()));
     stationLayer = L.layerGroup().addTo(map);
 
     if (d.lageplan && d.lageplan.image && d.lageplan.bounds) {
@@ -336,38 +341,72 @@
     });
   }
 
+  // Pins closer than this on screen are merged into one cluster badge (like map apps);
+  // from CLUSTER_OFF_ZOOM on every point gets its own pin.
+  const CLUSTER_PX = 38, CLUSTER_OFF_ZOOM = 19;
   function renderMarkers(list) {
     stationLayer.clearLayers(); markerByKey.clear();
-    const groups = new Map();
+    // 1. Stations at exactly the same point share a pin.
+    const points = new Map();
     list.forEach((s) => {
       if (s.lat == null) return;
-      const k = s.lat.toFixed(5) + "," + s.lng.toFixed(5);
-      if (!groups.has(k)) groups.set(k, []);
-      groups.get(k).push(s);
+      const k = keyOf(s);
+      if (!points.has(k)) points.set(k, []);
+      points.get(k).push(s);
     });
-    groups.forEach((arr, k) => {
-      const single = arr.length === 1;
-      const sel = arr.some((s) => s.id === state.sel);
-      // A building with several stations shows its Lageplan number plus a count bubble.
-      const label = single ? (arr[0].number || "•") : (arr[0].plan_ref || "•");
-      const html = `<div class="pin${single ? "" : " multi"}${sel ? " sel" : ""}" style="--c:${colorOf(arr[0])}"${single ? "" : ` data-n="${arr.length}"`}><b>${esc(label)}</b></div>`;
-      const m = L.marker([arr[0].lat, arr[0].lng], {
-        icon: L.divIcon({ className: "", html, iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -28] }),
-        title: single ? tx(arr[0], "title") : T("multiTitle", arr.length, arr[0].plan_ref || ""),
-        zIndexOffset: sel ? 1000 : 0,
-      });
-      if (single) {
-        m.on("click", () => select(arr[0].id, { pan: false }));
+    // 2. Points that would overlap on screen at this zoom form a cluster.
+    const z = map.getZoom();
+    const clusters = [];
+    points.forEach((arr) => {
+      const p = map.project([arr[0].lat, arr[0].lng], z);
+      const c = z < CLUSTER_OFF_ZOOM && clusters.find((c) => c.p.distanceTo(p) < CLUSTER_PX);
+      if (c) { c.points.push(arr); c.all.push(...arr); } else clusters.push({ p, points: [arr], all: [...arr] });
+    });
+    clusters.forEach((c) => {
+      const sel = c.all.some((s) => s.id === state.sel || (state.group && state.group.includes(s.id)));
+      const at = c.points.length === 1 ? [c.all[0].lat, c.all[0].lng] : map.unproject(c.p, z);
+      let html, size, anchor, title, onTap;
+      if (c.points.length > 1) {
+        // Cluster: building number if all are in one building, else the number of stations.
+        const blds = new Set(c.all.map((s) => String(s.plan_ref || s.number || "").split(".")[0]));
+        const label = blds.size === 1 && [...blds][0] ? [...blds][0] : String(c.all.length);
+        html = `<div class="cluster${sel ? " sel" : ""}"><b>${esc(label)}</b>${label !== String(c.all.length) ? `<span class="cnt">${c.all.length}</span>` : ""}</div>`;
+        size = [40, 40]; anchor = [20, 20];
+        title = T("count", c.all.length);
+        onTap = () => zoomInto(c.all);
       } else {
-        const ul = document.createElement("div");
-        ul.innerHTML = `<strong>${esc(T("multiHead", arr[0].plan_ref || "", arr.length))}</strong><ul class="popup-list">` +
-          arr.map((s) => `<li><button type="button" data-id="${esc(s.id)}">${s.number ? esc(s.number) + " · " : ""}${esc(tx(s, "title"))}</button></li>`).join("") + "</ul>";
-        ul.addEventListener("click", (e) => { const b = e.target.closest("button[data-id]"); if (b) { map.closePopup(); select(b.dataset.id, { pan: false }); } });
-        m.bindPopup(ul, { maxWidth: 280 });
+        const arr = c.points[0], single = arr.length === 1;
+        const label = single ? (arr[0].number || "•") : (arr[0].plan_ref || "•");
+        html = `<div class="pin${single ? "" : " multi"}${sel ? " sel" : ""}" style="--c:${colorOf(arr[0])}"><b>${esc(label)}</b>` +
+          `${single ? "" : `<span class="cnt">${arr.length}</span>`}</div>`;
+        size = [36, 36]; anchor = [18, 33];
+        title = single ? tx(arr[0], "title") : T("groupHead", arr[0].plan_ref || "", arr.length);
+        onTap = single ? () => select(arr[0].id, { pan: false }) : () => showGroup(arr);
       }
-      m.addTo(stationLayer);
-      arr.forEach((s) => markerByKey.set(s.id, m));
+      const m = L.marker(at, {
+        icon: L.divIcon({ className: "", html, iconSize: size, iconAnchor: anchor }),
+        title, zIndexOffset: sel ? 1000 : 0,
+      }).on("click", onTap).addTo(stationLayer);
+      c.all.forEach((s) => markerByKey.set(s.id, m));
     });
+  }
+
+  // Tap on a cluster: zoom in until its stations separate.
+  function zoomInto(stations) {
+    const b = L.latLngBounds(stations.map((s) => [s.lat, s.lng]));
+    const bottom = window.innerWidth >= 900 ? 30 : els.sheet.getBoundingClientRect().height + 30;
+    const target = Math.min(CLUSTER_OFF_ZOOM, Math.max(map.getZoom() + 1,
+      map.getBoundsZoom(b, false, L.point(60, 60 + bottom))));
+    map.flyToBounds(b, { paddingTopLeft: [30, 30], paddingBottomRight: [30, bottom], maxZoom: target, duration: 0.5 });
+  }
+
+  // Several stations at one point: list them in the bottom sheet.
+  function showGroup(arr) {
+    state.group = arr.map((s) => s.id);
+    state.sel = null;
+    render();
+    els.list.scrollTop = 0;
+    if (els.sheet.dataset.state === "min") els.sheet.dataset.state = "peek";
   }
 
   // ---------- chips ----------
@@ -391,8 +430,16 @@
   // ---------- list ----------
   function renderList(list) {
     const total = state.data.stations.length;
-    els.count.textContent = list.length === total ? T("count", total) : T("countOf", list.length, total);
-    els.reset.hidden = !(state.cats.size || state.q);
+    if (state.group) {
+      const g = state.data.byId[state.group[0]];
+      els.count.textContent = T("groupHead", (g && g.plan_ref) || "", state.group.length);
+      els.reset.textContent = "✕ " + T("allStations");
+      els.reset.hidden = false;
+    } else {
+      els.count.textContent = list.length === total ? T("count", total) : T("countOf", list.length, total);
+      els.reset.textContent = T("reset");
+      els.reset.hidden = !(state.cats.size || state.q);
+    }
     // With a search query, matching talks (of stations that pass the chips) and food places follow the stations.
     let extra = "";
     if (state.qm) {
@@ -553,15 +600,16 @@
       const b = e.target.closest(".chip"); if (!b) return;
       const c = b.dataset.cat;
       state.cats.has(c) ? state.cats.delete(c) : state.cats.add(c);
-      state.sel = null;
+      state.sel = null; state.group = null;
       renderChips(); render(); fitVisible();
     });
     let t;
     els.search.addEventListener("input", () => {
       clearTimeout(t);
-      t = setTimeout(() => { state.q = els.search.value.trim(); state.qm = makeQuery(state.q); state.sel = null; render(); }, 120);
+      t = setTimeout(() => { state.q = els.search.value.trim(); state.qm = makeQuery(state.q); state.sel = null; state.group = null; render(); }, 120);
     });
     els.reset.addEventListener("click", () => {
+      if (state.group) { state.group = null; state.sel = null; render(); return; }
       state.cats.clear(); state.q = ""; state.qm = null; els.search.value = ""; state.sel = null;
       renderChips(); render(); fitVisible();
     });

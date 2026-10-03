@@ -48,9 +48,31 @@ const expected = data.stations.filter((s) => (s.categories || []).includes(cat.i
 assert.equal(await page.locator(".list .item").count(), expected.length, "filtered list");
 assert.match(await page.evaluate(() => location.hash), new RegExp(`cat=${cat.id}`));
 // Markers: each visible station is on the map (grouped pins count their stations).
-const pinned = await page.$$eval(".pin", (ps) => ps.map((p) => +(p.dataset.n || 1)).reduce((a, b) => a + b, 0));
+// Stations represented on the map: cluster/multi pins carry a count badge, a cluster without one shows the count itself.
+const stationCount = () => page.$$eval(".leaflet-marker-pane .pin, .leaflet-marker-pane .cluster", (ms) => ms.map((m) => {
+  const c = m.querySelector(".cnt");
+  if (c) return +c.textContent;
+  return m.classList.contains("cluster") ? +m.querySelector("b").textContent : 1;
+}).reduce((a, b) => a + b, 0));
+const pinned = await stationCount();
 assert.equal(pinned, expected.filter((s) => s.lat != null).length, "markers match filter");
 await page.screenshot({ path: `${shots}/2-filter-${cat.id}.png` });
+
+// Station markers never overlap: centres at least 30 px apart.
+const centres = await page.$$eval(".leaflet-marker-pane .pin, .leaflet-marker-pane .cluster", (ms) => ms.map((m) => {
+  const r = m.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2];
+}));
+for (let i = 0; i < centres.length; i++) for (let j = i + 1; j < centres.length; j++) {
+  assert.ok(Math.hypot(centres[i][0] - centres[j][0], centres[i][1] - centres[j][1]) >= 30, "markers overlap");
+}
+// Tapping a cluster zooms in and splits it.
+if (await page.locator(".cluster").count()) {
+  const before = await page.locator(".leaflet-marker-pane .pin, .leaflet-marker-pane .cluster").count();
+  await page.locator(".cluster").first().click();
+  await page.waitForTimeout(1200);
+  assert.ok(await page.locator(".leaflet-marker-pane .pin, .leaflet-marker-pane .cluster").count() > before, "cluster splits on tap");
+  assert.equal(await stationCount(), expected.filter((s) => s.lat != null).length, "markers still match filter after zoom");
+}
 
 // Open details.
 await page.locator(".list .item").first().click();
@@ -96,6 +118,31 @@ assert.equal(await page.getAttribute(`.chip[data-cat="${cat.id}"]`, "aria-presse
 await page.setViewportSize({ width: 1280, height: 800 });
 await page.waitForTimeout(300);
 await page.screenshot({ path: `${shots}/5-desktop.png` });
+
+// Several stations at one point (e.g. 17.3): tapping the pin lists them in the sheet.
+{
+  const counts = {};
+  data.stations.forEach((s) => s.lat != null && (counts[s.lat + "," + s.lng] = (counts[s.lat + "," + s.lng] || []).concat(s)));
+  const grp = Object.values(counts).find((a) => a.length > 1);
+  if (grp) {
+    await page.goto(base + `#s=${grp[0].id}`);
+    await page.waitForSelector("#detail:not([hidden]) h2");
+    await page.waitForTimeout(800);
+    await page.click('[data-act="back"]');
+    const ref = grp[0].plan_ref || grp[0].number;
+    const pin = page.locator(".pin.multi", { has: page.locator("b", { hasText: new RegExp(`^${ref.replace(".", "\\.")}$`) }) });
+    await pin.first().dispatchEvent("click");
+    await page.waitForTimeout(400);
+    assert.equal(await page.locator(".list .item:not(.talk):not(.food)").count(), grp.length, "group listed in sheet");
+    assert.match(await page.textContent("#count"), new RegExp(String(grp.length)));
+    await page.screenshot({ path: `${shots}/11-group-list.png` });
+    await page.locator(".list .item").first().click();
+    await page.waitForSelector("#detail:not([hidden]) h2");
+    await page.click('[data-act="back"]');
+    await page.click("#reset");
+    assert.equal(await page.locator(".list .item").count(), data.stations.length, "back to all stations");
+  }
+}
 
 // Search: typo tolerance, talk results, food results.
 {

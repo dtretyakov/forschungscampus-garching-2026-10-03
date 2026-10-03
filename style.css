@@ -134,7 +134,7 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
 .badge.food { background: var(--chip); font-size: 15px; }
 .item.past { opacity: .5; }
 .poi i { position: absolute; top: -6px; right: -6px; min-width: 15px; height: 15px; padding: 0 3px; border-radius: 8px;
-  background: #15202b; color: #fff; font: 700 9px/15px system-ui, sans-serif; font-style: normal; text-align: center; }
+  background: #fff; color: #5b6876; border: 1px solid #8895a3; font: 700 9px/13px system-ui, sans-serif; font-style: normal; text-align: center; }
 .poi { position: relative; }
 .food-list { margin: 6px 0 0; padding: 0; list-style: none; }
 .food-list li { padding: 4px 0; border-top: 1px solid #e5e8ec; }
@@ -180,11 +180,20 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
 }
 .pin b { transform: rotate(45deg); color: #fff; font: 700 11px/1 system-ui, sans-serif; }
 .pin.sel { outline: 3px solid #ffbf00; outline-offset: 1px; }
-.pin.multi::after {
-  content: attr(data-n); position: absolute; top: -7px; right: -7px; transform: rotate(45deg);
-  min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: #15202b; color: #fff;
-  border: 1.5px solid #fff; font: 700 10px/14px system-ui, sans-serif; text-align: center;
+/* Count badge: white with purple number, inside the marker's tap area. */
+.pin .cnt, .cluster .cnt {
+  position: absolute; min-width: 16px; height: 16px; padding: 0 3px; border-radius: 8px;
+  background: #fff; color: #94054f; border: 1.5px solid #94054f;
+  font: 700 10px/13px system-ui, sans-serif; text-align: center;
 }
+.pin .cnt { top: -5px; right: -5px; transform: rotate(45deg); }
+.cluster {
+  position: relative; width: 36px; height: 36px; margin: 2px; border-radius: 50%;
+  background: #94054f; border: 2px solid #fff; box-shadow: 0 0 0 4px rgba(148, 5, 79, .25), 0 1px 4px rgba(0,0,0,.4);
+  display: grid; place-items: center; color: #fff; font: 700 13px/1 system-ui, sans-serif;
+}
+.cluster .cnt { top: -6px; right: -6px; }
+.cluster.sel { outline: 3px solid #ffbf00; outline-offset: 1px; }
 .pin { position: relative; }
 .poi {
   width: 26px; height: 26px; border-radius: 7px; background: #fff; border: 1px solid #8895a3;
