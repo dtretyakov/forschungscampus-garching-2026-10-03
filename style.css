@@ -199,6 +199,7 @@ h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 650; white-space: nowrap;
 .lochelp ol { margin: 0 0 8px; padding-left: 20px; }
 .lochelp li { margin-bottom: 4px; }
 .lochelp .actions { margin: 10px 0 0; }
+.lochelp .tech { color: var(--muted); font-size: 12px; }
 /* While placing the position by hand, taps go through pins to the map. */
 .picking { cursor: crosshair; }
 .picking .leaflet-marker-icon, .picking .leaflet-interactive { pointer-events: none !important; }

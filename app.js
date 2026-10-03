@@ -394,14 +394,14 @@
     if (watchId != null) navigator.geolocation.clearWatch(watchId);
     watchId = null;
     els.toast.hidden = true;
-    showLocHelp(e.code);
+    showLocHelp(e.code, e.message);
   }
 
   // Safari on iOS answers "denied" without asking when location is off for Safari websites,
   // so explain where to switch it on and offer to place the position by hand.
   let helpEl = null;
   function closeLocHelp() { if (helpEl) { helpEl.remove(); helpEl = null; } }
-  function showLocHelp(code) {
+  function showLocHelp(code, detail) {
     closeLocHelp();
     let steps;
     if (code === 1 && isIOS) {
@@ -428,6 +428,7 @@
     helpEl.setAttribute("aria-label", "Standort");
     helpEl.innerHTML = `<h3>📍 Standort nicht verfügbar</h3>${steps}
       <p>Oder setze deinen Standort von Hand – dann funktionieren Entfernungen und Sortierung trotzdem.</p>
+      <p class="tech">Technische Info: Code ${esc(code)}${detail ? " – " + esc(detail) : ""}</p>
       <div class="actions">
         <button type="button" class="btn primary" data-act="manual">Auf Karte antippen</button>
         ${code === 1 ? '<button type="button" class="btn" data-act="reload">Seite neu laden</button>' : '<button type="button" class="btn" data-act="retry">Erneut versuchen</button>'}
